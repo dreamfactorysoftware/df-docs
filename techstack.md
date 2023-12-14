@@ -3,11 +3,12 @@
 ## Tech Stack
 dreamfactorysoftware/df-docs is built on the following main stack:
 
-- [Node.js](http://nodejs.org/) – Frameworks (Full Stack)
+- [React](https://reactjs.org/) – Javascript UI Libraries
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
-- [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) – Frameworks (Full Stack)
-- [Docusaurus](https://docusaurus.io/) – Documentation as a Service & Tools
-- [Docker](https://www.docker.com/) – Virtual Machine Platforms & Containers
+- [Babel](http://babeljs.io/) – JavaScript Compilers
+- [Yarn](https://yarnpkg.com/) – Front End Package Manager
+- [LangChain](https://github.com/hwchase17/langchain) – Large Language Model Tools
+- [pgvector](https://github.com/pgvector/pgvector/) – Database Tools
 
 Full tech stack [here](/techstack.md)
 
@@ -17,11 +18,12 @@ Full tech stack [here](/techstack.md)
 ## Tech Stack
 dreamfactorysoftware/df-docs is built on the following main stack:
 
-- <img width='25' height='25' src='https://img.stackshare.io/service/1011/n1JRsFeB_400x400.png' alt='Node.js'/> [Node.js](http://nodejs.org/) – Frameworks (Full Stack)
+- <img width='25' height='25' src='https://img.stackshare.io/service/1020/OYIaJ1KK.png' alt='React'/> [React](https://reactjs.org/) – Javascript UI Libraries
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
-- <img width='25' height='25' src='https://img.stackshare.io/service/6403/default_91fc1f0ee315262794273aa1387eaf8fed8436e6.png' alt='.NET Core'/> [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) – Frameworks (Full Stack)
-- <img width='25' height='25' src='https://img.stackshare.io/service/8438/xyht_7gq_400x400.jpg' alt='Docusaurus'/> [Docusaurus](https://docusaurus.io/) – Documentation as a Service & Tools
-- <img width='25' height='25' src='https://img.stackshare.io/service/586/n4u37v9t_400x400.png' alt='Docker'/> [Docker](https://www.docker.com/) – Virtual Machine Platforms & Containers
+- <img width='25' height='25' src='https://img.stackshare.io/service/2739/-1wfGjNw.png' alt='Babel'/> [Babel](http://babeljs.io/) – JavaScript Compilers
+- <img width='25' height='25' src='https://img.stackshare.io/service/5848/44mC-kJ3.jpg' alt='Yarn'/> [Yarn](https://yarnpkg.com/) – Front End Package Manager
+- <img width='25' height='25' src='https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg' alt='LangChain'/> [LangChain](https://github.com/hwchase17/langchain) – Large Language Model Tools
+- <img width='25' height='25' src='https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png' alt='pgvector'/> [pgvector](https://github.com/pgvector/pgvector/) – Database Tools
 
 Full tech stack [here](/techstack.md)
 
@@ -32,7 +34,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [dreamfactorysoftware/df-docs](https://github.com/dreamfactorysoftware/df-docs)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|7<br/>Tools used|12/06/23 <br/>Report generated|
+|15<br/>Tools used|12/14/23 <br/>Report generated|
 |------|------|
 </div>
 
@@ -57,20 +59,25 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## <img src='https://img.stackshare.io/frameworks.svg'/> Frameworks (2)
+## <img src='https://img.stackshare.io/frameworks.svg'/> Frameworks (1)
 <table><tr>
   <td align='center'>
-  <img width='36' height='36' src='https://img.stackshare.io/service/6403/default_91fc1f0ee315262794273aa1387eaf8fed8436e6.png' alt='.NET Core'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/1020/OYIaJ1KK.png' alt='React'>
   <br>
-  <sub><a href="https://docs.microsoft.com/en-us/dotnet/core/">.NET Core</a></sub>
+  <sub><a href="https://reactjs.org/">React</a></sub>
   <br>
-  <sub></sub>
+  <sub>v17.0.2</sub>
 </td>
 
-<td align='center'>
-  <img width='36' height='36' src='https://img.stackshare.io/service/1011/n1JRsFeB_400x400.png' alt='Node.js'>
+</tr>
+</table>
+
+## <img src='https://img.stackshare.io/databases.svg'/> Data (1)
+<table><tr>
+  <td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png' alt='pgvector'>
   <br>
-  <sub><a href="http://nodejs.org/">Node.js</a></sub>
+  <sub><a href="https://github.com/pgvector/pgvector/">pgvector</a></sub>
   <br>
   <sub></sub>
 </td>
@@ -78,14 +85,14 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## <img src='https://img.stackshare.io/devops.svg'/> DevOps (2)
+## <img src='https://img.stackshare.io/devops.svg'/> DevOps (4)
 <table><tr>
   <td align='center'>
-  <img width='36' height='36' src='https://img.stackshare.io/service/586/n4u37v9t_400x400.png' alt='Docker'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/2739/-1wfGjNw.png' alt='Babel'>
   <br>
-  <sub><a href="https://www.docker.com/">Docker</a></sub>
+  <sub><a href="http://babeljs.io/">Babel</a></sub>
   <br>
-  <sub></sub>
+  <sub>v7.12.9</sub>
 </td>
 
 <td align='center'>
@@ -96,21 +103,58 @@ Full tech stack [here](/techstack.md)
   <sub></sub>
 </td>
 
-</tr>
-</table>
+<td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/5848/44mC-kJ3.jpg' alt='Yarn'>
+  <br>
+  <sub><a href="https://yarnpkg.com/">Yarn</a></sub>
+  <br>
+  <sub></sub>
+</td>
 
-## Other (1)
-<table><tr>
-  <td align='center'>
-  <img width='36' height='36' src='https://img.stackshare.io/service/8438/xyht_7gq_400x400.jpg' alt='Docusaurus'>
+<td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png' alt='npm'>
   <br>
-  <sub><a href="https://docusaurus.io/">Docusaurus</a></sub>
+  <sub><a href="https://www.npmjs.com/">npm</a></sub>
   <br>
-  <sub>v1.14.7</sub>
+  <sub></sub>
 </td>
 
 </tr>
 </table>
+
+## Other (2)
+<table><tr>
+  <td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/2270/no-img-open-source.png' alt='HTML'>
+  <br>
+  <sub><a href="http://">HTML</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+<td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg' alt='LangChain'>
+  <br>
+  <sub><a href="https://github.com/hwchase17/langchain">LangChain</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+</tr>
+</table>
+
+
+## <img src='https://img.stackshare.io/group.svg' /> Open source packages (5)</h2>
+
+## <img width='24' height='24' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png'/> npm (5)
+
+|NAME|VERSION|LAST UPDATED|LAST UPDATED BY|LICENSE|VULNERABILITIES|
+|:------|:------|:------|:------|:------|:------|
+|[@mdx-js/react](https://www.npmjs.com/@mdx-js/react)|v1.6.22|12/07/23|nicdavidson |MIT|N/A|
+|[@svgr/webpack](https://www.npmjs.com/@svgr/webpack)|v5.5.0|12/07/23|nicdavidson |MIT|N/A|
+|[file-loader](https://www.npmjs.com/file-loader)|v6.2.0|12/07/23|nicdavidson |MIT|N/A|
+|[react-dom](https://www.npmjs.com/react-dom)|v17.0.2|12/07/23|nicdavidson |MIT|N/A|
+|[url-loader](https://www.npmjs.com/url-loader)|v4.1.1|12/07/23|nicdavidson |MIT|N/A|
 
 <br/>
 <div align='center'>
