@@ -1,7 +1,7 @@
 export default {
-  "title": "My Site",
-  "tagline": "Dinosaurs are cool",
-  "url": "https://your-docusaurus-test-site.com",
+  "title": "DreamFactory Docs",
+  "tagline": "Instant API Generation",
+  "url": "https://dreamfactory.com",
   "baseUrl": "/",
   "onBrokenLinks": "throw",
   "onBrokenMarkdownLinks": "warn",
@@ -13,7 +13,7 @@ export default {
       "@docusaurus/preset-classic",
       {
         "docs": {
-          "sidebarPath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/sidebars.js",
+          "sidebarPath": "/Users/punchcode/df-docs/sidebars.js",
           "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/"
         },
         "blog": {
@@ -21,14 +21,14 @@ export default {
           "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/"
         },
         "theme": {
-          "customCss": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/src/css/custom.css"
+          "customCss": "/Users/punchcode/df-docs/src/css/custom.css"
         }
       }
     ]
   ],
   "themeConfig": {
     "navbar": {
-      "title": "My Site",
+      "title": "DreamFactory",
       "logo": {
         "alt": "My Site Logo",
         "src": "img/logo.svg"
@@ -46,7 +46,12 @@ export default {
           "position": "left"
         },
         {
-          "href": "https://github.com/facebook/docusaurus",
+          "to": "/installation",
+          "label": "Install",
+          "position": "left"
+        },
+        {
+          "href": "https://github.com/dreamfactorysoftware/dreamfactory",
           "label": "GitHub",
           "position": "right"
         }

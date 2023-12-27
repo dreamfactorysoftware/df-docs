@@ -1,0 +1,564 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/docs",
+          "tagsPath": "/docs/tags",
+          "versionEditUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs",
+          "versionEditUrlLocalized": "https://github.com/facebook/docusaurus/edit/main/website/i18n/en/docusaurus-plugin-content-docs/current",
+          "versionBanner": null,
+          "versionBadge": false,
+          "versionClassName": "docs-version-current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/Users/punchcode/df-docs/sidebars.js",
+          "contentPath": "/Users/punchcode/df-docs/docs",
+          "contentPathLocalized": "/Users/punchcode/df-docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "mainDocId": "intro",
+          "sidebars": {
+            "tutorialSidebar": [
+              {
+                "type": "doc",
+                "id": "intro"
+              },
+              {
+                "type": "category",
+                "label": "Tutorial - Basics",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "tutorial-basics/generate-db-api"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial-basics/test-api"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial-basics/secure-api"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial-basics/interacting-api"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial-basics/deploy-your-site"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial-basics/congratulations"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Tutorial - Advanced",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "tutorial-extras/system-api"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial-extras/rotating-keys"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              }
+            ]
+          },
+          "docs": [
+            {
+              "unversionedId": "intro",
+              "id": "intro",
+              "isDocsHomePage": false,
+              "title": "Tutorials",
+              "description": "Let's discover Docusaurus in less than 5 minutes.",
+              "source": "@site/docs/intro.md",
+              "sourceDirName": ".",
+              "slug": "/intro",
+              "permalink": "/docs/intro",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/intro.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "next": {
+                "title": "Generate a database API",
+                "permalink": "/docs/tutorial-basics/generate-db-api"
+              }
+            },
+            {
+              "unversionedId": "tutorial-basics/congratulations",
+              "id": "tutorial-basics/congratulations",
+              "isDocsHomePage": false,
+              "title": "Congratulations!",
+              "description": "You have just learned the basics of Docusaurus and made some changes to the initial template.",
+              "source": "@site/docs/tutorial-basics/congratulations.md",
+              "sourceDirName": "tutorial-basics",
+              "slug": "/tutorial-basics/congratulations",
+              "permalink": "/docs/tutorial-basics/congratulations",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/congratulations.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 6,
+              "frontMatter": {
+                "sidebar_position": 6
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Deploy your site",
+                "permalink": "/docs/tutorial-basics/deploy-your-site"
+              },
+              "next": {
+                "title": "System API",
+                "permalink": "/docs/tutorial-extras/system-api"
+              }
+            },
+            {
+              "unversionedId": "tutorial-basics/deploy-your-site",
+              "id": "tutorial-basics/deploy-your-site",
+              "isDocsHomePage": false,
+              "title": "Deploy your site",
+              "description": "Docusaurus is a static-site-generator (also called Jamstack).",
+              "source": "@site/docs/tutorial-basics/deploy-your-site.md",
+              "sourceDirName": "tutorial-basics",
+              "slug": "/tutorial-basics/deploy-your-site",
+              "permalink": "/docs/tutorial-basics/deploy-your-site",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/deploy-your-site.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 5,
+              "frontMatter": {
+                "sidebar_position": 5
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Interacting with the API",
+                "permalink": "/docs/tutorial-basics/interacting-api"
+              },
+              "next": {
+                "title": "Congratulations!",
+                "permalink": "/docs/tutorial-basics/congratulations"
+              }
+            },
+            {
+              "unversionedId": "tutorial-basics/generate-db-api",
+              "id": "tutorial-basics/generate-db-api",
+              "isDocsHomePage": false,
+              "title": "Generate a database API",
+              "description": "Add Markdown or React files to src/pages to create a standalone page:",
+              "source": "@site/docs/tutorial-basics/generate-db-api.md",
+              "sourceDirName": "tutorial-basics",
+              "slug": "/tutorial-basics/generate-db-api",
+              "permalink": "/docs/tutorial-basics/generate-db-api",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/generate-db-api.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Tutorials",
+                "permalink": "/docs/intro"
+              },
+              "next": {
+                "title": "Test the API",
+                "permalink": "/docs/tutorial-basics/test-api"
+              }
+            },
+            {
+              "unversionedId": "tutorial-basics/interacting-api",
+              "id": "tutorial-basics/interacting-api",
+              "isDocsHomePage": false,
+              "title": "Interacting with the API",
+              "description": "Docusaurus supports Markdown and a few additional features.",
+              "source": "@site/docs/tutorial-basics/interacting-api.md",
+              "sourceDirName": "tutorial-basics",
+              "slug": "/tutorial-basics/interacting-api",
+              "permalink": "/docs/tutorial-basics/interacting-api",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/interacting-api.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 4,
+              "frontMatter": {
+                "sidebar_position": 4
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Secure the API",
+                "permalink": "/docs/tutorial-basics/secure-api"
+              },
+              "next": {
+                "title": "Deploy your site",
+                "permalink": "/docs/tutorial-basics/deploy-your-site"
+              }
+            },
+            {
+              "unversionedId": "tutorial-basics/secure-api",
+              "id": "tutorial-basics/secure-api",
+              "isDocsHomePage": false,
+              "title": "Secure the API",
+              "description": "Docusaurus creates a page for each blog post, but also a blog index page, a tag system, an RSS feed...",
+              "source": "@site/docs/tutorial-basics/secure-api.md",
+              "sourceDirName": "tutorial-basics",
+              "slug": "/tutorial-basics/secure-api",
+              "permalink": "/docs/tutorial-basics/secure-api",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/secure-api.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 3,
+              "frontMatter": {
+                "sidebar_position": 3
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Test the API",
+                "permalink": "/docs/tutorial-basics/test-api"
+              },
+              "next": {
+                "title": "Interacting with the API",
+                "permalink": "/docs/tutorial-basics/interacting-api"
+              }
+            },
+            {
+              "unversionedId": "tutorial-basics/test-api",
+              "id": "tutorial-basics/test-api",
+              "isDocsHomePage": false,
+              "title": "Test the API",
+              "description": "Documents are groups of pages connected through:",
+              "source": "@site/docs/tutorial-basics/test-api.md",
+              "sourceDirName": "tutorial-basics",
+              "slug": "/tutorial-basics/test-api",
+              "permalink": "/docs/tutorial-basics/test-api",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/test-api.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Generate a database API",
+                "permalink": "/docs/tutorial-basics/generate-db-api"
+              },
+              "next": {
+                "title": "Secure the API",
+                "permalink": "/docs/tutorial-basics/secure-api"
+              }
+            },
+            {
+              "unversionedId": "tutorial-extras/rotating-keys",
+              "id": "tutorial-extras/rotating-keys",
+              "isDocsHomePage": false,
+              "title": "Rotating API Keys",
+              "description": "Let's translate docs/intro.md to French.",
+              "source": "@site/docs/tutorial-extras/rotating-keys.md",
+              "sourceDirName": "tutorial-extras",
+              "slug": "/tutorial-extras/rotating-keys",
+              "permalink": "/docs/tutorial-extras/rotating-keys",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-extras/rotating-keys.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "System API",
+                "permalink": "/docs/tutorial-extras/system-api"
+              }
+            },
+            {
+              "unversionedId": "tutorial-extras/system-api",
+              "id": "tutorial-extras/system-api",
+              "isDocsHomePage": false,
+              "title": "System API",
+              "description": "Docusaurus can manage multiple versions of your docs.",
+              "source": "@site/docs/tutorial-extras/system-api.md",
+              "sourceDirName": "tutorial-extras",
+              "slug": "/tutorial-extras/system-api",
+              "permalink": "/docs/tutorial-extras/system-api",
+              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-extras/system-api.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Congratulations!",
+                "permalink": "/docs/tutorial-basics/congratulations"
+              },
+              "next": {
+                "title": "Rotating API Keys",
+                "permalink": "/docs/tutorial-extras/rotating-keys"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogSidebarTitle": "Recent posts",
+      "blogPosts": [
+        {
+          "id": "welcome",
+          "metadata": {
+            "permalink": "/blog/welcome",
+            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2021-08-26-welcome/index.md",
+            "source": "@site/blog/2021-08-26-welcome/index.md",
+            "title": "Welcome",
+            "description": "Docusaurus blogging features are powered by the blog plugin.",
+            "date": "2021-08-26T00:00:00.000Z",
+            "formattedDate": "August 26, 2021",
+            "tags": [
+              {
+                "label": "facebook",
+                "permalink": "/blog/tags/facebook"
+              },
+              {
+                "label": "hello",
+                "permalink": "/blog/tags/hello"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "readingTime": 0.405,
+            "truncated": false,
+            "authors": [
+              {
+                "name": "Sébastien Lorber",
+                "title": "Docusaurus maintainer",
+                "url": "https://sebastienlorber.com",
+                "imageURL": "https://github.com/slorber.png",
+                "key": "slorber"
+              },
+              {
+                "name": "Yangshun Tay",
+                "title": "Front End Engineer @ Facebook",
+                "url": "https://github.com/yangshun",
+                "imageURL": "https://github.com/yangshun.png",
+                "key": "yangshun"
+              }
+            ],
+            "nextItem": {
+              "title": "MDX Blog Post",
+              "permalink": "/blog/mdx-blog-post"
+            }
+          }
+        },
+        {
+          "id": "mdx-blog-post",
+          "metadata": {
+            "permalink": "/blog/mdx-blog-post",
+            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2021-08-01-mdx-blog-post.mdx",
+            "source": "@site/blog/2021-08-01-mdx-blog-post.mdx",
+            "title": "MDX Blog Post",
+            "description": "Blog posts support Docusaurus Markdown features, such as MDX.",
+            "date": "2021-08-01T00:00:00.000Z",
+            "formattedDate": "August 1, 2021",
+            "tags": [
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "readingTime": 0.175,
+            "truncated": false,
+            "authors": [
+              {
+                "name": "Sébastien Lorber",
+                "title": "Docusaurus maintainer",
+                "url": "https://sebastienlorber.com",
+                "imageURL": "https://github.com/slorber.png",
+                "key": "slorber"
+              }
+            ],
+            "prevItem": {
+              "title": "Welcome",
+              "permalink": "/blog/welcome"
+            },
+            "nextItem": {
+              "title": "Long Blog Post",
+              "permalink": "/blog/long-blog-post"
+            }
+          }
+        },
+        {
+          "id": "long-blog-post",
+          "metadata": {
+            "permalink": "/blog/long-blog-post",
+            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2019-05-29-long-blog-post.md",
+            "source": "@site/blog/2019-05-29-long-blog-post.md",
+            "title": "Long Blog Post",
+            "description": "This is the summary of a very long blog post,",
+            "date": "2019-05-29T00:00:00.000Z",
+            "formattedDate": "May 29, 2019",
+            "tags": [
+              {
+                "label": "hello",
+                "permalink": "/blog/tags/hello"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "readingTime": 2.05,
+            "truncated": true,
+            "authors": [
+              {
+                "name": "Endilie Yacop Sucipto",
+                "title": "Maintainer of Docusaurus",
+                "url": "https://github.com/endiliey",
+                "imageURL": "https://github.com/endiliey.png",
+                "key": "endi"
+              }
+            ],
+            "prevItem": {
+              "title": "MDX Blog Post",
+              "permalink": "/blog/mdx-blog-post"
+            },
+            "nextItem": {
+              "title": "First Blog Post",
+              "permalink": "/blog/first-blog-post"
+            }
+          }
+        },
+        {
+          "id": "first-blog-post",
+          "metadata": {
+            "permalink": "/blog/first-blog-post",
+            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2019-05-28-first-blog-post.md",
+            "source": "@site/blog/2019-05-28-first-blog-post.md",
+            "title": "First Blog Post",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+            "date": "2019-05-28T00:00:00.000Z",
+            "formattedDate": "May 28, 2019",
+            "tags": [
+              {
+                "label": "hola",
+                "permalink": "/blog/tags/hola"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "readingTime": 0.12,
+            "truncated": false,
+            "authors": [
+              {
+                "name": "Gao Wei",
+                "title": "Docusaurus Core Team",
+                "url": "https://github.com/wgao19",
+                "image_url": "https://github.com/wgao19.png",
+                "imageURL": "https://github.com/wgao19.png"
+              }
+            ],
+            "prevItem": {
+              "title": "Long Blog Post",
+              "permalink": "/blog/long-blog-post"
+            }
+          }
+        }
+      ],
+      "blogListPaginated": [
+        {
+          "metadata": {
+            "permalink": "/blog",
+            "page": 1,
+            "postsPerPage": 10,
+            "totalPages": 1,
+            "totalCount": 4,
+            "previousPage": null,
+            "nextPage": null,
+            "blogDescription": "Blog",
+            "blogTitle": "Blog"
+          },
+          "items": [
+            "welcome",
+            "mdx-blog-post",
+            "long-blog-post",
+            "first-blog-post"
+          ]
+        }
+      ],
+      "blogTags": {
+        "/blog/tags/facebook": {
+          "name": "facebook",
+          "items": [
+            "welcome"
+          ],
+          "permalink": "/blog/tags/facebook"
+        },
+        "/blog/tags/hello": {
+          "name": "hello",
+          "items": [
+            "welcome",
+            "long-blog-post"
+          ],
+          "permalink": "/blog/tags/hello"
+        },
+        "/blog/tags/docusaurus": {
+          "name": "docusaurus",
+          "items": [
+            "welcome",
+            "mdx-blog-post",
+            "long-blog-post",
+            "first-blog-post"
+          ],
+          "permalink": "/blog/tags/docusaurus"
+        },
+        "/blog/tags/hola": {
+          "name": "hola",
+          "items": [
+            "first-blog-post"
+          ],
+          "permalink": "/blog/tags/hola"
+        }
+      },
+      "blogTagsListPath": "/blog/tags"
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      },
+      {
+        "type": "mdx",
+        "permalink": "/markdown-page",
+        "source": "@site/src/pages/markdown-page.md"
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {
+    "default": null
+  },
+  "docusaurus-theme-classic": {
+    "default": null
+  }
+}

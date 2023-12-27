@@ -4,9 +4,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'DreamFactory Docs',
+  tagline: 'Instant API Generation',
+  url: 'https://dreamfactory.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -41,7 +41,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'DreamFactory',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
@@ -54,8 +54,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             label: 'Tutorial',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/installation', label: 'Install', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/dreamfactorysoftware/dreamfactory',
             label: 'GitHub',
             position: 'right',
           },

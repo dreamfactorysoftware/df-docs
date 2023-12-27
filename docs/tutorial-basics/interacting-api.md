@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Markdown Features
+# Interacting with the API
 
 Docusaurus supports **[Markdown](https://daringfireball.net/projects/markdown/syntax)** and a few **additional features**.
 

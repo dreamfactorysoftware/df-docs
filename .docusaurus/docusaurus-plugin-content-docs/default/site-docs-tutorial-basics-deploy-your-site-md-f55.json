@@ -17,8 +17,8 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Markdown Features",
-    "permalink": "/docs/tutorial-basics/markdown-features"
+    "title": "Interacting with the API",
+    "permalink": "/docs/tutorial-basics/interacting-api"
   },
   "next": {
     "title": "Congratulations!",

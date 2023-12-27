@@ -10,7 +10,7 @@
     "tutorialSidebar": [
       {
         "type": "link",
-        "label": "Tutorial Intro",
+        "label": "Tutorials",
         "href": "/docs/intro"
       },
       {
@@ -19,23 +19,23 @@
         "items": [
           {
             "type": "link",
-            "label": "Create a Page",
-            "href": "/docs/tutorial-basics/create-a-page"
+            "label": "Generate a database API",
+            "href": "/docs/tutorial-basics/generate-db-api"
           },
           {
             "type": "link",
-            "label": "Create a Document",
-            "href": "/docs/tutorial-basics/create-a-document"
+            "label": "Test the API",
+            "href": "/docs/tutorial-basics/test-api"
           },
           {
             "type": "link",
-            "label": "Create a Blog Post",
-            "href": "/docs/tutorial-basics/create-a-blog-post"
+            "label": "Secure the API",
+            "href": "/docs/tutorial-basics/secure-api"
           },
           {
             "type": "link",
-            "label": "Markdown Features",
-            "href": "/docs/tutorial-basics/markdown-features"
+            "label": "Interacting with the API",
+            "href": "/docs/tutorial-basics/interacting-api"
           },
           {
             "type": "link",
@@ -53,17 +53,17 @@
       },
       {
         "type": "category",
-        "label": "Tutorial - Extras",
+        "label": "Tutorial - Advanced",
         "items": [
           {
             "type": "link",
-            "label": "Manage Docs Versions",
-            "href": "/docs/tutorial-extras/manage-docs-versions"
+            "label": "System API",
+            "href": "/docs/tutorial-extras/system-api"
           },
           {
             "type": "link",
-            "label": "Translate your site",
-            "href": "/docs/tutorial-extras/translate-your-site"
+            "label": "Rotating API Keys",
+            "href": "/docs/tutorial-extras/rotating-keys"
           }
         ],
         "collapsed": true,

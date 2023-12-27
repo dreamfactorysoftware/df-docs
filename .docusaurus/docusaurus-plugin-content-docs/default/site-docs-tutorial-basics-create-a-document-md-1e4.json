@@ -2,7 +2,7 @@
   "unversionedId": "tutorial-basics/create-a-document",
   "id": "tutorial-basics/create-a-document",
   "isDocsHomePage": false,
-  "title": "Create a Document",
+  "title": "Test the API",
   "description": "Documents are groups of pages connected through:",
   "source": "@site/docs/tutorial-basics/create-a-document.md",
   "sourceDirName": "tutorial-basics",
@@ -17,11 +17,11 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Create a Page",
-    "permalink": "/docs/tutorial-basics/create-a-page"
+    "title": "Generate a database API",
+    "permalink": "/docs/tutorial-basics/generate-db-api"
   },
   "next": {
-    "title": "Create a Blog Post",
+    "title": "Generate a database API",
     "permalink": "/docs/tutorial-basics/create-a-blog-post"
   }
 }
