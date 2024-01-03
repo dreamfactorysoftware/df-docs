@@ -2,13 +2,13 @@
   "unversionedId": "intro",
   "id": "intro",
   "isDocsHomePage": false,
-  "title": "Tutorials",
-  "description": "Let's discover Docusaurus in less than 5 minutes.",
+  "title": "Introduction",
+  "description": "Welcome to the DreamFactory documentation site! Here you will find comprehensive guides, tutorials, and references to help you get started with DreamFactory, an open-source REST API platform. Whether you are a developer, administrator, or user, this documentation will provide you with the information you need to leverage the power of DreamFactory and build scalable and secure APIs.",
   "source": "@site/docs/intro.md",
   "sourceDirName": ".",
   "slug": "/intro",
-  "permalink": "/docs/intro",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/intro.md",
+  "permalink": "/intro",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/intro.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 1,
@@ -17,7 +17,7 @@
   },
   "sidebar": "tutorialSidebar",
   "next": {
-    "title": "Generate a database API",
-    "permalink": "/docs/tutorial-basics/generate-db-api"
+    "title": "Installing DreamFactory",
+    "permalink": "/Installing DreamFactory/installation"
   }
 }

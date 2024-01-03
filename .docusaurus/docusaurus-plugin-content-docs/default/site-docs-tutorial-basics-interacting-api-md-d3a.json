@@ -7,8 +7,8 @@
   "source": "@site/docs/tutorial-basics/interacting-api.md",
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/interacting-api",
-  "permalink": "/docs/tutorial-basics/interacting-api",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/interacting-api.md",
+  "permalink": "/tutorial-basics/interacting-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/interacting-api.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 4,
@@ -18,10 +18,10 @@
   "sidebar": "tutorialSidebar",
   "previous": {
     "title": "Secure the API",
-    "permalink": "/docs/tutorial-basics/secure-api"
+    "permalink": "/tutorial-basics/secure-api"
   },
   "next": {
     "title": "Deploy your site",
-    "permalink": "/docs/tutorial-basics/deploy-your-site"
+    "permalink": "/tutorial-basics/deploy-your-site"
   }
 }

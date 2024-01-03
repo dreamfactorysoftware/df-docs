@@ -7,8 +7,8 @@
   "source": "@site/docs/tutorial-basics/secure-api.md",
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/secure-api",
-  "permalink": "/docs/tutorial-basics/secure-api",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/secure-api.md",
+  "permalink": "/tutorial-basics/secure-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/secure-api.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 3,
@@ -18,10 +18,10 @@
   "sidebar": "tutorialSidebar",
   "previous": {
     "title": "Test the API",
-    "permalink": "/docs/tutorial-basics/test-api"
+    "permalink": "/tutorial-basics/test-api"
   },
   "next": {
     "title": "Interacting with the API",
-    "permalink": "/docs/tutorial-basics/interacting-api"
+    "permalink": "/tutorial-basics/interacting-api"
   }
 }

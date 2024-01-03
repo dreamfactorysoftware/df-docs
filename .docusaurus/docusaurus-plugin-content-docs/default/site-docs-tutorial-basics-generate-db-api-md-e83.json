@@ -7,8 +7,8 @@
   "source": "@site/docs/tutorial-basics/generate-db-api.md",
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/generate-db-api",
-  "permalink": "/docs/tutorial-basics/generate-db-api",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/generate-db-api.md",
+  "permalink": "/tutorial-basics/generate-db-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/generate-db-api.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 1,
@@ -17,11 +17,11 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Tutorials",
-    "permalink": "/docs/intro"
+    "title": "Upgrading DreamFactory",
+    "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
   },
   "next": {
     "title": "Test the API",
-    "permalink": "/docs/tutorial-basics/test-api"
+    "permalink": "/tutorial-basics/test-api"
   }
 }

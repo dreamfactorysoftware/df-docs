@@ -10,8 +10,85 @@
     "tutorialSidebar": [
       {
         "type": "link",
-        "label": "Tutorials",
-        "href": "/docs/intro"
+        "label": "Introduction",
+        "href": "/intro"
+      },
+      {
+        "type": "category",
+        "label": "Installing DreamFactory",
+        "items": [
+          {
+            "type": "link",
+            "label": "Installing DreamFactory",
+            "href": "/Installing DreamFactory/installation"
+          },
+          {
+            "type": "link",
+            "label": "Linux Installation",
+            "href": "/Installing DreamFactory/linux-installation"
+          },
+          {
+            "type": "link",
+            "label": "Docker Installation",
+            "href": "/Installing DreamFactory/docker-installation"
+          },
+          {
+            "type": "link",
+            "label": "Windows Installation",
+            "href": "/Installing DreamFactory/windows-installation"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "DreamFactory Configuration",
+        "items": [
+          {
+            "type": "link",
+            "label": "Basic Configuration",
+            "href": "/DreamFactory Configuration/configuration"
+          },
+          {
+            "type": "category",
+            "label": "Web Server Configuration",
+            "items": [
+              {
+                "type": "link",
+                "label": "Nginx",
+                "href": "/DreamFactory Configuration/Web Server Configuration/nginx"
+              },
+              {
+                "type": "link",
+                "label": "IIS (Windows)",
+                "href": "/DreamFactory Configuration/Web Server Configuration/iis"
+              },
+              {
+                "type": "link",
+                "label": "Certbot and SSL",
+                "href": "/DreamFactory Configuration/Web Server Configuration/certbot"
+              }
+            ],
+            "collapsed": true,
+            "collapsible": true
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "DreamFactory Upgrades and Migrations",
+        "items": [
+          {
+            "type": "link",
+            "label": "Upgrading DreamFactory",
+            "href": "/DreamFactory Upgrades and Migrations/upgrades"
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
       },
       {
         "type": "category",
@@ -20,32 +97,32 @@
           {
             "type": "link",
             "label": "Generate a database API",
-            "href": "/docs/tutorial-basics/generate-db-api"
+            "href": "/tutorial-basics/generate-db-api"
           },
           {
             "type": "link",
             "label": "Test the API",
-            "href": "/docs/tutorial-basics/test-api"
+            "href": "/tutorial-basics/test-api"
           },
           {
             "type": "link",
             "label": "Secure the API",
-            "href": "/docs/tutorial-basics/secure-api"
+            "href": "/tutorial-basics/secure-api"
           },
           {
             "type": "link",
             "label": "Interacting with the API",
-            "href": "/docs/tutorial-basics/interacting-api"
+            "href": "/tutorial-basics/interacting-api"
           },
           {
             "type": "link",
             "label": "Deploy your site",
-            "href": "/docs/tutorial-basics/deploy-your-site"
+            "href": "/tutorial-basics/deploy-your-site"
           },
           {
             "type": "link",
             "label": "Congratulations!",
-            "href": "/docs/tutorial-basics/congratulations"
+            "href": "/tutorial-basics/congratulations"
           }
         ],
         "collapsed": true,
@@ -58,12 +135,12 @@
           {
             "type": "link",
             "label": "System API",
-            "href": "/docs/tutorial-extras/system-api"
+            "href": "/tutorial-extras/system-api"
           },
           {
             "type": "link",
             "label": "Rotating API Keys",
-            "href": "/docs/tutorial-extras/rotating-keys"
+            "href": "/tutorial-extras/rotating-keys"
           }
         ],
         "collapsed": true,

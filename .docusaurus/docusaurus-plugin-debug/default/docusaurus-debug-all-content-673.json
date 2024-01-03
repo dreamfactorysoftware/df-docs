@@ -5,24 +5,92 @@
         {
           "versionName": "current",
           "versionLabel": "Next",
-          "versionPath": "/docs",
-          "tagsPath": "/docs/tags",
-          "versionEditUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs",
-          "versionEditUrlLocalized": "https://github.com/facebook/docusaurus/edit/main/website/i18n/en/docusaurus-plugin-content-docs/current",
+          "versionPath": "/",
+          "tagsPath": "/tags",
+          "versionEditUrl": "https://github.com/dreamfactorysoftware/df-docs/docs",
+          "versionEditUrlLocalized": "https://github.com/dreamfactorysoftware/df-docs/i18n/en/docusaurus-plugin-content-docs/current",
           "versionBanner": null,
           "versionBadge": false,
           "versionClassName": "docs-version-current",
           "isLast": true,
           "routePriority": -1,
-          "sidebarFilePath": "/Users/punchcode/df-docs/sidebars.js",
-          "contentPath": "/Users/punchcode/df-docs/docs",
-          "contentPathLocalized": "/Users/punchcode/df-docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "sidebarFilePath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/sidebars.js",
+          "contentPath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/docs",
+          "contentPathLocalized": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/i18n/en/docusaurus-plugin-content-docs/current",
           "mainDocId": "intro",
           "sidebars": {
             "tutorialSidebar": [
               {
                 "type": "doc",
                 "id": "intro"
+              },
+              {
+                "type": "category",
+                "label": "Installing DreamFactory",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "Installing DreamFactory/installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Installing DreamFactory/linux-installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Installing DreamFactory/docker-installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Installing DreamFactory/windows-installation"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "DreamFactory Configuration",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "DreamFactory Configuration/configuration"
+                  },
+                  {
+                    "type": "category",
+                    "label": "Web Server Configuration",
+                    "items": [
+                      {
+                        "type": "doc",
+                        "id": "DreamFactory Configuration/Web Server Configuration/nginx"
+                      },
+                      {
+                        "type": "doc",
+                        "id": "DreamFactory Configuration/Web Server Configuration/iis"
+                      },
+                      {
+                        "type": "doc",
+                        "id": "DreamFactory Configuration/Web Server Configuration/certbot"
+                      }
+                    ],
+                    "collapsed": true,
+                    "collapsible": true
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "DreamFactory Upgrades and Migrations",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "DreamFactory Upgrades and Migrations/upgrades"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
               },
               {
                 "type": "category",
@@ -76,16 +144,259 @@
           },
           "docs": [
             {
+              "unversionedId": "DreamFactory Configuration/configuration",
+              "id": "DreamFactory Configuration/configuration",
+              "isDocsHomePage": false,
+              "title": "Basic Configuration",
+              "description": "This page outlines the basic configuration settings for DreamFactory.",
+              "source": "@site/docs/DreamFactory Configuration/configuration.md",
+              "sourceDirName": "DreamFactory Configuration",
+              "slug": "/DreamFactory Configuration/configuration",
+              "permalink": "/DreamFactory Configuration/configuration",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/configuration.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Windows Installation",
+                "permalink": "/Installing DreamFactory/windows-installation"
+              },
+              "next": {
+                "title": "Nginx",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/nginx"
+              }
+            },
+            {
+              "unversionedId": "DreamFactory Configuration/Web Server Configuration/certbot",
+              "id": "DreamFactory Configuration/Web Server Configuration/certbot",
+              "isDocsHomePage": false,
+              "title": "Certbot and SSL",
+              "description": "",
+              "source": "@site/docs/DreamFactory Configuration/Web Server Configuration/certbot.md",
+              "sourceDirName": "DreamFactory Configuration/Web Server Configuration",
+              "slug": "/DreamFactory Configuration/Web Server Configuration/certbot",
+              "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Web Server Configuration/certbot.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 3,
+              "frontMatter": {
+                "sidebar_position": 3
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "IIS (Windows)",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/iis"
+              },
+              "next": {
+                "title": "Upgrading DreamFactory",
+                "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+              }
+            },
+            {
+              "unversionedId": "DreamFactory Configuration/Web Server Configuration/iis",
+              "id": "DreamFactory Configuration/Web Server Configuration/iis",
+              "isDocsHomePage": false,
+              "title": "IIS (Windows)",
+              "description": "",
+              "source": "@site/docs/DreamFactory Configuration/Web Server Configuration/iis.md",
+              "sourceDirName": "DreamFactory Configuration/Web Server Configuration",
+              "slug": "/DreamFactory Configuration/Web Server Configuration/iis",
+              "permalink": "/DreamFactory Configuration/Web Server Configuration/iis",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Web Server Configuration/iis.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Nginx",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/nginx"
+              },
+              "next": {
+                "title": "Certbot and SSL",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+              }
+            },
+            {
+              "unversionedId": "DreamFactory Configuration/Web Server Configuration/nginx",
+              "id": "DreamFactory Configuration/Web Server Configuration/nginx",
+              "isDocsHomePage": false,
+              "title": "Nginx",
+              "description": "",
+              "source": "@site/docs/DreamFactory Configuration/Web Server Configuration/nginx.md",
+              "sourceDirName": "DreamFactory Configuration/Web Server Configuration",
+              "slug": "/DreamFactory Configuration/Web Server Configuration/nginx",
+              "permalink": "/DreamFactory Configuration/Web Server Configuration/nginx",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Web Server Configuration/nginx.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Basic Configuration",
+                "permalink": "/DreamFactory Configuration/configuration"
+              },
+              "next": {
+                "title": "IIS (Windows)",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/iis"
+              }
+            },
+            {
+              "unversionedId": "DreamFactory Upgrades and Migrations/upgrades",
+              "id": "DreamFactory Upgrades and Migrations/upgrades",
+              "isDocsHomePage": false,
+              "title": "Upgrading DreamFactory",
+              "description": "",
+              "source": "@site/docs/DreamFactory Upgrades and Migrations/upgrades.md",
+              "sourceDirName": "DreamFactory Upgrades and Migrations",
+              "slug": "/DreamFactory Upgrades and Migrations/upgrades",
+              "permalink": "/DreamFactory Upgrades and Migrations/upgrades",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Upgrades and Migrations/upgrades.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Certbot and SSL",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+              },
+              "next": {
+                "title": "Generate a database API",
+                "permalink": "/tutorial-basics/generate-db-api"
+              }
+            },
+            {
+              "unversionedId": "Installing DreamFactory/docker-installation",
+              "id": "Installing DreamFactory/docker-installation",
+              "isDocsHomePage": false,
+              "title": "Docker Installation",
+              "description": "This page will have docker install instructions on it.",
+              "source": "@site/docs/Installing DreamFactory/docker-installation.md",
+              "sourceDirName": "Installing DreamFactory",
+              "slug": "/Installing DreamFactory/docker-installation",
+              "permalink": "/Installing DreamFactory/docker-installation",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/docker-installation.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 3,
+              "frontMatter": {
+                "sidebar_position": 3
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Linux Installation",
+                "permalink": "/Installing DreamFactory/linux-installation"
+              },
+              "next": {
+                "title": "Windows Installation",
+                "permalink": "/Installing DreamFactory/windows-installation"
+              }
+            },
+            {
+              "unversionedId": "Installing DreamFactory/installation",
+              "id": "Installing DreamFactory/installation",
+              "isDocsHomePage": false,
+              "title": "Installing DreamFactory",
+              "description": "Welcome to the installation guide for DreamFactory! This section will focus on the inital installation of DreamFactory on the various supported platforms.",
+              "source": "@site/docs/Installing DreamFactory/installation.md",
+              "sourceDirName": "Installing DreamFactory",
+              "slug": "/Installing DreamFactory/installation",
+              "permalink": "/Installing DreamFactory/installation",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/installation.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Introduction",
+                "permalink": "/intro"
+              },
+              "next": {
+                "title": "Linux Installation",
+                "permalink": "/Installing DreamFactory/linux-installation"
+              }
+            },
+            {
+              "unversionedId": "Installing DreamFactory/linux-installation",
+              "id": "Installing DreamFactory/linux-installation",
+              "isDocsHomePage": false,
+              "title": "Linux Installation",
+              "description": "This page will have linux install stuff on it.",
+              "source": "@site/docs/Installing DreamFactory/linux-installation.md",
+              "sourceDirName": "Installing DreamFactory",
+              "slug": "/Installing DreamFactory/linux-installation",
+              "permalink": "/Installing DreamFactory/linux-installation",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/linux-installation.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Installing DreamFactory",
+                "permalink": "/Installing DreamFactory/installation"
+              },
+              "next": {
+                "title": "Docker Installation",
+                "permalink": "/Installing DreamFactory/docker-installation"
+              }
+            },
+            {
+              "unversionedId": "Installing DreamFactory/windows-installation",
+              "id": "Installing DreamFactory/windows-installation",
+              "isDocsHomePage": false,
+              "title": "Windows Installation",
+              "description": "This page will have windows install instructions",
+              "source": "@site/docs/Installing DreamFactory/windows-installation.md",
+              "sourceDirName": "Installing DreamFactory",
+              "slug": "/Installing DreamFactory/windows-installation",
+              "permalink": "/Installing DreamFactory/windows-installation",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/windows-installation.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 4,
+              "frontMatter": {
+                "sidebar_position": 4
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Docker Installation",
+                "permalink": "/Installing DreamFactory/docker-installation"
+              },
+              "next": {
+                "title": "Basic Configuration",
+                "permalink": "/DreamFactory Configuration/configuration"
+              }
+            },
+            {
               "unversionedId": "intro",
               "id": "intro",
               "isDocsHomePage": false,
-              "title": "Tutorials",
-              "description": "Let's discover Docusaurus in less than 5 minutes.",
+              "title": "Introduction",
+              "description": "Welcome to the DreamFactory documentation site! Here you will find comprehensive guides, tutorials, and references to help you get started with DreamFactory, an open-source REST API platform. Whether you are a developer, administrator, or user, this documentation will provide you with the information you need to leverage the power of DreamFactory and build scalable and secure APIs.",
               "source": "@site/docs/intro.md",
               "sourceDirName": ".",
               "slug": "/intro",
-              "permalink": "/docs/intro",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/intro.md",
+              "permalink": "/intro",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/intro.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 1,
@@ -94,8 +405,8 @@
               },
               "sidebar": "tutorialSidebar",
               "next": {
-                "title": "Generate a database API",
-                "permalink": "/docs/tutorial-basics/generate-db-api"
+                "title": "Installing DreamFactory",
+                "permalink": "/Installing DreamFactory/installation"
               }
             },
             {
@@ -107,8 +418,8 @@
               "source": "@site/docs/tutorial-basics/congratulations.md",
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/congratulations",
-              "permalink": "/docs/tutorial-basics/congratulations",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/congratulations.md",
+              "permalink": "/tutorial-basics/congratulations",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/congratulations.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 6,
@@ -118,11 +429,11 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "Deploy your site",
-                "permalink": "/docs/tutorial-basics/deploy-your-site"
+                "permalink": "/tutorial-basics/deploy-your-site"
               },
               "next": {
                 "title": "System API",
-                "permalink": "/docs/tutorial-extras/system-api"
+                "permalink": "/tutorial-extras/system-api"
               }
             },
             {
@@ -134,8 +445,8 @@
               "source": "@site/docs/tutorial-basics/deploy-your-site.md",
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/deploy-your-site",
-              "permalink": "/docs/tutorial-basics/deploy-your-site",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/deploy-your-site.md",
+              "permalink": "/tutorial-basics/deploy-your-site",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/deploy-your-site.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 5,
@@ -145,11 +456,11 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "Interacting with the API",
-                "permalink": "/docs/tutorial-basics/interacting-api"
+                "permalink": "/tutorial-basics/interacting-api"
               },
               "next": {
                 "title": "Congratulations!",
-                "permalink": "/docs/tutorial-basics/congratulations"
+                "permalink": "/tutorial-basics/congratulations"
               }
             },
             {
@@ -161,8 +472,8 @@
               "source": "@site/docs/tutorial-basics/generate-db-api.md",
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/generate-db-api",
-              "permalink": "/docs/tutorial-basics/generate-db-api",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/generate-db-api.md",
+              "permalink": "/tutorial-basics/generate-db-api",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/generate-db-api.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 1,
@@ -171,12 +482,12 @@
               },
               "sidebar": "tutorialSidebar",
               "previous": {
-                "title": "Tutorials",
-                "permalink": "/docs/intro"
+                "title": "Upgrading DreamFactory",
+                "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
               },
               "next": {
                 "title": "Test the API",
-                "permalink": "/docs/tutorial-basics/test-api"
+                "permalink": "/tutorial-basics/test-api"
               }
             },
             {
@@ -188,8 +499,8 @@
               "source": "@site/docs/tutorial-basics/interacting-api.md",
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/interacting-api",
-              "permalink": "/docs/tutorial-basics/interacting-api",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/interacting-api.md",
+              "permalink": "/tutorial-basics/interacting-api",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/interacting-api.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 4,
@@ -199,11 +510,11 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "Secure the API",
-                "permalink": "/docs/tutorial-basics/secure-api"
+                "permalink": "/tutorial-basics/secure-api"
               },
               "next": {
                 "title": "Deploy your site",
-                "permalink": "/docs/tutorial-basics/deploy-your-site"
+                "permalink": "/tutorial-basics/deploy-your-site"
               }
             },
             {
@@ -215,8 +526,8 @@
               "source": "@site/docs/tutorial-basics/secure-api.md",
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/secure-api",
-              "permalink": "/docs/tutorial-basics/secure-api",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/secure-api.md",
+              "permalink": "/tutorial-basics/secure-api",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/secure-api.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 3,
@@ -226,11 +537,11 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "Test the API",
-                "permalink": "/docs/tutorial-basics/test-api"
+                "permalink": "/tutorial-basics/test-api"
               },
               "next": {
                 "title": "Interacting with the API",
-                "permalink": "/docs/tutorial-basics/interacting-api"
+                "permalink": "/tutorial-basics/interacting-api"
               }
             },
             {
@@ -242,8 +553,8 @@
               "source": "@site/docs/tutorial-basics/test-api.md",
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/test-api",
-              "permalink": "/docs/tutorial-basics/test-api",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/test-api.md",
+              "permalink": "/tutorial-basics/test-api",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/test-api.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 2,
@@ -253,11 +564,11 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "Generate a database API",
-                "permalink": "/docs/tutorial-basics/generate-db-api"
+                "permalink": "/tutorial-basics/generate-db-api"
               },
               "next": {
                 "title": "Secure the API",
-                "permalink": "/docs/tutorial-basics/secure-api"
+                "permalink": "/tutorial-basics/secure-api"
               }
             },
             {
@@ -269,8 +580,8 @@
               "source": "@site/docs/tutorial-extras/rotating-keys.md",
               "sourceDirName": "tutorial-extras",
               "slug": "/tutorial-extras/rotating-keys",
-              "permalink": "/docs/tutorial-extras/rotating-keys",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-extras/rotating-keys.md",
+              "permalink": "/tutorial-extras/rotating-keys",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-extras/rotating-keys.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 2,
@@ -280,7 +591,7 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "System API",
-                "permalink": "/docs/tutorial-extras/system-api"
+                "permalink": "/tutorial-extras/system-api"
               }
             },
             {
@@ -292,8 +603,8 @@
               "source": "@site/docs/tutorial-extras/system-api.md",
               "sourceDirName": "tutorial-extras",
               "slug": "/tutorial-extras/system-api",
-              "permalink": "/docs/tutorial-extras/system-api",
-              "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-extras/system-api.md",
+              "permalink": "/tutorial-extras/system-api",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-extras/system-api.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 1,
@@ -303,11 +614,11 @@
               "sidebar": "tutorialSidebar",
               "previous": {
                 "title": "Congratulations!",
-                "permalink": "/docs/tutorial-basics/congratulations"
+                "permalink": "/tutorial-basics/congratulations"
               },
               "next": {
                 "title": "Rotating API Keys",
-                "permalink": "/docs/tutorial-extras/rotating-keys"
+                "permalink": "/tutorial-extras/rotating-keys"
               }
             }
           ]
@@ -323,7 +634,7 @@
           "id": "welcome",
           "metadata": {
             "permalink": "/blog/welcome",
-            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2021-08-26-welcome/index.md",
+            "editUrl": "https://github.com/dreamfactorysofware/df-docs/blog/blog/2021-08-26-welcome/index.md",
             "source": "@site/blog/2021-08-26-welcome/index.md",
             "title": "Welcome",
             "description": "Docusaurus blogging features are powered by the blog plugin.",
@@ -371,7 +682,7 @@
           "id": "mdx-blog-post",
           "metadata": {
             "permalink": "/blog/mdx-blog-post",
-            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2021-08-01-mdx-blog-post.mdx",
+            "editUrl": "https://github.com/dreamfactorysofware/df-docs/blog/blog/2021-08-01-mdx-blog-post.mdx",
             "source": "@site/blog/2021-08-01-mdx-blog-post.mdx",
             "title": "MDX Blog Post",
             "description": "Blog posts support Docusaurus Markdown features, such as MDX.",
@@ -408,7 +719,7 @@
           "id": "long-blog-post",
           "metadata": {
             "permalink": "/blog/long-blog-post",
-            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2019-05-29-long-blog-post.md",
+            "editUrl": "https://github.com/dreamfactorysofware/df-docs/blog/blog/2019-05-29-long-blog-post.md",
             "source": "@site/blog/2019-05-29-long-blog-post.md",
             "title": "Long Blog Post",
             "description": "This is the summary of a very long blog post,",
@@ -449,7 +760,7 @@
           "id": "first-blog-post",
           "metadata": {
             "permalink": "/blog/first-blog-post",
-            "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/blog/2019-05-28-first-blog-post.md",
+            "editUrl": "https://github.com/dreamfactorysofware/df-docs/blog/blog/2019-05-28-first-blog-post.md",
             "source": "@site/blog/2019-05-28-first-blog-post.md",
             "title": "First Blog Post",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
@@ -543,11 +854,6 @@
   },
   "docusaurus-plugin-content-pages": {
     "default": [
-      {
-        "type": "jsx",
-        "permalink": "/",
-        "source": "@site/src/pages/index.js"
-      },
       {
         "type": "mdx",
         "permalink": "/markdown-page",

@@ -1,58 +1,103 @@
 {
   "docusaurus-plugin-content-docs": {
     "default": {
-      "path": "/docs",
+      "path": "/",
       "versions": [
         {
           "name": "current",
           "label": "Next",
           "isLast": true,
-          "path": "/docs",
+          "path": "/",
           "mainDocId": "intro",
           "docs": [
             {
+              "id": "DreamFactory Configuration/configuration",
+              "path": "/DreamFactory Configuration/configuration",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "DreamFactory Configuration/Web Server Configuration/certbot",
+              "path": "/DreamFactory Configuration/Web Server Configuration/certbot",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "DreamFactory Configuration/Web Server Configuration/iis",
+              "path": "/DreamFactory Configuration/Web Server Configuration/iis",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "DreamFactory Configuration/Web Server Configuration/nginx",
+              "path": "/DreamFactory Configuration/Web Server Configuration/nginx",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "DreamFactory Upgrades and Migrations/upgrades",
+              "path": "/DreamFactory Upgrades and Migrations/upgrades",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Installing DreamFactory/docker-installation",
+              "path": "/Installing DreamFactory/docker-installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Installing DreamFactory/installation",
+              "path": "/Installing DreamFactory/installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Installing DreamFactory/linux-installation",
+              "path": "/Installing DreamFactory/linux-installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Installing DreamFactory/windows-installation",
+              "path": "/Installing DreamFactory/windows-installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "intro",
-              "path": "/docs/intro",
+              "path": "/intro",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-basics/congratulations",
-              "path": "/docs/tutorial-basics/congratulations",
+              "path": "/tutorial-basics/congratulations",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-basics/deploy-your-site",
-              "path": "/docs/tutorial-basics/deploy-your-site",
+              "path": "/tutorial-basics/deploy-your-site",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-basics/generate-db-api",
-              "path": "/docs/tutorial-basics/generate-db-api",
+              "path": "/tutorial-basics/generate-db-api",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-basics/interacting-api",
-              "path": "/docs/tutorial-basics/interacting-api",
+              "path": "/tutorial-basics/interacting-api",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-basics/secure-api",
-              "path": "/docs/tutorial-basics/secure-api",
+              "path": "/tutorial-basics/secure-api",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-basics/test-api",
-              "path": "/docs/tutorial-basics/test-api",
+              "path": "/tutorial-basics/test-api",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-extras/rotating-keys",
-              "path": "/docs/tutorial-extras/rotating-keys",
+              "path": "/tutorial-extras/rotating-keys",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "tutorial-extras/system-api",
-              "path": "/docs/tutorial-extras/system-api",
+              "path": "/tutorial-extras/system-api",
               "sidebar": "tutorialSidebar"
             }
           ]

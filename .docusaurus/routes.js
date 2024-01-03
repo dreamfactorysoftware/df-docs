@@ -4,11 +4,6 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 
 export default [
   {
-    path: '/',
-    component: ComponentCreator('/','deb'),
-    exact: true
-  },
-  {
     path: '/__docusaurus/debug',
     component: ComponentCreator('/__docusaurus/debug','3d6'),
     exact: true
@@ -99,70 +94,124 @@ export default [
     exact: true
   },
   {
-    path: '/docs/tags',
-    component: ComponentCreator('/docs/tags','0cc'),
-    exact: true
-  },
-  {
     path: '/markdown-page',
     component: ComponentCreator('/markdown-page','be1'),
     exact: true
   },
   {
-    path: '/docs',
-    component: ComponentCreator('/docs','c5a'),
+    path: '/tags',
+    component: ComponentCreator('/tags','d7a'),
+    exact: true
+  },
+  {
+    path: '/',
+    component: ComponentCreator('/','ebb'),
     routes: [
       {
-        path: '/docs/intro',
-        component: ComponentCreator('/docs/intro','aed'),
+        path: '/DreamFactory Configuration/configuration',
+        component: ComponentCreator('/DreamFactory Configuration/configuration','142'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-basics/congratulations',
-        component: ComponentCreator('/docs/tutorial-basics/congratulations','793'),
+        path: '/DreamFactory Configuration/Web Server Configuration/certbot',
+        component: ComponentCreator('/DreamFactory Configuration/Web Server Configuration/certbot','0ae'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-basics/deploy-your-site',
-        component: ComponentCreator('/docs/tutorial-basics/deploy-your-site','e46'),
+        path: '/DreamFactory Configuration/Web Server Configuration/iis',
+        component: ComponentCreator('/DreamFactory Configuration/Web Server Configuration/iis','bcc'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-basics/generate-db-api',
-        component: ComponentCreator('/docs/tutorial-basics/generate-db-api','bec'),
+        path: '/DreamFactory Configuration/Web Server Configuration/nginx',
+        component: ComponentCreator('/DreamFactory Configuration/Web Server Configuration/nginx','4ea'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-basics/interacting-api',
-        component: ComponentCreator('/docs/tutorial-basics/interacting-api','629'),
+        path: '/DreamFactory Upgrades and Migrations/upgrades',
+        component: ComponentCreator('/DreamFactory Upgrades and Migrations/upgrades','4ec'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-basics/secure-api',
-        component: ComponentCreator('/docs/tutorial-basics/secure-api','606'),
+        path: '/Installing DreamFactory/docker-installation',
+        component: ComponentCreator('/Installing DreamFactory/docker-installation','d2d'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-basics/test-api',
-        component: ComponentCreator('/docs/tutorial-basics/test-api','419'),
+        path: '/Installing DreamFactory/installation',
+        component: ComponentCreator('/Installing DreamFactory/installation','c05'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-extras/rotating-keys',
-        component: ComponentCreator('/docs/tutorial-extras/rotating-keys','32f'),
+        path: '/Installing DreamFactory/linux-installation',
+        component: ComponentCreator('/Installing DreamFactory/linux-installation','47d'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
       {
-        path: '/docs/tutorial-extras/system-api',
-        component: ComponentCreator('/docs/tutorial-extras/system-api','547'),
+        path: '/Installing DreamFactory/windows-installation',
+        component: ComponentCreator('/Installing DreamFactory/windows-installation','578'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/intro',
+        component: ComponentCreator('/intro','283'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-basics/congratulations',
+        component: ComponentCreator('/tutorial-basics/congratulations','4b2'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-basics/deploy-your-site',
+        component: ComponentCreator('/tutorial-basics/deploy-your-site','317'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-basics/generate-db-api',
+        component: ComponentCreator('/tutorial-basics/generate-db-api','c1c'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-basics/interacting-api',
+        component: ComponentCreator('/tutorial-basics/interacting-api','845'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-basics/secure-api',
+        component: ComponentCreator('/tutorial-basics/secure-api','33f'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-basics/test-api',
+        component: ComponentCreator('/tutorial-basics/test-api','332'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-extras/rotating-keys',
+        component: ComponentCreator('/tutorial-extras/rotating-keys','44f'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/tutorial-extras/system-api',
+        component: ComponentCreator('/tutorial-extras/system-api','86b'),
         exact: true,
         'sidebar': "tutorialSidebar"
       }

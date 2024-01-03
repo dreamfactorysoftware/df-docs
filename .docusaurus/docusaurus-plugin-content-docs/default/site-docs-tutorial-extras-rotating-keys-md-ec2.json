@@ -7,8 +7,8 @@
   "source": "@site/docs/tutorial-extras/rotating-keys.md",
   "sourceDirName": "tutorial-extras",
   "slug": "/tutorial-extras/rotating-keys",
-  "permalink": "/docs/tutorial-extras/rotating-keys",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-extras/rotating-keys.md",
+  "permalink": "/tutorial-extras/rotating-keys",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-extras/rotating-keys.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 2,
@@ -18,6 +18,6 @@
   "sidebar": "tutorialSidebar",
   "previous": {
     "title": "System API",
-    "permalink": "/docs/tutorial-extras/system-api"
+    "permalink": "/tutorial-extras/system-api"
   }
 }

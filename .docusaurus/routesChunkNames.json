@@ -1,8 +1,4 @@
 {
-  "/-deb": {
-    "component": "component---site-src-pages-index-jsc-4-f-f99",
-    "config": "config---5-e-9-4f3"
-  },
   "/__docusaurus/debug-3d6": {
     "component": "component---theme-debug-config-23-a-2ff"
   },
@@ -125,51 +121,87 @@
     "sidebar": "sidebar---blog-814-8ac",
     "content": "content---blog-welcomed-9-f-ffb"
   },
-  "/docs/tags-0cc": {
-    "component": "component---theme-doc-tags-list-page-372-89e",
-    "tags": "tags---docs-tags-559-5e5"
-  },
   "/markdown-page-be1": {
     "component": "component---theme-mdx-page-1-f-3-b90",
     "content": "content---markdown-page-393-028"
   },
-  "/docs-c5a": {
+  "/tags-d7a": {
+    "component": "component---theme-doc-tags-list-page-372-89e",
+    "tags": "tags---docs-tags-559-5e5"
+  },
+  "/-ebb": {
     "component": "component---theme-doc-page-1-be-9be",
     "versionMetadata": "versionMetadata---docs-935-398"
   },
-  "/docs/intro-aed": {
+  "/DreamFactory Configuration/configuration-142": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---dream-factory-configuration-configuratione-56-b8f"
+  },
+  "/DreamFactory Configuration/Web Server Configuration/certbot-0ae": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---dream-factory-configuration-web-server-configuration-certbot-400-a9c"
+  },
+  "/DreamFactory Configuration/Web Server Configuration/iis-bcc": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---dream-factory-configuration-web-server-configuration-iisb-13-04c"
+  },
+  "/DreamFactory Configuration/Web Server Configuration/nginx-4ea": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---dream-factory-configuration-web-server-configuration-nginx-9-e-3-dfe"
+  },
+  "/DreamFactory Upgrades and Migrations/upgrades-4ec": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---dream-factory-upgrades-and-migrations-upgradesdf-0-5a9"
+  },
+  "/Installing DreamFactory/docker-installation-d2d": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---installing-dream-factory-docker-installationf-34-5d4"
+  },
+  "/Installing DreamFactory/installation-c05": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---installing-dream-factory-installationc-8-f-b93"
+  },
+  "/Installing DreamFactory/linux-installation-47d": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---installing-dream-factory-linux-installation-4-e-9-276"
+  },
+  "/Installing DreamFactory/windows-installation-578": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---installing-dream-factory-windows-installation-8-d-6-f4e"
+  },
+  "/intro-283": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-intro-0-e-3-be1"
   },
-  "/docs/tutorial-basics/congratulations-793": {
+  "/tutorial-basics/congratulations-4b2": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-basics-congratulations-822-958"
   },
-  "/docs/tutorial-basics/deploy-your-site-e46": {
+  "/tutorial-basics/deploy-your-site-317": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-basics-deploy-your-sitef-55-a3f"
   },
-  "/docs/tutorial-basics/generate-db-api-bec": {
+  "/tutorial-basics/generate-db-api-c1c": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-basics-generate-db-apie-83-de1"
   },
-  "/docs/tutorial-basics/interacting-api-629": {
+  "/tutorial-basics/interacting-api-845": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-basics-interacting-apid-3-a-3a2"
   },
-  "/docs/tutorial-basics/secure-api-606": {
+  "/tutorial-basics/secure-api-33f": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-basics-secure-apic-45-397"
   },
-  "/docs/tutorial-basics/test-api-419": {
+  "/tutorial-basics/test-api-332": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-basics-test-apib-40-c63"
   },
-  "/docs/tutorial-extras/rotating-keys-32f": {
+  "/tutorial-extras/rotating-keys-44f": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-extras-rotating-keysec-2-807"
   },
-  "/docs/tutorial-extras/system-api-547": {
+  "/tutorial-extras/system-api-86b": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---docs-tutorial-extras-system-api-309-36f"
   }

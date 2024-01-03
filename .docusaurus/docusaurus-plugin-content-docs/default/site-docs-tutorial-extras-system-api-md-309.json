@@ -7,8 +7,8 @@
   "source": "@site/docs/tutorial-extras/system-api.md",
   "sourceDirName": "tutorial-extras",
   "slug": "/tutorial-extras/system-api",
-  "permalink": "/docs/tutorial-extras/system-api",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-extras/system-api.md",
+  "permalink": "/tutorial-extras/system-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-extras/system-api.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 1,
@@ -18,10 +18,10 @@
   "sidebar": "tutorialSidebar",
   "previous": {
     "title": "Congratulations!",
-    "permalink": "/docs/tutorial-basics/congratulations"
+    "permalink": "/tutorial-basics/congratulations"
   },
   "next": {
     "title": "Rotating API Keys",
-    "permalink": "/docs/tutorial-extras/rotating-keys"
+    "permalink": "/tutorial-extras/rotating-keys"
   }
 }

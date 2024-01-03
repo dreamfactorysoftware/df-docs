@@ -7,8 +7,8 @@
   "source": "@site/docs/tutorial-basics/deploy-your-site.md",
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/deploy-your-site",
-  "permalink": "/docs/tutorial-basics/deploy-your-site",
-  "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/docs/tutorial-basics/deploy-your-site.md",
+  "permalink": "/tutorial-basics/deploy-your-site",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/deploy-your-site.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 5,
@@ -18,10 +18,10 @@
   "sidebar": "tutorialSidebar",
   "previous": {
     "title": "Interacting with the API",
-    "permalink": "/docs/tutorial-basics/interacting-api"
+    "permalink": "/tutorial-basics/interacting-api"
   },
   "next": {
     "title": "Congratulations!",
-    "permalink": "/docs/tutorial-basics/congratulations"
+    "permalink": "/tutorial-basics/congratulations"
   }
 }

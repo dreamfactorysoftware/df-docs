@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Installing DreamFactory/installation",
+  "id": "Installing DreamFactory/installation",
+  "isDocsHomePage": false,
+  "title": "Installing DreamFactory",
+  "description": "Welcome to the installation guide for DreamFactory! This section will focus on the inital installation of DreamFactory on the various supported platforms.",
+  "source": "@site/docs/Installing DreamFactory/installation.md",
+  "sourceDirName": "Installing DreamFactory",
+  "slug": "/Installing DreamFactory/installation",
+  "permalink": "/Installing DreamFactory/installation",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/installation.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Introduction",
+    "permalink": "/intro"
+  },
+  "next": {
+    "title": "Linux Installation",
+    "permalink": "/Installing DreamFactory/linux-installation"
+  }
+}
