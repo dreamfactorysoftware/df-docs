@@ -127,15 +127,23 @@
   },
   "/tags-d7a": {
     "component": "component---theme-doc-tags-list-page-372-89e",
-    "tags": "tags---docs-tags-559-5e5"
+    "tags": "tags---tags-559-690"
   },
-  "/-ebb": {
+  "/-927": {
     "component": "component---theme-doc-page-1-be-9be",
-    "versionMetadata": "versionMetadata---docs-935-398"
+    "versionMetadata": "versionMetadata---935-fcf"
+  },
+  "/API Creation and Management/api-creation-management-40a": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---api-creation-and-management-api-creation-managementbda-bee"
   },
   "/DreamFactory Configuration/configuration-142": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---dream-factory-configuration-configuratione-56-b8f"
+  },
+  "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config-171": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---dream-factory-configuration-laravel-and-php-configuration-laravel-configd-98-19b"
   },
   "/DreamFactory Configuration/Web Server Configuration/certbot-0ae": {
     "component": "component---theme-doc-item-178-a40",
@@ -165,44 +173,64 @@
     "component": "component---theme-doc-item-178-a40",
     "content": "content---installing-dream-factory-linux-installation-4-e-9-276"
   },
+  "/Installing DreamFactory/manual-install-d93": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---installing-dream-factory-manual-install-29-d-45f"
+  },
   "/Installing DreamFactory/windows-installation-578": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---installing-dream-factory-windows-installation-8-d-6-f4e"
   },
   "/intro-283": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-intro-0-e-3-be1"
+    "content": "content---intro-0-e-3-7b8"
+  },
+  "/Security and Authentication/api-keys-e5b": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---security-and-authentication-api-keysaac-5c5"
+  },
+  "/Security and Authentication/limits-159": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---security-and-authentication-limitsd-47-022"
+  },
+  "/Security and Authentication/role-based-access-9da": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---security-and-authentication-role-based-accesse-84-97f"
+  },
+  "/Security and Authentication/security-and-auth-94d": {
+    "component": "component---theme-doc-item-178-a40",
+    "content": "content---security-and-authentication-security-and-auth-51-b-aa8"
   },
   "/tutorial-basics/congratulations-4b2": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-basics-congratulations-822-958"
+    "content": "content---tutorial-basics-congratulations-822-79f"
   },
   "/tutorial-basics/deploy-your-site-317": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-basics-deploy-your-sitef-55-a3f"
+    "content": "content---tutorial-basics-deploy-your-sitef-55-bcd"
   },
   "/tutorial-basics/generate-db-api-c1c": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-basics-generate-db-apie-83-de1"
+    "content": "content---tutorial-basics-generate-db-apie-83-c0d"
   },
   "/tutorial-basics/interacting-api-845": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-basics-interacting-apid-3-a-3a2"
+    "content": "content---tutorial-basics-interacting-apid-3-a-679"
   },
   "/tutorial-basics/secure-api-33f": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-basics-secure-apic-45-397"
+    "content": "content---tutorial-basics-secure-apic-45-1ac"
   },
   "/tutorial-basics/test-api-332": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-basics-test-apib-40-c63"
+    "content": "content---tutorial-basics-test-apib-40-dfe"
   },
   "/tutorial-extras/rotating-keys-44f": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-extras-rotating-keysec-2-807"
+    "content": "content---tutorial-extras-rotating-keysec-2-fe9"
   },
   "/tutorial-extras/system-api-86b": {
     "component": "component---theme-doc-item-178-a40",
-    "content": "content---docs-tutorial-extras-system-api-309-36f"
+    "content": "content---tutorial-extras-system-api-309-08a"
   }
 }

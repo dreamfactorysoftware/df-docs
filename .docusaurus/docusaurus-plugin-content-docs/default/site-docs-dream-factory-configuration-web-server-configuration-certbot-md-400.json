@@ -21,7 +21,7 @@
     "permalink": "/DreamFactory Configuration/Web Server Configuration/iis"
   },
   "next": {
-    "title": "Upgrading DreamFactory",
-    "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+    "title": "Laravel and PHP configuration",
+    "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
   }
 }

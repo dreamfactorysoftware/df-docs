@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Security and Authentication/limits",
+  "id": "Security and Authentication/limits",
+  "isDocsHomePage": false,
+  "title": "Limits",
+  "description": "",
+  "source": "@site/docs/Security and Authentication/limits.md",
+  "sourceDirName": "Security and Authentication",
+  "slug": "/Security and Authentication/limits",
+  "permalink": "/Security and Authentication/limits",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/limits.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "API Keys",
+    "permalink": "/Security and Authentication/api-keys"
+  },
+  "next": {
+    "title": "Generate a database API",
+    "permalink": "/tutorial-basics/generate-db-api"
+  }
+}

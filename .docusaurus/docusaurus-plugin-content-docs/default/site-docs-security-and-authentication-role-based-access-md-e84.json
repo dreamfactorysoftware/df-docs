@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Security and Authentication/role-based-access",
+  "id": "Security and Authentication/role-based-access",
+  "isDocsHomePage": false,
+  "title": "Roles",
+  "description": "",
+  "source": "@site/docs/Security and Authentication/role-based-access.md",
+  "sourceDirName": "Security and Authentication",
+  "slug": "/Security and Authentication/role-based-access",
+  "permalink": "/Security and Authentication/role-based-access",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/role-based-access.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "API Creation and Management",
+    "permalink": "/API Creation and Management/api-creation-management"
+  },
+  "next": {
+    "title": "Security and Authentication",
+    "permalink": "/Security and Authentication/security-and-auth"
+  }
+}

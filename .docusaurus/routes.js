@@ -105,11 +105,23 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/','ebb'),
+    component: ComponentCreator('/','927'),
     routes: [
+      {
+        path: '/API Creation and Management/api-creation-management',
+        component: ComponentCreator('/API Creation and Management/api-creation-management','40a'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
       {
         path: '/DreamFactory Configuration/configuration',
         component: ComponentCreator('/DreamFactory Configuration/configuration','142'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config',
+        component: ComponentCreator('/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config','171'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },
@@ -156,6 +168,12 @@ export default [
         'sidebar': "tutorialSidebar"
       },
       {
+        path: '/Installing DreamFactory/manual-install',
+        component: ComponentCreator('/Installing DreamFactory/manual-install','d93'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
         path: '/Installing DreamFactory/windows-installation',
         component: ComponentCreator('/Installing DreamFactory/windows-installation','578'),
         exact: true,
@@ -164,6 +182,30 @@ export default [
       {
         path: '/intro',
         component: ComponentCreator('/intro','283'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/Security and Authentication/api-keys',
+        component: ComponentCreator('/Security and Authentication/api-keys','e5b'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/Security and Authentication/limits',
+        component: ComponentCreator('/Security and Authentication/limits','159'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/Security and Authentication/role-based-access',
+        component: ComponentCreator('/Security and Authentication/role-based-access','9da'),
+        exact: true,
+        'sidebar': "tutorialSidebar"
+      },
+      {
+        path: '/Security and Authentication/security-and-auth',
+        component: ComponentCreator('/Security and Authentication/security-and-auth','94d'),
         exact: true,
         'sidebar': "tutorialSidebar"
       },

@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Security and Authentication/security-and-auth",
+  "id": "Security and Authentication/security-and-auth",
+  "isDocsHomePage": false,
+  "title": "Security and Authentication",
+  "description": "",
+  "source": "@site/docs/Security and Authentication/security-and-auth.md",
+  "sourceDirName": "Security and Authentication",
+  "slug": "/Security and Authentication/security-and-auth",
+  "permalink": "/Security and Authentication/security-and-auth",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/security-and-auth.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Roles",
+    "permalink": "/Security and Authentication/role-based-access"
+  },
+  "next": {
+    "title": "API Keys",
+    "permalink": "/Security and Authentication/api-keys"
+  }
+}

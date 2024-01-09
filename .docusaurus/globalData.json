@@ -11,8 +11,18 @@
           "mainDocId": "intro",
           "docs": [
             {
+              "id": "API Creation and Management/api-creation-management",
+              "path": "/API Creation and Management/api-creation-management",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "DreamFactory Configuration/configuration",
               "path": "/DreamFactory Configuration/configuration",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+              "path": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
               "sidebar": "tutorialSidebar"
             },
             {
@@ -51,6 +61,11 @@
               "sidebar": "tutorialSidebar"
             },
             {
+              "id": "Installing DreamFactory/manual-install",
+              "path": "/Installing DreamFactory/manual-install",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "Installing DreamFactory/windows-installation",
               "path": "/Installing DreamFactory/windows-installation",
               "sidebar": "tutorialSidebar"
@@ -58,6 +73,26 @@
             {
               "id": "intro",
               "path": "/intro",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Security and Authentication/api-keys",
+              "path": "/Security and Authentication/api-keys",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Security and Authentication/limits",
+              "path": "/Security and Authentication/limits",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Security and Authentication/role-based-access",
+              "path": "/Security and Authentication/role-based-access",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Security and Authentication/security-and-auth",
+              "path": "/Security and Authentication/security-and-auth",
               "sidebar": "tutorialSidebar"
             },
             {

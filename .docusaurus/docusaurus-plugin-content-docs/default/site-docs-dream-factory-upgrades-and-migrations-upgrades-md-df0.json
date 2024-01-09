@@ -17,11 +17,11 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Certbot and SSL",
-    "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+    "title": "Laravel and PHP configuration",
+    "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
   },
   "next": {
-    "title": "Generate a database API",
-    "permalink": "/tutorial-basics/generate-db-api"
+    "title": "API Creation and Management",
+    "permalink": "/API Creation and Management/api-creation-management"
   }
 }

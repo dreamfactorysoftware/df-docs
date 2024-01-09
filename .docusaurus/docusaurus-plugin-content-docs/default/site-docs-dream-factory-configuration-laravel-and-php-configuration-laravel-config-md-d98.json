@@ -1,0 +1,24 @@
+{
+  "unversionedId": "DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+  "id": "DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+  "isDocsHomePage": false,
+  "title": "Laravel and PHP configuration",
+  "description": "",
+  "source": "@site/docs/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config.md",
+  "sourceDirName": "DreamFactory Configuration/Laravel and PHP Configuration",
+  "slug": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+  "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Certbot and SSL",
+    "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+  },
+  "next": {
+    "title": "Upgrading DreamFactory",
+    "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+  }
+}

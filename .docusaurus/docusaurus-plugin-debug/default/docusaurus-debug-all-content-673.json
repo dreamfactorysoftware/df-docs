@@ -43,6 +43,10 @@
                   {
                     "type": "doc",
                     "id": "Installing DreamFactory/windows-installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Installing DreamFactory/manual-install"
                   }
                 ],
                 "collapsed": true,
@@ -75,6 +79,18 @@
                     ],
                     "collapsed": true,
                     "collapsible": true
+                  },
+                  {
+                    "type": "category",
+                    "label": "Laravel and PHP Configuration",
+                    "items": [
+                      {
+                        "type": "doc",
+                        "id": "DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
+                      }
+                    ],
+                    "collapsed": true,
+                    "collapsible": true
                   }
                 ],
                 "collapsed": true,
@@ -87,6 +103,42 @@
                   {
                     "type": "doc",
                     "id": "DreamFactory Upgrades and Migrations/upgrades"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "API Creation and Management",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "API Creation and Management/api-creation-management"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Security and Authentication",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "Security and Authentication/role-based-access"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Security and Authentication/security-and-auth"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Security and Authentication/api-keys"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Security and Authentication/limits"
                   }
                 ],
                 "collapsed": true,
@@ -144,11 +196,35 @@
           },
           "docs": [
             {
+              "unversionedId": "API Creation and Management/api-creation-management",
+              "id": "API Creation and Management/api-creation-management",
+              "isDocsHomePage": false,
+              "title": "API Creation and Management",
+              "description": "API Creation and Management will encompass the creation and management of the actual API connection that DreamFactory is making to external API sources. Things like Roles, API Keys and the System API are in their own sections.",
+              "source": "@site/docs/API Creation and Management/api-creation-management.md",
+              "sourceDirName": "API Creation and Management",
+              "slug": "/API Creation and Management/api-creation-management",
+              "permalink": "/API Creation and Management/api-creation-management",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/API Creation and Management/api-creation-management.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Upgrading DreamFactory",
+                "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+              },
+              "next": {
+                "title": "Roles",
+                "permalink": "/Security and Authentication/role-based-access"
+              }
+            },
+            {
               "unversionedId": "DreamFactory Configuration/configuration",
               "id": "DreamFactory Configuration/configuration",
               "isDocsHomePage": false,
               "title": "Basic Configuration",
-              "description": "This page outlines the basic configuration settings for DreamFactory.",
+              "description": "This page outlines the basic configuration settings for DreamFactory. For the most part, this will mean adding/changing parameers in the .env file located in the dreamfactory directory. Common tasks/procedures are outlined at the top of this page, and every parameter indiidually documented at the end of this page.",
               "source": "@site/docs/DreamFactory Configuration/configuration.md",
               "sourceDirName": "DreamFactory Configuration",
               "slug": "/DreamFactory Configuration/configuration",
@@ -162,12 +238,36 @@
               },
               "sidebar": "tutorialSidebar",
               "previous": {
-                "title": "Windows Installation",
-                "permalink": "/Installing DreamFactory/windows-installation"
+                "title": "Manual Installation",
+                "permalink": "/Installing DreamFactory/manual-install"
               },
               "next": {
                 "title": "Nginx",
                 "permalink": "/DreamFactory Configuration/Web Server Configuration/nginx"
+              }
+            },
+            {
+              "unversionedId": "DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+              "id": "DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+              "isDocsHomePage": false,
+              "title": "Laravel and PHP configuration",
+              "description": "",
+              "source": "@site/docs/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config.md",
+              "sourceDirName": "DreamFactory Configuration/Laravel and PHP Configuration",
+              "slug": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+              "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Certbot and SSL",
+                "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+              },
+              "next": {
+                "title": "Upgrading DreamFactory",
+                "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
               }
             },
             {
@@ -193,8 +293,8 @@
                 "permalink": "/DreamFactory Configuration/Web Server Configuration/iis"
               },
               "next": {
-                "title": "Upgrading DreamFactory",
-                "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+                "title": "Laravel and PHP configuration",
+                "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
               }
             },
             {
@@ -270,12 +370,12 @@
               },
               "sidebar": "tutorialSidebar",
               "previous": {
-                "title": "Certbot and SSL",
-                "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+                "title": "Laravel and PHP configuration",
+                "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
               },
               "next": {
-                "title": "Generate a database API",
-                "permalink": "/tutorial-basics/generate-db-api"
+                "title": "API Creation and Management",
+                "permalink": "/API Creation and Management/api-creation-management"
               }
             },
             {
@@ -360,6 +460,33 @@
               }
             },
             {
+              "unversionedId": "Installing DreamFactory/manual-install",
+              "id": "Installing DreamFactory/manual-install",
+              "isDocsHomePage": false,
+              "title": "Manual Installation",
+              "description": "This guide will encompass how to install DreamFactory manually (without the automated installer) on a Linux server.",
+              "source": "@site/docs/Installing DreamFactory/manual-install.md",
+              "sourceDirName": "Installing DreamFactory",
+              "slug": "/Installing DreamFactory/manual-install",
+              "permalink": "/Installing DreamFactory/manual-install",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/manual-install.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 5,
+              "frontMatter": {
+                "sidebar_position": 5
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Windows Installation",
+                "permalink": "/Installing DreamFactory/windows-installation"
+              },
+              "next": {
+                "title": "Basic Configuration",
+                "permalink": "/DreamFactory Configuration/configuration"
+              }
+            },
+            {
               "unversionedId": "Installing DreamFactory/windows-installation",
               "id": "Installing DreamFactory/windows-installation",
               "isDocsHomePage": false,
@@ -382,8 +509,8 @@
                 "permalink": "/Installing DreamFactory/docker-installation"
               },
               "next": {
-                "title": "Basic Configuration",
-                "permalink": "/DreamFactory Configuration/configuration"
+                "title": "Manual Installation",
+                "permalink": "/Installing DreamFactory/manual-install"
               }
             },
             {
@@ -407,6 +534,114 @@
               "next": {
                 "title": "Installing DreamFactory",
                 "permalink": "/Installing DreamFactory/installation"
+              }
+            },
+            {
+              "unversionedId": "Security and Authentication/api-keys",
+              "id": "Security and Authentication/api-keys",
+              "isDocsHomePage": false,
+              "title": "API Keys",
+              "description": "",
+              "source": "@site/docs/Security and Authentication/api-keys.md",
+              "sourceDirName": "Security and Authentication",
+              "slug": "/Security and Authentication/api-keys",
+              "permalink": "/Security and Authentication/api-keys",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/api-keys.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 3,
+              "frontMatter": {
+                "sidebar_position": 3
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Security and Authentication",
+                "permalink": "/Security and Authentication/security-and-auth"
+              },
+              "next": {
+                "title": "Limits",
+                "permalink": "/Security and Authentication/limits"
+              }
+            },
+            {
+              "unversionedId": "Security and Authentication/limits",
+              "id": "Security and Authentication/limits",
+              "isDocsHomePage": false,
+              "title": "Limits",
+              "description": "",
+              "source": "@site/docs/Security and Authentication/limits.md",
+              "sourceDirName": "Security and Authentication",
+              "slug": "/Security and Authentication/limits",
+              "permalink": "/Security and Authentication/limits",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/limits.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 4,
+              "frontMatter": {
+                "sidebar_position": 4
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "API Keys",
+                "permalink": "/Security and Authentication/api-keys"
+              },
+              "next": {
+                "title": "Generate a database API",
+                "permalink": "/tutorial-basics/generate-db-api"
+              }
+            },
+            {
+              "unversionedId": "Security and Authentication/role-based-access",
+              "id": "Security and Authentication/role-based-access",
+              "isDocsHomePage": false,
+              "title": "Roles",
+              "description": "",
+              "source": "@site/docs/Security and Authentication/role-based-access.md",
+              "sourceDirName": "Security and Authentication",
+              "slug": "/Security and Authentication/role-based-access",
+              "permalink": "/Security and Authentication/role-based-access",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/role-based-access.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "API Creation and Management",
+                "permalink": "/API Creation and Management/api-creation-management"
+              },
+              "next": {
+                "title": "Security and Authentication",
+                "permalink": "/Security and Authentication/security-and-auth"
+              }
+            },
+            {
+              "unversionedId": "Security and Authentication/security-and-auth",
+              "id": "Security and Authentication/security-and-auth",
+              "isDocsHomePage": false,
+              "title": "Security and Authentication",
+              "description": "",
+              "source": "@site/docs/Security and Authentication/security-and-auth.md",
+              "sourceDirName": "Security and Authentication",
+              "slug": "/Security and Authentication/security-and-auth",
+              "permalink": "/Security and Authentication/security-and-auth",
+              "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/security-and-auth.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Roles",
+                "permalink": "/Security and Authentication/role-based-access"
+              },
+              "next": {
+                "title": "API Keys",
+                "permalink": "/Security and Authentication/api-keys"
               }
             },
             {
@@ -482,8 +717,8 @@
               },
               "sidebar": "tutorialSidebar",
               "previous": {
-                "title": "Upgrading DreamFactory",
-                "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+                "title": "Limits",
+                "permalink": "/Security and Authentication/limits"
               },
               "next": {
                 "title": "Test the API",

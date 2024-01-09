@@ -3,7 +3,7 @@
   "id": "DreamFactory Configuration/configuration",
   "isDocsHomePage": false,
   "title": "Basic Configuration",
-  "description": "This page outlines the basic configuration settings for DreamFactory.",
+  "description": "This page outlines the basic configuration settings for DreamFactory. For the most part, this will mean adding/changing parameers in the .env file located in the dreamfactory directory. Common tasks/procedures are outlined at the top of this page, and every parameter indiidually documented at the end of this page.",
   "source": "@site/docs/DreamFactory Configuration/configuration.md",
   "sourceDirName": "DreamFactory Configuration",
   "slug": "/DreamFactory Configuration/configuration",
@@ -17,8 +17,8 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Windows Installation",
-    "permalink": "/Installing DreamFactory/windows-installation"
+    "title": "Manual Installation",
+    "permalink": "/Installing DreamFactory/manual-install"
   },
   "next": {
     "title": "Nginx",

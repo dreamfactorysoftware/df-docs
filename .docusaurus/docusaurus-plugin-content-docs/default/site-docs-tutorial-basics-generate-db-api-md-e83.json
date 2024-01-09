@@ -17,8 +17,8 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Upgrading DreamFactory",
-    "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+    "title": "Limits",
+    "permalink": "/Security and Authentication/limits"
   },
   "next": {
     "title": "Test the API",

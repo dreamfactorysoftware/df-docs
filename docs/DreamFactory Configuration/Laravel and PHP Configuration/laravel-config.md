@@ -1,0 +1,1 @@
+# Laravel and PHP configuration
