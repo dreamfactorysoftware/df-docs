@@ -1,0 +1,24 @@
+{
+  "unversionedId": "DreamFactory Upgrades and Migrations/upgrades-migrations",
+  "id": "DreamFactory Upgrades and Migrations/upgrades-migrations",
+  "isDocsHomePage": false,
+  "title": "upgrades-migrations",
+  "description": "",
+  "source": "@site/docs/DreamFactory Upgrades and Migrations/upgrades-migrations.md",
+  "sourceDirName": "DreamFactory Upgrades and Migrations",
+  "slug": "/DreamFactory Upgrades and Migrations/upgrades-migrations",
+  "permalink": "/DreamFactory Upgrades and Migrations/upgrades-migrations",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Upgrades and Migrations/upgrades-migrations.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Certbot and SSL",
+    "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+  },
+  "next": {
+    "title": "Generate a database API",
+    "permalink": "/tutorial-basics/generate-db-api"
+  }
+}

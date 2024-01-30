@@ -1,0 +1,27 @@
+{
+  "unversionedId": "DreamFactory Configuration/Web Server Configuration/iis",
+  "id": "DreamFactory Configuration/Web Server Configuration/iis",
+  "isDocsHomePage": false,
+  "title": "IIS (Windows)",
+  "description": "",
+  "source": "@site/docs/DreamFactory Configuration/Web Server Configuration/iis.md",
+  "sourceDirName": "DreamFactory Configuration/Web Server Configuration",
+  "slug": "/DreamFactory Configuration/Web Server Configuration/iis",
+  "permalink": "/DreamFactory Configuration/Web Server Configuration/iis",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Web Server Configuration/iis.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Nginx",
+    "permalink": "/DreamFactory Configuration/Web Server Configuration/nginx"
+  },
+  "next": {
+    "title": "Certbot and SSL",
+    "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot"
+  }
+}

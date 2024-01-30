@@ -1,0 +1,27 @@
+{
+  "unversionedId": "DreamFactory Upgrades and Migrations/upgrades",
+  "id": "DreamFactory Upgrades and Migrations/upgrades",
+  "isDocsHomePage": false,
+  "title": "Upgrading DreamFactory",
+  "description": "",
+  "source": "@site/docs/DreamFactory Upgrades and Migrations/upgrades.md",
+  "sourceDirName": "DreamFactory Upgrades and Migrations",
+  "slug": "/DreamFactory Upgrades and Migrations/upgrades",
+  "permalink": "/DreamFactory Upgrades and Migrations/upgrades",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Upgrades and Migrations/upgrades.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Laravel and PHP configuration",
+    "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
+  },
+  "next": {
+    "title": "API Creation and Management",
+    "permalink": "/API Creation and Management/api-creation-management"
+  }
+}

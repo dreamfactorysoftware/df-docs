@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Security and Authentication/api-keys",
+  "id": "Security and Authentication/api-keys",
+  "isDocsHomePage": false,
+  "title": "API Keys",
+  "description": "",
+  "source": "@site/docs/Security and Authentication/api-keys.md",
+  "sourceDirName": "Security and Authentication",
+  "slug": "/Security and Authentication/api-keys",
+  "permalink": "/Security and Authentication/api-keys",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Security and Authentication/api-keys.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Security and Authentication",
+    "permalink": "/Security and Authentication/security-and-auth"
+  },
+  "next": {
+    "title": "Limits",
+    "permalink": "/Security and Authentication/limits"
+  }
+}

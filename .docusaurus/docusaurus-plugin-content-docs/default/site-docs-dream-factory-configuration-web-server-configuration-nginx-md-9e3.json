@@ -1,0 +1,27 @@
+{
+  "unversionedId": "DreamFactory Configuration/Web Server Configuration/nginx",
+  "id": "DreamFactory Configuration/Web Server Configuration/nginx",
+  "isDocsHomePage": false,
+  "title": "Nginx",
+  "description": "",
+  "source": "@site/docs/DreamFactory Configuration/Web Server Configuration/nginx.md",
+  "sourceDirName": "DreamFactory Configuration/Web Server Configuration",
+  "slug": "/DreamFactory Configuration/Web Server Configuration/nginx",
+  "permalink": "/DreamFactory Configuration/Web Server Configuration/nginx",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Web Server Configuration/nginx.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Basic Configuration",
+    "permalink": "/DreamFactory Configuration/configuration"
+  },
+  "next": {
+    "title": "IIS (Windows)",
+    "permalink": "/DreamFactory Configuration/Web Server Configuration/iis"
+  }
+}

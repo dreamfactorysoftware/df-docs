@@ -1,0 +1,27 @@
+{
+  "unversionedId": "tutorial-basics/secure-api",
+  "id": "tutorial-basics/secure-api",
+  "isDocsHomePage": false,
+  "title": "Secure the API",
+  "description": "Docusaurus creates a page for each blog post, but also a blog index page, a tag system, an RSS feed...",
+  "source": "@site/docs/tutorial-basics/secure-api.md",
+  "sourceDirName": "tutorial-basics",
+  "slug": "/tutorial-basics/secure-api",
+  "permalink": "/tutorial-basics/secure-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/secure-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Test the API",
+    "permalink": "/tutorial-basics/test-api"
+  },
+  "next": {
+    "title": "Interacting with the API",
+    "permalink": "/tutorial-basics/interacting-api"
+  }
+}

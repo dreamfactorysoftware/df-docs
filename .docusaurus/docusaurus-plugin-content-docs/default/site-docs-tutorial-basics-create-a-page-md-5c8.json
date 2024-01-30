@@ -2,7 +2,7 @@
   "unversionedId": "tutorial-basics/create-a-page",
   "id": "tutorial-basics/create-a-page",
   "isDocsHomePage": false,
-  "title": "Create a Page",
+  "title": "Generate a database API",
   "description": "Add Markdown or React files to src/pages to create a standalone page:",
   "source": "@site/docs/tutorial-basics/create-a-page.md",
   "sourceDirName": "tutorial-basics",
@@ -17,7 +17,7 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Tutorial Intro",
+    "title": "Tutorials",
     "permalink": "/docs/intro"
   },
   "next": {

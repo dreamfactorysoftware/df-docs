@@ -1,0 +1,27 @@
+{
+  "unversionedId": "tutorial-extras/system-api",
+  "id": "tutorial-extras/system-api",
+  "isDocsHomePage": false,
+  "title": "System API",
+  "description": "Docusaurus can manage multiple versions of your docs.",
+  "source": "@site/docs/tutorial-extras/system-api.md",
+  "sourceDirName": "tutorial-extras",
+  "slug": "/tutorial-extras/system-api",
+  "permalink": "/tutorial-extras/system-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-extras/system-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Congratulations!",
+    "permalink": "/tutorial-basics/congratulations"
+  },
+  "next": {
+    "title": "Rotating API Keys",
+    "permalink": "/tutorial-extras/rotating-keys"
+  }
+}

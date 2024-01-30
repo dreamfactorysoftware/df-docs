@@ -1,0 +1,27 @@
+{
+  "unversionedId": "tutorial-basics/generate-db-api",
+  "id": "tutorial-basics/generate-db-api",
+  "isDocsHomePage": false,
+  "title": "Generate a database API",
+  "description": "Add Markdown or React files to src/pages to create a standalone page:",
+  "source": "@site/docs/tutorial-basics/generate-db-api.md",
+  "sourceDirName": "tutorial-basics",
+  "slug": "/tutorial-basics/generate-db-api",
+  "permalink": "/tutorial-basics/generate-db-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/generate-db-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Limits",
+    "permalink": "/Security and Authentication/limits"
+  },
+  "next": {
+    "title": "Test the API",
+    "permalink": "/tutorial-basics/test-api"
+  }
+}

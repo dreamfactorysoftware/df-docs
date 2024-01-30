@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Installing DreamFactory/linux-installation",
+  "id": "Installing DreamFactory/linux-installation",
+  "isDocsHomePage": false,
+  "title": "Linux Installation",
+  "description": "This page will have linux install stuff on it.",
+  "source": "@site/docs/Installing DreamFactory/linux-installation.md",
+  "sourceDirName": "Installing DreamFactory",
+  "slug": "/Installing DreamFactory/linux-installation",
+  "permalink": "/Installing DreamFactory/linux-installation",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/linux-installation.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installing DreamFactory",
+    "permalink": "/Installing DreamFactory/installation"
+  },
+  "next": {
+    "title": "Docker Installation",
+    "permalink": "/Installing DreamFactory/docker-installation"
+  }
+}

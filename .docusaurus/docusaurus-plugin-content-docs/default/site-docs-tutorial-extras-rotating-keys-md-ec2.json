@@ -1,0 +1,23 @@
+{
+  "unversionedId": "tutorial-extras/rotating-keys",
+  "id": "tutorial-extras/rotating-keys",
+  "isDocsHomePage": false,
+  "title": "Rotating API Keys",
+  "description": "Let's translate docs/intro.md to French.",
+  "source": "@site/docs/tutorial-extras/rotating-keys.md",
+  "sourceDirName": "tutorial-extras",
+  "slug": "/tutorial-extras/rotating-keys",
+  "permalink": "/tutorial-extras/rotating-keys",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-extras/rotating-keys.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "System API",
+    "permalink": "/tutorial-extras/system-api"
+  }
+}

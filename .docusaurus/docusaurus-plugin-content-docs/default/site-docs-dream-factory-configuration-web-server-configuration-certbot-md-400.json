@@ -1,0 +1,27 @@
+{
+  "unversionedId": "DreamFactory Configuration/Web Server Configuration/certbot",
+  "id": "DreamFactory Configuration/Web Server Configuration/certbot",
+  "isDocsHomePage": false,
+  "title": "Certbot and SSL",
+  "description": "",
+  "source": "@site/docs/DreamFactory Configuration/Web Server Configuration/certbot.md",
+  "sourceDirName": "DreamFactory Configuration/Web Server Configuration",
+  "slug": "/DreamFactory Configuration/Web Server Configuration/certbot",
+  "permalink": "/DreamFactory Configuration/Web Server Configuration/certbot",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/DreamFactory Configuration/Web Server Configuration/certbot.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "IIS (Windows)",
+    "permalink": "/DreamFactory Configuration/Web Server Configuration/iis"
+  },
+  "next": {
+    "title": "Laravel and PHP configuration",
+    "permalink": "/DreamFactory Configuration/Laravel and PHP Configuration/laravel-config"
+  }
+}

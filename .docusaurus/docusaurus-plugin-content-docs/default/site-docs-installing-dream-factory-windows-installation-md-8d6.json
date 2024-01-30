@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Installing DreamFactory/windows-installation",
+  "id": "Installing DreamFactory/windows-installation",
+  "isDocsHomePage": false,
+  "title": "Windows Installation",
+  "description": "This page will have windows install instructions",
+  "source": "@site/docs/Installing DreamFactory/windows-installation.md",
+  "sourceDirName": "Installing DreamFactory",
+  "slug": "/Installing DreamFactory/windows-installation",
+  "permalink": "/Installing DreamFactory/windows-installation",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/windows-installation.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Docker Installation",
+    "permalink": "/Installing DreamFactory/docker-installation"
+  },
+  "next": {
+    "title": "Manual Installation",
+    "permalink": "/Installing DreamFactory/manual-install"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Installing DreamFactory/manual-install",
+  "id": "Installing DreamFactory/manual-install",
+  "isDocsHomePage": false,
+  "title": "Manual Installation",
+  "description": "This guide will encompass how to install DreamFactory manually (without the automated installer) on a Linux server.",
+  "source": "@site/docs/Installing DreamFactory/manual-install.md",
+  "sourceDirName": "Installing DreamFactory",
+  "slug": "/Installing DreamFactory/manual-install",
+  "permalink": "/Installing DreamFactory/manual-install",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/manual-install.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Windows Installation",
+    "permalink": "/Installing DreamFactory/windows-installation"
+  },
+  "next": {
+    "title": "Basic Configuration",
+    "permalink": "/DreamFactory Configuration/configuration"
+  }
+}

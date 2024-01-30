@@ -2,7 +2,7 @@
   "unversionedId": "tutorial-basics/markdown-features",
   "id": "tutorial-basics/markdown-features",
   "isDocsHomePage": false,
-  "title": "Markdown Features",
+  "title": "Interacting with the API",
   "description": "Docusaurus supports Markdown and a few additional features.",
   "source": "@site/docs/tutorial-basics/markdown-features.mdx",
   "sourceDirName": "tutorial-basics",
@@ -17,8 +17,8 @@
   },
   "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Create a Blog Post",
-    "permalink": "/docs/tutorial-basics/create-a-blog-post"
+    "title": "Secure the API",
+    "permalink": "/docs/tutorial-basics/secure-api"
   },
   "next": {
     "title": "Deploy your site",

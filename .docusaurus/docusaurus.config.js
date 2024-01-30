@@ -1,34 +1,36 @@
 export default {
-  "title": "My Site",
-  "tagline": "Dinosaurs are cool",
-  "url": "https://your-docusaurus-test-site.com",
+  "title": "DreamFactory Docs",
+  "tagline": "Instant API Generation",
+  "url": "https://dreamfactory.com",
   "baseUrl": "/",
   "onBrokenLinks": "throw",
   "onBrokenMarkdownLinks": "warn",
   "favicon": "img/favicon.ico",
-  "organizationName": "facebook",
-  "projectName": "docusaurus",
+  "organizationName": "dreamfactorysoftware",
+  "projectName": "df-docs",
   "presets": [
     [
       "@docusaurus/preset-classic",
       {
         "docs": {
-          "sidebarPath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/sidebars.js",
-          "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/"
+          "routeBasePath": "/",
+          "sidebarPath": "/Users/jacobyi/Desktop/DreamFactory/df-docs/sidebars.js",
+          "editUrl": "https://github.com/dreamfactorysoftware/df-docs"
         },
         "blog": {
           "showReadingTime": true,
-          "editUrl": "https://github.com/facebook/docusaurus/edit/main/website/blog/"
+          "path": "./blog",
+          "editUrl": "https://github.com/dreamfactorysofware/df-docs/blog/"
         },
         "theme": {
-          "customCss": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/src/css/custom.css"
+          "customCss": "/Users/jacobyi/Desktop/DreamFactory/df-docs/src/css/custom.css"
         }
       }
     ]
   ],
   "themeConfig": {
     "navbar": {
-      "title": "My Site",
+      "title": "DreamFactory",
       "logo": {
         "alt": "My Site Logo",
         "src": "img/logo.svg"
@@ -38,7 +40,7 @@ export default {
           "type": "doc",
           "docId": "intro",
           "position": "left",
-          "label": "Tutorial"
+          "label": "Documentation"
         },
         {
           "to": "/blog",
@@ -46,7 +48,7 @@ export default {
           "position": "left"
         },
         {
-          "href": "https://github.com/facebook/docusaurus",
+          "href": "https://github.com/dreamfactorysoftware/dreamfactory",
           "label": "GitHub",
           "position": "right"
         }
@@ -57,11 +59,15 @@ export default {
       "style": "dark",
       "links": [
         {
-          "title": "Docs",
+          "title": "Documentation",
           "items": [
             {
-              "label": "Tutorial",
-              "to": "/docs/intro"
+              "label": "Documentation",
+              "to": "/intro"
+            },
+            {
+              "label": "Blog",
+              "to": "/blog"
             }
           ]
         },
@@ -69,16 +75,24 @@ export default {
           "title": "Community",
           "items": [
             {
-              "label": "Stack Overflow",
-              "href": "https://stackoverflow.com/questions/tagged/docusaurus"
-            },
-            {
-              "label": "Discord",
-              "href": "https://discordapp.com/invite/docusaurus"
+              "label": "Github",
+              "href": "https://github.com/dreamfactorysoftware/dreamfactory"
             },
             {
               "label": "Twitter",
-              "href": "https://twitter.com/docusaurus"
+              "href": "https://twitter.com/dreamfactory"
+            },
+            {
+              "label": "Facebook",
+              "href": "https://www.facebook.com/dreamfactorysoftware"
+            },
+            {
+              "label": "LinkedIn",
+              "href": "https://www.linkedin.com/company/dreamfactory-software-inc-"
+            },
+            {
+              "label": "YouTube",
+              "href": "https://www.youtube.com/channel/UCX0uK4kq8JxOpbPZpXbXN7w"
             }
           ]
         },
@@ -87,16 +101,12 @@ export default {
           "items": [
             {
               "label": "Blog",
-              "to": "/blog"
-            },
-            {
-              "label": "GitHub",
-              "href": "https://github.com/facebook/docusaurus"
+              "to": "https://blog.dreamfactory.com"
             }
           ]
         }
       ],
-      "copyright": "Copyright © 2023 My Project, Inc. Built with Docusaurus."
+      "copyright": "Copyright © 2024 My Project, Inc. Built with Docusaurus."
     },
     "prism": {
       "theme": {

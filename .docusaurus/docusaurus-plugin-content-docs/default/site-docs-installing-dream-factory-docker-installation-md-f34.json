@@ -1,0 +1,27 @@
+{
+  "unversionedId": "Installing DreamFactory/docker-installation",
+  "id": "Installing DreamFactory/docker-installation",
+  "isDocsHomePage": false,
+  "title": "Docker Installation",
+  "description": "This page will have docker install instructions on it.",
+  "source": "@site/docs/Installing DreamFactory/docker-installation.md",
+  "sourceDirName": "Installing DreamFactory",
+  "slug": "/Installing DreamFactory/docker-installation",
+  "permalink": "/Installing DreamFactory/docker-installation",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/Installing DreamFactory/docker-installation.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Linux Installation",
+    "permalink": "/Installing DreamFactory/linux-installation"
+  },
+  "next": {
+    "title": "Windows Installation",
+    "permalink": "/Installing DreamFactory/windows-installation"
+  }
+}

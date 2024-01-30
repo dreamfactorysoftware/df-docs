@@ -1,0 +1,27 @@
+{
+  "unversionedId": "tutorial-basics/interacting-api",
+  "id": "tutorial-basics/interacting-api",
+  "isDocsHomePage": false,
+  "title": "Interacting with the API",
+  "description": "Docusaurus supports Markdown and a few additional features.",
+  "source": "@site/docs/tutorial-basics/interacting-api.md",
+  "sourceDirName": "tutorial-basics",
+  "slug": "/tutorial-basics/interacting-api",
+  "permalink": "/tutorial-basics/interacting-api",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/tutorial-basics/interacting-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Secure the API",
+    "permalink": "/tutorial-basics/secure-api"
+  },
+  "next": {
+    "title": "Deploy your site",
+    "permalink": "/tutorial-basics/deploy-your-site"
+  }
+}

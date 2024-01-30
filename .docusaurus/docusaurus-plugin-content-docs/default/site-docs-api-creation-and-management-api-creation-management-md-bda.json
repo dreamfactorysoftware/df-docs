@@ -1,0 +1,24 @@
+{
+  "unversionedId": "API Creation and Management/api-creation-management",
+  "id": "API Creation and Management/api-creation-management",
+  "isDocsHomePage": false,
+  "title": "API Creation and Management",
+  "description": "API Creation and Management will encompass the creation and management of the actual API connection that DreamFactory is making to external API sources. Things like Roles, API Keys and the System API are in their own sections.",
+  "source": "@site/docs/API Creation and Management/api-creation-management.md",
+  "sourceDirName": "API Creation and Management",
+  "slug": "/API Creation and Management/api-creation-management",
+  "permalink": "/API Creation and Management/api-creation-management",
+  "editUrl": "https://github.com/dreamfactorysoftware/df-docs/docs/API Creation and Management/api-creation-management.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Upgrading DreamFactory",
+    "permalink": "/DreamFactory Upgrades and Migrations/upgrades"
+  },
+  "next": {
+    "title": "Roles",
+    "permalink": "/Security and Authentication/role-based-access"
+  }
+}
