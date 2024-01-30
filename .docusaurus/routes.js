@@ -262,7 +262,7 @@ export default [
         component: ComponentCreator('/intro','283'),
         exact: true,
         'sidebar': "tutorialSidebar"
-      }
+      },
     ]
   },
   {
