@@ -1090,6 +1090,11 @@
   "docusaurus-plugin-content-pages": {
     "default": [
       {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      },
+      {
         "type": "mdx",
         "permalink": "/markdown-page",
         "source": "@site/src/pages/markdown-page.md"
