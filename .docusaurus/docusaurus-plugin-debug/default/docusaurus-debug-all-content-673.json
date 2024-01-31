@@ -14,9 +14,9 @@
           "versionClassName": "docs-version-current",
           "isLast": true,
           "routePriority": -1,
-          "sidebarFilePath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/sidebars.js",
-          "contentPath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/docs",
-          "contentPathLocalized": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "sidebarFilePath": "/Users/jacobyi/Desktop/DreamFactory/df-docs/sidebars.js",
+          "contentPath": "/Users/jacobyi/Desktop/DreamFactory/df-docs/docs",
+          "contentPathLocalized": "/Users/jacobyi/Desktop/DreamFactory/df-docs/i18n/en/docusaurus-plugin-content-docs/current",
           "mainDocId": "intro",
           "sidebars": {
             "tutorialSidebar": [
@@ -1089,6 +1089,11 @@
   },
   "docusaurus-plugin-content-pages": {
     "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      },
       {
         "type": "mdx",
         "permalink": "/markdown-page",

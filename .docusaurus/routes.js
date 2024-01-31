@@ -4,6 +4,11 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 
 export default [
   {
+    path: '/',
+    component: ComponentCreator('/','deb'),
+    exact: true
+  },
+  {
     path: '/__docusaurus/debug',
     component: ComponentCreator('/__docusaurus/debug','3d6'),
     exact: true
