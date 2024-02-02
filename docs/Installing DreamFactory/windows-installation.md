@@ -9,7 +9,9 @@ This page will have Windows installation instructions.
 
 ## Prerequisites
 
-These instructions will apply only to a fresh 64-bit Windows 2019 or 2022 Server. The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You will need to be able to access the GUI of the server via something like RDP, the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. 
+These instructions will apply only to a fresh 64-bit Windows 2019 or 2022 Server. The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You will need to be able to access the GUI of the server via something like RDP, the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to be ran on the same IIS instance as DreamFactory, however this is not typically supported. 
+
+A local Administrator account is also required at minimum for testing permissions, and possibly in perpetuity for IIS permissions.  
 
 ## Server Role setup
 
@@ -277,26 +279,97 @@ To begin, open the IIS manager, most of the steps here will take place in the II
 
 In the left panel of the IIS manager UI, open "sites" and right click > remove the default site.
 
+Next, right click on the "sites" folder and then "Add Website". Then fill in the dialog
 
+- Site name: typically set to "dreamfactory" but can be whatever you'd like
+- Physical Path: `{dreamfactory install dir}/public` if you've been following along this should be: `C:\inetpub\wwwroot\dreamfactory\public\`
+- Connect as...
+ - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the "Specific User" option. Other options such as domain users can be used, however you might run into permission issues that you will need to solve. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non local admin account permissions. 
+ - Use the "Test Settings" button, and ensure you have two green check marks. 
+
+:::note
+Due to the vast diversity in Windows environments, initial testing of DreamFactory necessitates the use of the local Administrator account. If DreamFactory is accessible with the local Administrator account but encounters issues with domain or non-admin user accounts, the problem often lies within permissions. We strongly recommend and support the use of the local Administrator account. Troubleshooting permission issues will likely be required for non-admin accounts to resolve access discrepancies.
+:::
 
 ### Handler mappings
 
+Handler mappings tell IIS how/where to use the php executeables in serving DreamFactory. To start, select the server on the lefthand side of the IIS manager. Then, click on the "Handler Mappings" icon. To create a new mapping, click "Add Module Mapping" on the righthand side. 
+
+Fill in the Add Module Mapping dialog:
+
+- Request Path: `*.php`
+- Module: `FastCgiModule`
+- Executeable: `C:\php\php-cgi.exe`
+- Name: `PHP_via_FastCGI`
+
+Next, click on request restricions, and ensure the following are set:
+
+- Mapping: file or folder
+- Verbs: all
+- Access: script
+
+Click "OK" to save the handler mapping. 
+
 ### PHP Manager config
-    check php info
-    check ext
+
+Again, from the server view on the left, but this time click on the "PHP Manager" icon. 
+
+You will likley see a yellow notice that your PHP configuration is non optimal. Click on "View Recomendations" check the boxes and apply every available recommendation.
+
+Test that PHP is working, click the "Check phpinfo()" link and then test using the dreamfactory site. Ensure that you see a purple and white PHP info output in this screen. If not, go back and resolve PHP installation issues. 
+
+If your php.ini is built correctly from above, you should be able to access "Enable or disable an extention" and see them enabled. You can also enable extentions manually in the PHP Manager which will apply the appropriate edits to the `php.ini` file
+
 ### FastCGI settings
 
-### reuest filtering
+There is one small setting change to be made here to the default IIS error handling. 
 
-### check applicationhost.config
+From the server view, select "FastCGI Settings", then slect the handler you made earlier and then "Edit..." on the right side. 
 
-### url rewrite import
-- site not server
+Change "Standard Error Mode" to "IgnoreAndReturn200" and click "OK" 
+
+### Request filtering
+
+From the server view, select "Request Filtering" icon. Then Navigate to the "HTTP Verbs" tab. On the right side, click "Allow Verb" and add the following verbs one at a time:
+
+- GET
+- HEAD
+- POST
+- DELETE
+- PUT
+- PATCH
+
+### URL Rewrite rules
+
+Next, on the left hand side of the IIS management window, open the dreamfactory site, and then click on "URL Rewrite" module. To import the URL rewrite rules:
+
+1. Click "Import Rules" on the right side 
+2. Browse to the dreamfactory/public dir and open .htaccess
+3. click "import"
+4. If any of the imported rules have red "X"s on them, select them and remove that specific rule until everything in green checkmarks. 
+5. click "apply" on the right side. 
+
 ### Directory permissions
 
+IIS needs control over certian folders within the dreamfactory installation directory in order to function properly. Right click > properties on the following folders and give IIS_IUSRS full control over them. Additionally, be sure to unckeck the "read only" option, and apply all changes recursively if asked:
+
+- `storage`
+- `bootstrap/cache`
+- `public`
+
+:::note
+Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results using these two commands ran from the dreamfactory install directory:
+
+`icacls "bootstrap\cache" /grant "IIS_IUSRS:(OI)(CI)F"`
+
+`icacls "storage" /grant "IIS_IUSRS:(OI)(CI)F"`
+
+:::
+
+### Accessing DreamFactory
+
+After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are examples of the numerous additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, please consult Microsoft's documentation as needed.
 
 ## Adding SSL
 
-## Notes
-
-![Locale Dropdown](/img/tutorial/localeDropdown.png)
+We typically recommend [certbot](https://certbot.eff.org/instructions?ws=other&os=windows) 
