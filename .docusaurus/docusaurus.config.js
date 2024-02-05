@@ -14,7 +14,7 @@ export default {
       {
         "docs": {
           "routeBasePath": "/",
-          "sidebarPath": "/Users/jacobyi/Desktop/DreamFactory/df-docs/sidebars.js",
+          "sidebarPath": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/sidebars.js",
           "editUrl": "https://github.com/dreamfactorysoftware/df-docs"
         },
         "blog": {
@@ -23,7 +23,7 @@ export default {
           "editUrl": "https://github.com/dreamfactorysofware/df-docs/blog/"
         },
         "theme": {
-          "customCss": "/Users/jacobyi/Desktop/DreamFactory/df-docs/src/css/custom.css"
+          "customCss": "/Users/dreamfactory/Documents/doc_overhaul/df-docs/src/css/custom.css"
         }
       }
     ]

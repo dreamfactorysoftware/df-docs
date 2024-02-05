@@ -256,13 +256,7 @@ export default [
         component: ComponentCreator('/tutorial-extras/system-api','86b'),
         exact: true,
         'sidebar': "tutorialSidebar"
-      },
-      {
-        path: '/',
-        component: ComponentCreator('/intro','283'),
-        exact: true,
-        'sidebar': "tutorialSidebar"
-      },
+      }
     ]
   },
   {
