@@ -22,7 +22,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="https://github.com/dreamfactorysoftware/dreamfactory">
-            Code Repository
+            Github
           </Link>
         </div>
       </div>

@@ -42,7 +42,7 @@ export default {
           "label": "Documentation"
         },
         {
-          "to": "/blog",
+          "href": "https://blog.dreamfactory.com/",
           "label": "Blog",
           "position": "left"
         },
