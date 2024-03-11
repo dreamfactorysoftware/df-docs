@@ -148,62 +148,6 @@
         ],
         "collapsed": true,
         "collapsible": true
-      },
-      {
-        "type": "category",
-        "label": "Tutorial - Basics",
-        "items": [
-          {
-            "type": "link",
-            "label": "Generate a database API",
-            "href": "/tutorial-basics/generate-db-api"
-          },
-          {
-            "type": "link",
-            "label": "Test the API",
-            "href": "/tutorial-basics/test-api"
-          },
-          {
-            "type": "link",
-            "label": "Secure the API",
-            "href": "/tutorial-basics/secure-api"
-          },
-          {
-            "type": "link",
-            "label": "Interacting with the API",
-            "href": "/tutorial-basics/interacting-api"
-          },
-          {
-            "type": "link",
-            "label": "Deploy your site",
-            "href": "/tutorial-basics/deploy-your-site"
-          },
-          {
-            "type": "link",
-            "label": "Congratulations!",
-            "href": "/tutorial-basics/congratulations"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
-      },
-      {
-        "type": "category",
-        "label": "Tutorial - Advanced",
-        "items": [
-          {
-            "type": "link",
-            "label": "System API",
-            "href": "/tutorial-extras/system-api"
-          },
-          {
-            "type": "link",
-            "label": "Rotating API Keys",
-            "href": "/tutorial-extras/rotating-keys"
-          }
-        ],
-        "collapsed": true,
-        "collapsible": true
       }
     ]
   }

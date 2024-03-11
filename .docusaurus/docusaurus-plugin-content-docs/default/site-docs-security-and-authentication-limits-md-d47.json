@@ -19,9 +19,5 @@
   "previous": {
     "title": "API Keys",
     "permalink": "/Security and Authentication/api-keys"
-  },
-  "next": {
-    "title": "Generate a database API",
-    "permalink": "/tutorial-basics/generate-db-api"
   }
 }
