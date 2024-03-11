@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 (module.exports = {
   title: 'DreamFactory Docs',
   tagline: 'Instant API Generation',
-  url: 'https://df-docs.netlify.app',
+  url: 'https://dreamfactory-docs.netlify.app',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
