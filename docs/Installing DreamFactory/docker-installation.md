@@ -33,7 +33,9 @@ The DreamFactory docker application is setup to use docker-compose.  To build an
 
   3. Build images with `docker-compose build`
 
-    *Note*: Running this after an initial deployment will rebuild the entire application unless you save and re-use the APP_KEY as described below.
+    :::caution Backup your APP_KEY
+    Running this after an initial deployment will rebuild the entire application unless you save and re-use the APP_KEY as described below.
+    :::
 
   4. Start containers with `docker-compose up -d`
   
@@ -62,7 +64,7 @@ The DreamFactory docker application is setup to use docker-compose.  To build an
 
     ![docker splash screen](/img/docker-install/docker-compose-splash-page.png)
 
-    Continue waiting for the application to complete seeding the database and do not click back or refresh at this time.  After a few minutes you will see the Create a System Administrator page:
+    Continue waiting for the application to load and do not click back or refresh at this time.  Occasionally the page loads before the DB migrations are completed.  If that happens you'll see a light red screen with an error message.  In that case it is safe to allow the jobs to finish and refresh the page. After a few minutes you will see the Create a System Administrator page:
 
     ![docker create admin page](/img/docker-install/initial-login-create-admin-page.png)
 
@@ -78,9 +80,13 @@ You will see a few lines output but only need to copy the APP_KEY itself (everyt
 
 ![app key output](/img/docker-install/app-key-output.png)
 
-Should you ever need to rebuild, set this value as the APP_KEY value in the docker-compose.yml file.  Uncomment the line in services -> web -> environment and paste your key from the above output, wrapped in single quotes.  This will allow the new build to access the old encrypted settings and prevent data loss, receiving "The MAC is invalid" or "Invalid Cypher" errors in the application.
+Should you ever need to rebuild, set this value as the APP_KEY value in the docker-compose.yml file.  Uncomment the line in services -> web -> environment and paste your key from the above output, wrapped in single quotes.  This will allow the new build to access the previous encrypted settings and prevent data loss and errors in the application.
 
 ![app key in docker-compose](/img/docker-install/app-key-docker-compose.png)
+
+:::caution Backup your docker-compose file
+If you've overridden other defaults such as database settings or ports, you'll want to backup your entire docker-compose file and compare your old values with the latest file.  Skipping this step will lead to issues when upgrading.
+:::
 
 ## Testing Data
 
@@ -114,7 +120,40 @@ As enhancements and features get added to DreamFactory, you may wish to upgrade 
   1. Backup your existing environment
     
     As a best practice, you should backup your files and system database before attempting to upgrade to a new version.  This includes extracting your `APP_KEY` from the existing docker container (see above).
+  
+  2. Update your repo with `git pull` and `git tag --list` to see the tagged versions available.
 
+  3. Stop the DreamFactory container without deleting it with `docker-compose stop` (this will bring the instance offline until the upgrade is completed).
+
+  4. Checkout the newer tagged version with `git checkout tags/{version}`.
+
+  5. Add the `APP_KEY` to the docker-compose file (see above for instructions).
+
+    :::tip Be sure to enclose the `APP_KEY` with single quotes.
+  
+  6. Modify any other settings in docker-compose as needed for your environment (compare the old docker-compose file with the new on as needed).
+
+  7. Save your changes and rebuild the container with `docker-compose up -d --build`.
+
+  8. Double-check that all services are running as expected with `docker-compose ps`.
+
+    If any of the containers are not in a good state, you can view the logs with `docker-compose logs web` (or whatever container had the error).
+  
+  9. Once the containers are all Up and running, check if the system DB schema needs a migration with `docker-compose exec web php artisan migrate:status`.  The output should look similar to:
+
+    ![artisan migrate:status](/img/docker-install/docker-artisan-migrate-status.png)
+
+    If any rows don't show `Ran` for the job, you'll need to manually run the migration with `docker-compose exec web php artisan migrate`.
+  
+  10. The final step is to clear the configuration and cache with:
+
+    ```
+    docker-compose exec web php artisan config:clear
+
+    docker-compose exec web php artisan cache:clear
+    ```
+
+    After clearing the cache you should be able to open DreamFactory and verify the environment is operational.
 
 ## Platform-Specific Instructions
 
