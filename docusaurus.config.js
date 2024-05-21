@@ -45,8 +45,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
       navbar: {
         title: 'DreamFactory',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'DreamFactory Logo',
+          src: 'img/logo.png',
         },
         items: [
           {
@@ -111,7 +111,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} DreamFactory. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
