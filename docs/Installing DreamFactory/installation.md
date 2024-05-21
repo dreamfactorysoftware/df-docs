@@ -16,3 +16,5 @@ To get started, choose the installation method that suits your needs:
 
 - [Windows Installation](windows-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
 
+- [Manual Installation](manual-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
+

@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Linux Installation
 
-DreamFactory can be installed using our automated installer or manually from source code on multiple Linux platforms.  This guide contains information on both installation methods.
+DreamFactory can be installed on most common Linux platforms using our automated installer. The installer is designed to deploy DreamFactory as the primary application on the server (the site is publised on port 80 of the local host).  This guide provides instructions for downloading and running the installer on a new Linux server.  For custom installations or to install manually, see the [Manual Installation](manual-installation.md) guide instead.
 
 ## Supported Operating Systems
 
@@ -19,7 +19,7 @@ At the time of writing DreamFactory is supported on the following flavors of Lin
 
 ## Automated installer
 
-DreamFactory has an automated installer to make Linux installs a breeze. The installer can be found in our Github repo [here](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers)
+The installer can be found in our Github repo [here](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers)
 
 To execute the script on your Linux machine, simply:
 
@@ -50,10 +50,6 @@ The rest of the installer's process will provide prompts for things like the loc
 
 You should now be able to access the DreamFactory UI via a web browser by pointing to the server IP address and using the credentials you entered earlier in the installer process.
 ![DreamFactory login page](/img/common/df-login-page.png)
-
-## Manual Installation
-
-TODO: Add manual steps
 
 ## About The System Database
 
