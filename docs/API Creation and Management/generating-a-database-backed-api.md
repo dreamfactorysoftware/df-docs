@@ -48,15 +48,15 @@ Want to create a MySQL API but don't have any test data? You can download a samp
 
 To generate a MySQL-backed API, login to your DreamFactory instance using an administrator account and click on the Services tab:
 
-<img src="/images/03/navbar-services.png" width="800" alt="Generate a MySQL API with DreamFactory" />
+<img src="/img/database-backed-api/navbar-services.png" width="800" alt="Generate a MySQL API with DreamFactory" />
 
 On the left side of the interface you'll see the `Create` button. Click this button to begin generating an API. You'll be presented with a single dropdown form control titled `Select Service Type`. You'll use this dropdown to both generate new APIs and configure additional authentication options. There's a lot to review in this menu, but for the moment let's stay on track and just navigate to `Databases` and then `MySQL`:
 
-<img src="/images/03/service-create-mysql.png" width="500" alt="Select MySQL Database Service" />
+<img src="/img/database-backed-api/service-create-mysql.png" width="500" alt="Select MySQL Database Service" />
 
 After selecting MySQL, you'll be presented with the following form:
 
-<img src="/images/03/services-overview.png" width="500" alt="MySQL Service Information Screen" />
+<img src="/img/database-backed-api/services-overview.png" width="500" alt="MySQL Service Information Screen" />
 
 Let's review these fields:
 
@@ -67,7 +67,7 @@ Let's review these fields:
 
 After completing these fields, click on the `Config` tab located at the top of the interface. You'll be presented with the following form (I'll only present the top of the form since this one is fairly long):
 
-<img src="/images/03/services-config.png" width="500" alt="MySQL Service Configuration Screen" />
+<img src="/img/database-backed-api/services-config.png" width="500" alt="MySQL Service Configuration Screen" />
 
 This form might look a bit intimidating at first, however in most cases there are only a few fields you'll need to complete. Let's cover those first, followed by an overview of the optional fields.
 
@@ -118,7 +118,7 @@ ssh -N -L 3307:127.0.0.1:3306 admin@10.0.0.10 -i ./server_key
 
 Now, once the connection has been established, in the DreamFactory interface, we can create our service in the same manner as described above, but instead of pointing to the MySQL server, we will point it to the SSH tunnel (localhost).
 
-<img src="/images/03/mysql-ssh-tunnel.png" width="500" alt="Setup a MySQL API Through an SSH Tunnel" />
+<img src="/img/database-backed-api/mysql-ssh-tunnel.png" width="500" alt="Setup a MySQL API Through an SSH Tunnel" />
 
 And that's it! You now have the same capabilties as you would with a standard MySQL-backed API, just connected through SSH.
 
@@ -142,11 +142,11 @@ The `Service Saved Successfully` message which appears following successful gene
 
 To access your new API's documentation, click on the `API Docs` tab located at the top of the screen:
 
-<img src="/images/03/navbar-apidocs.png" width="800" alt="Interacting with your DreamFactory API with the Docs Tab" />
+<img src="/img/database-backed-api/navbar-apidocs.png" width="800" alt="Interacting with your DreamFactory API with the Docs Tab" />
 
 You'll be presented with a list of all documentation associated with your DreamFactory instance. The `db`, `email`, `files`, `logs`, `system`, and `user` documentation are automatically included with all DreamFactory instances, and can be very useful should you eventually desire to programmatically manage your instance. Let's just ignore those for now and focus on the newly generated database documentation. Click on the table row associated with this service to access the documentation. You'll be presented with a screen that looks like this:
 
-<img src="/images/03/apidocs-mysql.png" width="800" alt="DreamFactory API Docs Tab" />
+<img src="/img/database-backed-api/apidocs-mysql.png" width="800" alt="DreamFactory API Docs Tab" />
 
 Scrolling through this list, you can see that quite a few API endpoints have been generated! If you generated an API for a database which supports stored procedures, towards the top you'll find endpoints named `GET /_proc/{procedure_name}` and `POST /_proc/{procedure_name}`. Scrolling down, you'll encounter quite a few endpoints used to manage your schema, followed by a set of CRUD (create, retrieve, update, delete) endpoints which are undoubtedly the most commonly used of the bunch.
 
@@ -154,13 +154,13 @@ Scrolling through this list, you can see that quite a few API endpoints have bee
 
 Let's test the API by retrieving a set of table records. Select the `GET /_table/{table_name} Retrieve one or more records` entry:
 
-<img src="/images/03/apidocs-mysql-getrecords.png" width="800" alt="Querying Table Records" />
+<img src="/img/database-backed-api/apidocs-mysql-getrecords.png" width="800" alt="Querying Table Records" />
 
 A slideout window will open containing two sections. The first, `Parameters`, identifies the supported request parameters. The second, `Responses`, indicates what you can expect to receive by way of a response, including the status code and a JSON response template. In the case of the `GET _/table/{table_name}` endpoint, you have quite a few parameters at your disposal, because this endpoint represents the primary way in which table data is queried. By manipulating these parameters you'll be able to query for all records, or a specific record according to its primary key, or a subset of records according to a particular condition. Further, you can use these parameters to perform other commonplace tasks such as grouping and counting records, and joining tables.
 
 To test the endpoint, click the `Try it out` button located on the right. When you do, the input parameter fields will be enabled, allowing you to enter values to modify the default query's behavior. For the moment we're going to modify just one parameter: `table_name`. It's located at the very bottom of the parameter list. Enter the name of a table you know exists in the database, and press the blue `Execute` button. Below the button you'll see a "Loading" icon, and soon thereafter a list of records found in the designated table will be presented in JSON format. Here's an example of what I see when running this endpoint against our test MySQL database:
 
-<img src="/images/03/apidocs-mysql-getrecords-output.png" width="800" alt="JSON response of API call to MySQL Database" />
+<img src="/img/database-backed-api/apidocs-mysql-getrecords-output.png" width="800" alt="JSON response of API call to MySQL Database" />
 
 Congratulations! You've just successfully interacted with the database API by way of the Swagger documentation. If you don't see a list of records, be sure to confirm the following:
 
@@ -177,21 +177,21 @@ Over time your DreamFactory instance will likely manage multiple APIs. Chances a
 
 To create a role, click on the `Roles` tab located at the top of the screen:
 
-<img src="/images/03/navbar-roles.png" width="800" alt="Creating a Role for your DreamFactory API" />
+<img src="/img/database-backed-api/navbar-roles.png" width="800" alt="Creating a Role for your DreamFactory API" />
 
 Presuming this is the first time you've created a role, you'll be prompted to create one as depicted in this screenshot:
 
-<img src="/images/03/create-first-role.png" width="400" alt="Creating your First Role" />
+<img src="/img/database-backed-api/create-first-role.png" width="400" alt="Creating your First Role" />
 
 Click the `Create a Role!` button and you'll be prompted to enter a role name and description. Unlike the service name, the role name is only used for human consumption so be sure to name it something descriptive such as `MySQL Role`. Next, click the `Access` tab. Here you'll be prompted to identify the API(s) which should be associated with this service. The default interface looks like that presented in the below screenshot:
 
-<img src="/images/03/roles-service-access-definition-form.png" width="800" alt="Name your Role" />
+<img src="/img/database-backed-api/roles-service-access-definition-form.png" width="800" alt="Name your Role" />
 
 The `Service` select box contains all of the APIs you've defined this far, including a few which are automatically included with each DreamFactory instance (`system`, `api_docs`, etc). Select the `mysql` service. Now here's where things get really interesting. After selecting the `mysql` service, click on the `Component` select box. You'll see this select box contains a list of all assets exposed through this API! If you leave the `Component` select box set to `*`, then the role will have access to all of the APIs assets. However, you're free to restrict the role's access to one or several assets by choosing for instance `_table/employees/*`. This would limit this role's access to *just* performing CRUD operations on the `employees` table! Further, using the `Access` select box, you can restrict which methods can be used by the role, selecting only `GET`, only `POST`, or any combination thereof.
 
 If you wanted to add access to another asset, or even to another service, just click the plus sign next to the `Advanced Filters` header, and you'll see an additional row added to the interface:
 
-<img src="/images/03/roles-service-access-definition-form-2.png" width="800" alt="Assign a Service to the Created Role" />
+<img src="/img/database-backed-api/roles-service-access-definition-form-2.png" width="800" alt="Assign a Service to the Created Role" />
 
 Use the new row to assign another service and/or already assigned service component to the role. In the screenshot you can see the role has been granted complete access to the `mysql` service's `employees` table, and read-only access to the `departments` table.
 
@@ -201,11 +201,11 @@ Once you are satisfied with the role's configuration, press the `Save` button to
 
 Next let's create an application, done by clicking on the `Apps` tab located at the top of the interface:
 
-<img src="/images/03/navbar-apps.png" width="800" alt="Creating an App for your DreamFactory API" />
+<img src="/img/database-backed-api/navbar-apps.png" width="800" alt="Creating an App for your DreamFactory API" />
 
 Click the `Create` tab to create a new application. You'll be presented with the following form:
 
-<img src="/images/03/app-create.png" width="800" alt="App Configuration Form" />
+<img src="/img/database-backed-api/app-create.png" width="800" alt="App Configuration Form" />
 
 Let's walk through each form field:
 
@@ -231,11 +231,11 @@ Also, because we're retrieving records the method will be set to `GET`.
 
 Next, we'll need to set the header which defines the API key. This header should be named `X-DreamFactory-Api-Key`. You might have to hunt around for a moment within your HTTP client to figure out where this is placed, but we promise it is definitely there. In the case of Insomnia the header is added via a tab found directly below the address bar:
 
-<img src="/images/03/insomnia-api-key.png" width="800" alt="Setting DreamFactory API Key Header" />
+<img src="/img/database-backed-api/insomnia-api-key.png" width="800" alt="Setting DreamFactory API Key Header" />
 
 With the URL and header in place, request the URL and you should see the table records returned in JSON format:
 
-<img src="/images/03/insomnia-all-records.png" width="400" alt="JSON response of GET Request for All Records" />
+<img src="/img/database-backed-api/insomnia-all-records.png" width="400" alt="JSON response of GET Request for All Records" />
 
 The equivalent SQL query would look like this:
 
@@ -335,7 +335,7 @@ If you'd like to use this URL format to search for another unique value not defi
 
 One of DreamFactory's most interesting database-related features is the automatic support for table joins. When DreamFactory creates a database-backed API, it parses all of the database tables, learning everything it can about the tables, including the column names, attributes, and relationships. The relationships are assigned aliases, and presented for referential purposes within DreamFactory's `Schema` tab. For instance, the following screenshot contains the list of relationship aliases associated with the `employees` table:
 
-<img src="/images/03/schema-relationships.png" width="800" alt="Joining Tables with DreamFactory" />
+<img src="/img/database-backed-api/schema-relationships.png" width="800" alt="Joining Tables with DreamFactory" />
 
 Using these aliases along with the `related` parameter we can easily return sets of joined records via the API. For instance, the following URI would be used to join the `employees` and `departments` tables together:
 
@@ -951,7 +951,7 @@ In order for DreamFactory to be able to see the extension's functions, you shoul
 SET search_path TO "$user", public, postgis, topology;
 ```
 
-<img src="/images/03/postgis_search_path.png" width="800" alt="Adding a search path to your postgres connection" />
+<img src="/img/database-backed-api/postgis_search_path.png" width="800" alt="Adding a search path to your postgres connection" />
 
 This will allow DreamFactory to search through additional schemas to find the functions that the database requires when using any extensions.
 ## Conclusion
