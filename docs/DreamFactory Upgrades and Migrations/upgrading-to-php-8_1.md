@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Upgrading to PHP 8.1
 
-**# Estimated Upgrade Time: 1.5 Hours**
+:::infoEstimated Upgrade Time: 1.5 Hours:::
 
 We attempt to make the shift from PHP 7.2 to PHP 8.1 as simple as possible. Some services have undergone significant changes as a result of third-party API providers. We have compiled a list of all services that have experienced noticeable changes, which you can find below. While it's not necessary to update all of these services, if you are using any of them, we recommend that you review the relevant section to expedite the development of your dream API.
 
