@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Linux Installation
 
-This page will have linux install stuff on it. 
+DreamFactory can be installed on most common Linux platforms using our automated installer. The installer is designed to deploy DreamFactory as the primary application on the server (the site is publised on port 80 of the local host).  This guide provides instructions for downloading and running the installer on a new Linux server.  For custom installations or to install manually, see the [Manual Installation](manual-installation.md) guide instead.
 
 ## Supported Operating Systems
 
@@ -17,29 +17,39 @@ At the time of writing DreamFactory is supported on the following flavors of Lin
 - Fedora 36/37
 - Ubuntu 20/22
 
-
-
 ## Automated installer
 
-DreamFactory has an automated installer to make Linux installs a breeze. The installer can be found in our Github repo [here](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers)
+The installer can be found in our Github repo [here](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers)
 
-To get the installation script locally, you can run:
+To execute the script on your Linux machine, simply:
 
-`wget https://github.com/dreamfactorysoftware/dreamfactory/raw/master/installers/dfsetup.run`
+1. Download the script from GitHub:
+    
+    `wget https://github.com/dreamfactorysoftware/dreamfactory/raw/master/installers/dfsetup.run`
 
-Then, ensure the installer is executeable: 
+2. Make the installer executeable:
 
-`chmod +x dfsetup.run`
+    `chmod +x dfsetup.run`
 
-Run the installer:
+3. Run the installer as sudo:
 
-`sudo ./dfsetup.run`
+    `sudo ./dfsetup.run`
 
-## Using the installer
+### Using the installer
 
-Once the installer has started, you'll be greeted by an interactive menu. The most typical installation will use options 0, 5, and 7 for a default installation of the latest version of DreamFactory with NGINX as a web server, installing and configuring MariaDB as the system database, and providing a debug log in the `/tmp/` directory. 
+Once the installer has started, you'll be greeted by an interactive menu:
+![linux installer start](/img/linux-install/df-linux-installer-start.png)
 
-The rest of the installer's process will provide prompts for things like the location of commercial license files, database settings, and initial admin user information. Once these prompts are complete and the installer exits, you should see the DreamFactory UI on port 80 on the server when accessed via web browser. 
+The most typical installation will use options 0, 5, and 7 for a default installation of the latest version of DreamFactory with NGINX as a web server, installing and configuring MariaDB as the system database, and providing a debug log in the `/tmp/` directory.
+
+The installer will verify the Linux platform is supported and begin installing dependencies. As each dependency is installed, you'll see a progress bar (...) and any issues that may come up. You can also tail the log file in the `/tmp` directory if needed.
+![linux installer installing](/img/linux-install/df-linux-installer-installing.png)
+
+The rest of the installer's process will provide prompts for things like the location of commercial license files, database settings, and initial admin user information. Once these prompts are complete, the installer will exit. Take note of the system DB details before closing the terminal.
+![linux installer complete](/img/linux-install/df-linux-installer-complete.png)
+
+You should now be able to access the DreamFactory UI via a web browser by pointing to the server IP address and using the credentials you entered earlier in the installer process.
+![DreamFactory login page](/img/common/df-login-page.png)
 
 ## About The System Database
 
@@ -57,4 +67,3 @@ Currently, the supported system database types are:
 - MySQL (MariaDB)
 - Postgres
 - SQL Server
-

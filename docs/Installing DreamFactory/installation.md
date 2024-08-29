@@ -12,8 +12,9 @@ To get started, choose the installation method that suits your needs:
 
 - [Linux Installation](linux-installation.md): This guide will show you how to install DreamFactory on various Linux distributions.
 
-- [Windows Installation](windows-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
-
 - [Docker Installation](docker-installation.md): If you prefer using Docker, this guide will help you set up DreamFactory in a containerized environment.
 
+- [Windows Installation](windows-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
+
+- [Manual Installation](manual-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
 
