@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Basic Configuration
 
-This page outlines the basic configuration settings for DreamFactory. For the most part, this will mean adding/changing parameers in the .env file located in the `dreamfactory` directory. Common tasks/procedures are outlined at the top of this page, and every parameter indiidually documented at the end of this page. 
+This page outlines the basic configuration settings for DreamFactory. For the most part, this will mean adding/changing parameers in the .env file located in the `dreamfactory` directory. Common tasks/procedures are outlined at the top of this page, and every parameter individually documented at the end of this page. 
 
 :::info
 For web server configurations, check the child pages of this section for your specific web server
@@ -25,9 +25,25 @@ Two parameters are used here:
 
 ### Changing the System Database
 
+This requires updating the connection to your database type (mysql, sqlsrv, pgsql, sqlite) and providing the necessary connection details.
 
+- `DB_CONNECTION`: Type of database connection.
+- `DB_HOST`: Database host address.
+- `DB_PORT`: Database port number.
+- `DB_DATABASE`: Database name.
+- `DB_USERNAME`: Database username.
+- `DB_PASSWORD`: Database password.
 
 ### Caching settings
+
+To update the default cache (file) to an external cache (Memcache or Redis), or to a local alternative (apc, array, database, file) you can update the following values.
+
+- `CACHE_DRIVER`: Cache driver type.
+- `CACHE_DEFAULT_TTL`: Default cache TTL in seconds.
+- `CACHE_PREFIX`: Prefix for cache keys.
+- `CACHE_PATH`: Cache path for 'file' driver.
+- `CACHE_TABLE`: Cache table for 'database' driver.
+- `CACHE_HOST`, `CACHE_PORT`, `CACHE_PASSWORD`, `CACHE_WEIGHT`, `CACHE_PERSISTENT_ID`, `CACHE_USERNAME`, `CACHE_DATABASE`: Cache settings for 'memcached' or 'redis'.
 
 ## Configuration Parameters
 

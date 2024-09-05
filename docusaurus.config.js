@@ -1,9 +1,13 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+// @ts-check
+// `@type` JSDoc annotations allow editor autocompletion and type checking
+// (when paired with `@ts-check`).
+// There are various equivalent ways to declare your Docusaurus config.
+// See: https://docusaurus.io/docs/api/docusaurus-config
 
-// With JSDoc @type annotations, IDEs can provide config autocompletion
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-(module.exports = {
+import {themes as prismThemes} from 'prism-react-renderer';
+
+/** @type {import('@docusaurus/types').Config} */
+const config = {
   title: 'DreamFactory Docs',
   tagline: 'Instant API Generation',
   url: 'https://dreamfactory-docs.netlify.app',
@@ -14,26 +18,44 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   organizationName: 'dreamfactorysoftware', // Usually your GitHub org/user name.
   projectName: 'df-docs', // Usually your repo name.
 
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
   presets: [
     [
-      '@docusaurus/preset-classic',
+      'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: '/', //this isn't working correctly
-          sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: '/',
+          sidebarPath: './sidebars.js',
           // Please change this to your repo.
-          editUrl: 'https://github.com/dreamfactorysoftware/df-docs',
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/dreamfactorysoftware/df-docs',
         },
         blog: {
           showReadingTime: true,
-          path: './blog',
+          feedOptions: {
+            type: ['rss', 'atom'],
+            xslt: true,
+          },
           // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/dreamfactorysofware/df-docs/blog/',
+          // Useful options to enforce blogging best practices
+          onInlineTags: 'warn',
+          onInlineAuthors: 'warn',
+          onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: './src/css/custom.css',
         },
       }),
     ],
@@ -45,13 +67,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
       navbar: {
         title: 'DreamFactory',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'DreamFactory Logo',
+          src: 'img/logo.png',
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
+            type: 'docSidebar',
+            sidebarId: 'intro',
             position: 'left',
             label: 'Documentation',
           },
@@ -75,7 +97,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
               },
               {
                 label: 'Blog',
-                to: '/blog',
+                to: '/blog'
               }
             ],
           },
@@ -93,11 +115,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
               },
               {
                 label: 'LinkedIn',
-                href: 'https://www.linkedin.com/company/dreamfactory-software-inc-',
+                href: 'https://www.linkedin.com/company/dreamfactory-software-inc',
               },
               {
                 label: 'YouTube',
-                href: 'https://www.youtube.com/channel/UCX0uK4kq8JxOpbPZpXbXN7w',
+                href: 'https://www.youtube.com/@DreamfactorySoftware',
               },
             ],
           },
@@ -105,8 +127,16 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             title: 'More',
             items: [
               {
-                label: 'Blog',
+                label: 'Legacy Blog',
                 to: 'https://blog.dreamfactory.com',
+              },
+              {
+                label: 'Legacy Wiki',
+                to: 'https://wiki.dreamfactory.com',
+              },
+              {
+                label: 'Legacy Docs',
+                to: 'https://guide.dreamfactory.com/docs',
               }
             ],
           },
@@ -114,8 +144,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
       },
     }),
-});
+};
+
+export default config;
