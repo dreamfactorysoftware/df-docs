@@ -18,6 +18,5 @@ API Creation and Management will encompass the creation and management of the ac
     - Node
 - File APIs
 - Email
-- Auth
 - Source Control
 
