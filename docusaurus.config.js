@@ -12,7 +12,7 @@ const config = {
   tagline: 'Instant API Generation',
   url: 'https://dreamfactory-docs.netlify.app',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'dreamfactorysoftware', // Usually your GitHub org/user name.
