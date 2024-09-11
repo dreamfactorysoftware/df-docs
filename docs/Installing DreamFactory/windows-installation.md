@@ -372,4 +372,4 @@ After completing the setup, you can navigate to the server's IP address or hostn
 
 ## Adding SSL
 
-We typically recommend [certbot](https://certbot.eff.org/instructions?ws=other&os=windows) 
+We typically recommend [certbot](https://certbot.eff.org/instructions?ws=other&os=windows) follow instructions there. 
