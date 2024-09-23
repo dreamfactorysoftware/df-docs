@@ -12,7 +12,7 @@ This chapter introduces you to DreamFactory, an automated REST API generation, i
 
 ## Introducing REST
 
-If you were to design an ideal solution for passing data between computers ("computers" here refers to any servers, laptops, mobile phones, ory other Internet-connected device), what would it look like?
+If you were to design an ideal solution for passing data between computers ("computers" here refers to any servers, laptops, mobile phones, or other Internet-connected device), what would it look like?
 
 For starters, we might consider HTTP for the transport protocol since applications can quickly be created that communicate over HTTP and HTTPS. Further, HTTP supports *request URLs*, which can be constructed to easily identify a particular target resource (e.g. `https://www.example.com/employees/42` ), *request methods*, which identify what we'd like to do in conjunction with the target resource (e.g. GET (retrieve), POST (insert), PUT (update), DELETE (destroy)), and *request payloads* in the form of URL parameters and message bodies.
 
@@ -162,7 +162,7 @@ To delete a resource, you can send a `DELETE` request to the endpoint associated
 
 ## Introducing DreamFactory
 
-With all that we've covered in this topic, the thought of implementing a REST API on your own probably sounds quite daunting. It should, because it is. Nnot only would you be responsible for building out the logic required to process the request methods and URLs, but you'd also be on the hook for integrating authentication and authorization, generating and maintaining documentation, and figuring out how to sanely generate working APIs for any number of third-party data sources. It's a handful!
+With all that we've covered in this topic, the thought of implementing a REST API on your own probably sounds quite daunting. It should, because it is. Not only would you be responsible for building out the logic required to process the request methods and URLs, but you'd also be on the hook for integrating authentication and authorization, generating and maintaining documentation, and figuring out how to sanely generate working APIs for any number of third-party data sources. It's a handful!
 
 And this is only the beginning of your challenges. As your needs grow, so does the complexity. Consider the amount of work required to add per-endpoint business logic capabilities to your API. Or bolting on API limiting features. Or adding per-service API logging. The work required to build and maintain these features can be staggering, and can easily distract you and your team from the more important goal of satisfying customers through the creation of superior products and services.
 
