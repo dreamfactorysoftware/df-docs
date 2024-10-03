@@ -129,7 +129,8 @@ As new features and enhancements are added to DreamFactory, you may want to upgr
 
   5. Add the `APP_KEY` to the docker-compose file (see above for instructions).
 
-    :::tip Ensure that you enclose the `APP_KEY` with single quotes.:::
+    :::tip Ensure that you enclose the `APP_KEY` with single quotes.
+    :::
   
   6. Modify any other settings in docker-compose as needed for your environment (compare the old docker-compose file with the new one as needed).
 
