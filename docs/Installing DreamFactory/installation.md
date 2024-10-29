@@ -4,17 +4,15 @@ sidebar_position: 1
 
 # Installing DreamFactory
 
-Welcome to the installation guide for DreamFactory! This section will focus on the inital installation of DreamFactory on the various supported platforms.
+Welcome to the installation guide for DreamFactory! This section focuses on the inital installation of DreamFactory on our supported platforms.
 
-DreamFactory is a powerful open-source REST API platform that allows you to quickly build and deploy secure and scalable applications. Whether you are running Linux, Windows, or prefer using Docker, we have got you covered. 
+DreamFactory is a powerful open-source REST API platform that allows you to quickly build and deploy secure and scalable applications. Whether you are running Linux, Windows, or prefer using Docker, we've got you covered. 
 
-To get started, choose the installation method that suits your needs:
+To get started, choose the applicable installation method:
 
-- [Linux Installation](linux-installation.md): This guide will show you how to install DreamFactory on various Linux distributions.
+- [Linux Installation](linux-installation.md): This guide details the DreamFactory installation process for various Linux distributions.
 
-- [Docker Installation](docker-installation.md): If you prefer using Docker, this guide will help you set up DreamFactory in a containerized environment.
+- [Docker Installation](docker-installation.md): If you prefer using Docker, this guide helps you set up DreamFactory in a containerized environment.
 
-- [Windows Installation](windows-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
-
-- [Manual Installation](manual-installation.md): If you are using Windows, this guide will walk you through the installation process step by step.
+- [Windows Installation](windows-installation.md): If you are using Windows, this guide walks you through the installation process step by step.
 
