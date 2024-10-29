@@ -2,11 +2,11 @@
 sidebar_position: 1
 ---
 
-# Scripting Resources
+# Scripting resources
 
-DreamFactory offers an extraordinarily powerful solution for creating APIs and adding business logic to existing APIs using a variety of popular scripting languages including PHP, Python, Node.js, and JavaScript. In this section we'll walk you through several examples which will hopefully spur the imagination regarding the many ways in which you can take advantage of this great feature.
+DreamFactory offers an extraordinarily powerful solution for creating APIs and adding business logic to existing APIs using a variety of popular scripting languages including PHP, Python, Node.js, and JavaScript. In this section we walk through several examples to spur your imagination regarding the many ways you can take advantage of this great feature.
 
-## Supported Scripting Languages
+## Supported scripting languages
 DreamFactory has several scripting languages available for customized scripting of endpoints and services. To get a list of the currently supported and configured scripts on a particular instance, use the API endpoint:
 
 ```
@@ -55,30 +55,30 @@ The sandbox parameter means that the script execution is bound by memory and tim
 
 :::
 
-The following languages are typically supported on most DreamFactory installations:
+The following languages are typically supported on DreamFactory installations:
 
 * Node.js
 * PHP
 * Python
 
-## Where to use DreamFactory Scripting
+## Where to use DreamFactory scripting
 
-Scripts can be used within two places in DreamFactory, ***Event Scripts*** and ***Scripted APIs***. ***Event Scripts*** is tied to and triggered by API calls, internal events or other scrips. The other way is through customize-able script APIs. There is a scripting API type for each supporting scripting language (above).
+Scripts can be used in two places in DreamFactory, ***Event Scripts*** and ***Scripted APIs***. ***Event Scripts*** is tied to and triggered by API calls, internal events, or other scrips. The other way scripts are used is through customize-able script APIs. There is a scripting API type for each supporting scripting language listed above.
 
-## Programatic Resources Available to a Script
+## Programatic resources available to a script
 
-When a script is executed, DreamFactory passes the script(s) two primary resources to allow the script to access many parts of the system including the state, configuration and even the ability call other internal APIs or external APIs. They are the **event** and **platform** resources and are described below.
+When a script is executed, DreamFactory passes the script(s) two primary resources to allow the script to access many parts of the system, including the state, configuration and even the ability to call other internal or external APIs. They are the **event** and **platform** resources described below.
 
 :::info
 The "resource" term is used generically in this context. Depending on the scripting language being used, the resource could be an object (Node.js, Python) or an array (PHP)
 :::
 
-### The Event Resource
+### Event resource
 
-The event resource contains the structured data about the event triggered (Event Scripts) or from the API service call (Scripte APIs). As seen below, this includes things like the request and response information available to this “event”.
+The event resource contains the structured data about the event triggered (Event Scripts) or from the API service call (Script APIs). As seen below, this includes things like the request and response information available to this “event”.
 
 :::info
-In order for a script to be able to modify the event resource, the script must be configured to allow modification to events. This is done by checking the "Allow script to modify request payload" checkbox in the script editing screen. 
+In order for a script to modify the event resource, the script must be configured to allow modification to events. This is done in the script editing screen by checking the **Allow script to modify request payload** checkbox.
 :::
 
 The following are the properties of the event resource. Below are similar tables for the properties of each property. 
@@ -89,7 +89,7 @@ The following are the properties of the event resource. Below are similar tables
 | response        | resource          | Represents the response to an inbound REST API call, i.e the HTTP response
 | resource    | string            | Any additional resource names typically represented as a replaceable part of the path, i.e. “table name” on a `db/_table/{table_name}` call.
 
-#### Event Request
+#### Event request
 
 The **request** resource contains all the components of the original HTTP request. This resource is always available, and is writable during pre-process event scripting.
 
