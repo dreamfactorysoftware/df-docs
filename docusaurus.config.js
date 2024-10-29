@@ -57,9 +57,13 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'DreamFactory',
+        // title: 'DreamFactory',
         logo: {
+<<<<<<< HEAD
           alt: 'DreamFactory Logo',
+=======
+          alt: 'My Site Logo',
+>>>>>>> c9a29e28ae89c54d049077a3fef2c6c9ad51d1c1
           src: 'img/logo.png',
         },
         items: [

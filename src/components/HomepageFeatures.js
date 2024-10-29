@@ -4,42 +4,48 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Customer Hosted',
+    src: require('../../static/img/Server-Stack.gif').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        DreamFactory is scalable, stateless, and portable. You can run it on bare metal, in a VM or in a container, but DreamFactory does not have a cloud offering.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Database & Network API Generation',
+    src: require('../../static/img/API.gif').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Integrate natively with over 20 different databases including big data services like Snowflake and Hadoop.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    title: 'API Security',
+    src: require('../../static/img/Browser.gif').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+       Security is key. DreamFactory is security forward, so APIs are secured by default with an API Key and limited access. Instantly and easily roll your keys and reissue them as needed.
       </>
     ),
   },
+  {
+    title: 'API Scripting',
+    src: require('../../static/img/Tools.gif').default,
+    description: (
+      <>
+        Supporting four scripting engines (NodeJS, PHP, Python, and V8JS), custom logic can be used to validate input parameters, transform responses to suit client requirements, and even call other APIs.
+      </>
+    ),
+  }
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({src, title, description}) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--3')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} alt={title} />
+        <img src={src} className={styles.featureSvg} alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
