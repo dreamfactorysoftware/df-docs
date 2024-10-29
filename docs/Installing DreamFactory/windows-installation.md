@@ -5,32 +5,32 @@ sidebar_position: 4
 
 # Windows Installation
 
-This page will have Windows installation instructions.
+This page contains installation instructions for Windows.
 
 ## Prerequisites
 
-These instructions will apply only to a fresh 64-bit Windows 2019 or 2022 Server. The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You will need to be able to access the GUI of the server via something like RDP, the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to be ran on the same IIS instance as DreamFactory, however this is not typically supported. 
+These instructions apply only to a fresh 64-bit Windows 2019 or 2022 Server. The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You must be able to access the GUI of the server using something like RDP, have the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to run on the same IIS instance as DreamFactory, however this is not typically supported. 
 
 A local Administrator account is also required at minimum for testing permissions, and possibly in perpetuity for IIS permissions.  
 
-## Server Role setup
+## Server role setup
 
-To start, you will need to set up the IIS Web server roles.
+To start, set up the IIS Web server roles.
 
 To enable the Web Server Roles:
 
-1. Open the Server Manager Application.
-2. Click on Option 2 "Add roles and features".
-3. Click Next.
-4. Ensure that "Role based or feature based" is selected, and click Next.
-5. Ensure the server you're working on is selected, click Next.
-6. Check the "Web Server (IIS)" box on server roles, install any admin tools if asked. Click Next.
+1. Open the **Server Manager Application**.
+2. Click on Option 2 **Add roles and features**.
+3. Click **Next**.
+4. Ensure that **Role based or feature based** is selected, and click **Next**.
+5. Ensure the server you're working on is selected, click **Next**.
+6. On server roles, check the **Web Server (IIS)** box, install any admin tools if asked, and click **Next**.
 7. Your Web Server Role should look something like this (also outlined below): 
 ![Web Server Role selection](/img/windows-install/select-server-roles.png)
-8. Click Next and then Install, let the installer run in the background, reup on coffee and start the download section below. 
+8. Click **Next** and then select **Install**. Let the installer run in the background, reup on coffee and start the download section below. 
 
-### Web server Roles
-These are the web server roles you'll want to check:
+### Web server roles
+These are the web server roles DreamFactory recommends selecting:
 
 - Web Server (IIS)
     - Common HTTP Features
@@ -50,11 +50,11 @@ These are the web server roles you'll want to check:
 
 ## Downloads
 
-There are a few installation files that will need to be downloaded and, in some cases, installed. This section will cover the downloads needed before starting the actual installation and configuration of the server. Getting all of these files on the server ahead of time will keep the rest of the installation going smoothly. 
+There are a few installation files to downloade and, in some cases, installed. This section covers the downloads needed before starting the actual installation and configuration of the server. Getting all of these files on the server ahead of time ensures that the rest of the installation runs smoothly.
 
 ### DreamFactory specific files
 
-Before starting, you will need the following files on the server ready to add to the installation when needed.
+Before starting, locate the following files on the server so they are ready to add to the installation when needed.
 
 - Composer (license) files:
   - composer.json
@@ -68,11 +68,11 @@ The composer files are typically grabbed from the DreamFactory SFTP server. Cont
 
 ### Git
 
-We will need the `git` command available to get the DreamFactory code later. 
+The `git` command must be available to get the DreamFactory code later in the installation process. 
 
-Git can be downloaded from [here](https://git-scm.com/download/win). Get the "64-bit Git for Windows Setup" version.
+Git can be downloaded from [here](https://git-scm.com/download/win). Select the **64-bit Git for Windows Setup** version.
 
-To install git, simply run the installer you downloaded and click yes/next on all default options. 
+To install git, simply run the installer you downloaded and click **yes**/**next** on all default options. 
 
 ### Visual C++ 2015-2019
 
@@ -88,29 +88,29 @@ Simply run the installer to install.
 
 ### PHP
 
-PHP for Windows can be downloaded from [here](https://windows.php.net/download#php-8.1). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip
+PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.1). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
 
-At the time of writing, the latest supported PHP version is 8.1.27. The 64-bit NTS version can be directly downloaded from [here](https://windows.php.net/downloads/releases/php-8.1.27-nts-Win32-vs16-x64.zip)
+At the time of writing, the latest supported PHP version is 8.1.27. The 64-bit NTS version can be directly downloaded [here](https://windows.php.net/downloads/releases/php-8.1.27-nts-Win32-vs16-x64.zip).
 
-Just get the .zip downloaded. You will install it later. 
+Just get the .zip downloaded. It is installed later in the process. 
 
 ### Composer
 
-Composer is a package manager for PHP. The installer can be directly downloaded from [here](https://getcomposer.org/Composer-Setup.exe).
+Composer is a package manager for PHP. The installer can be directly downloaded [here](https://getcomposer.org/Composer-Setup.exe).
 
-Just get the installer downloaded. You will run it later. 
+Just get the installer downloaded. It is run later in the process. 
 
 ### PHP Manager
 
 PHP Manager is an IIS utility to make managing PHP and extensions much easier. 
 
-Go to the link [here]( https://www.iis.net/downloads/community/2018/05/php-manager-150-for-iis-10) and click "Download this extension". 
+Go to the link [here]( https://www.iis.net/downloads/community/2018/05/php-manager-150-for-iis-10) and click **Download this extension**. 
 
-Simply run the downloaded installer while IIS is closed to install.
+Simply run the downloaded installer while IIS is closed to complete the install.
 
-### SQL Server Drivers
+### SQL Server drivers
 
-If you plan to use DreamFactory to connect to SQL Server, you will need the driver packages. 
+If you plan to use DreamFactory to connect to a SQL Server, you must have the driver packages. 
 
 Start with downloading the v17 and v18 drivers:
 
@@ -119,28 +119,27 @@ Start with downloading the v17 and v18 drivers:
 
 Run **both** downloaded installers.
 
-For the drivers to be used, you'll also need the sqlsrv PHP extensions. Start by going to the releases page [here](https://github.com/microsoft/msphpsql/releases)
+For the drivers to be used, you also need the sqlsrv PHP extensions. Start by going to the releases page [here](https://github.com/microsoft/msphpsql/releases).
 
-Find the latest release and look in the assets section. Windows packages will be at the end of the list. Download the Windows-8.1.zip for PHP v8.1
+Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the Windows-8.1.zip for PHP v8.1.
 
-As of this writing, the latest release of the extension package can be directly downloaded from [here](https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows-8.1.zip)
+As of this writing, the latest release of the extension package can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows-8.1.zip).
 
 ## Getting DreamFactory running
 
-The rest of the procedure will involve two primary objectives: getting DreamFactory installed and running with the PHP development server, and then configuring IIS to serve DreamFactory. This section will cover the former. 
+The rest of the procedure involves two primary objectives: getting DreamFactory installed and running with the PHP development server, and then configuring IIS to serve DreamFactory. This section cover the installation and PHP development server set up. 
 
 ### Installing PHP
 
-To begin, create a new folder: `C:\php\`
-Next, grab the PHP installation .zip you gathered earlier. Extract the entire contents to the `C:\php\` folder. 
+1. Create a new folder: `C:\php\`, grab the PHP installation .zip you gathered earlier, and extract the entire contents to the `C:\php\` folder. 
 
-Duplicate (copy/paste) the `php.ini-development` file, rename the duplicate `php.ini`
+2. Duplicate (copy/paste) the `php.ini-development` file, and rename the duplicate `php.ini`.
 
 :::note
-You might need to enable file name extentions in the "view" tab of the file explorer
+You might need to enable file name extentions in the **View** tab of the file explorer.
 :::
 
-Open the newly created php.ini and copy/paste the following at the bottom of the file: 
+3. Open the newly created php.ini and copy/paste the following at the bottom of the file: 
 
 ```
 extension=ldap
@@ -174,17 +173,17 @@ zend_extension=opcache
 
 opcache.enable=1
 ```
-Save and close php.ini
+4. Save and close php.ini.
 
 :::note
-You can manually add PHP to your enviornment variable path, however this will be done automatically for us during the Composer installation. 
+You can manually add PHP to your enviornment variable path, however this is done automatically during the Composer installation. 
 :::
 
 ### Installing Composer
 
 To start, run the composer installer you downloaded earlier. 
 
-You will mostly hit "next" through most of the installtion. When asked to browse to your command line/CLI PHP naviagate to: `C:\php\php.exe`. Then check the "Add to path" option. Click Next and wait. 
+You can select **Next** through most of the installtion. When asked to browse to your command line/CLI PHP, naviagate to: `C:\php\php.exe`. Then check the **Add to path** option. Click **Next** and wait. 
 
 :::info
 This is a great time to test both the PHP and Composer installations, open a new commmand prompt and run:
@@ -193,35 +192,35 @@ This is a great time to test both the PHP and Composer installations, open a new
 
 `composer --version`
 
-If both of those commands are sucessful, you are safe to keep moving forward. 
+If both of those commands are successful, you are safe to keep moving forward. 
 :::
 
 ### Installing SQL Server drivers (optional)
 
-This again is an optional step dependent on if you intend to use DreamFactory with SQL Server.
+This is an optional step dependent on if you intend to use DreamFactory with SQL Server.
 
 The v17 and v18 drivers should have been installed during the previous steps, if not, install them now. 
 
-Open the Windows-8.1.zip you downloaded earlier, in the x64 folder there should be  4 .dll files. Copy/paste the **two** nts (Non Thread Safe) .dll into your php ext folder (`C:\php\ext\`)
+Open the Windows-8.1.zip downloaded earlier, in the x64 folder there should be 4 .dll files. Copy/paste the **two** nts (Non Thread Safe) .dll into your php ext folder (`C:\php\ext\`)
 
-Then, rename both files removing the "_81_nts" at the end of the filename. The files will be named:
+Then, rename both files removing the "_81_nts" at the end of the filename. The files are named:
 
 - php_pdo_sqlsrv.dll
 - php_sqlsrv.dll
 
 ### Get (git) DreamFactory code
 
-Next, we will get the DreamFactory code itself, to begin open a command prompt, then run:
+Next, get the DreamFactory code by opening a command prompt, and running:
 
 `cd C:\inetpub\wwwroot\`
 
 `git clone https://github.com/dreamfactorysoftware/dreamfactory`
 
-This will create a `C:\inetpub\wwwroot\dreamfactory` folder on the server which will be refered to as the DreamFactory installation folder in this and other documentation. 
+This creates a `C:\inetpub\wwwroot\dreamfactory` folder on the server, refered to as the **DreamFactory installation folder** in this and other documentation. 
 
 :::warning
 At this time, the newest supported version of DreamFactory on Windows is v5.4.1
-Version 6+ is not currently supported so the following commands will also need to be ran:
+Version 6+ is not currently supported so the following commands also need to be run:
 
 `cd C:\inetpub\wwwroot\dreamfactory`
 
@@ -232,74 +231,76 @@ Once the new UI in v6 is made compatible with Windows, this notice will be remov
 
 ### Install DreamFactory dependencies
 
-DreamFactory uses Composer to handle all PHP dependencies, if you haven't installed Composer from the installation section above, do that now. 
+DreamFactory uses Composer to handle all PHP dependencies, if you haven't installed Composer from the installation section above, do so now. 
 
 First, take your 3 composer/license files (`composer.json`, `composer.json-dist`, `composer.lock`) and add them to the DreamFactory installation directory, overwriting the existing composer files in that directory. Then, open a command prompt, cd into the dreamfactory installation directory and run:
 
 `composer install --no-dev --ignore-platform-reqs --verbose`
 
-Sometimes this command can take quite a while to run, if it feels hung, hit enter a couple times in the command prompt. 
+Sometimes this command takes a while to run, if it feels hung, hit enter a couple times in the command prompt. 
 
 ### Build DreamFactory system database and root admin
 
-Once the composer install finishes, we will finalize the DreamFactory setup, in your command prompt, cd into the dreamfactory installatoin directory. Start by running: 
-`php artisan df:env`
-This command will define the system database for the DreamFactory enviornment. For inital installation, it is recommended to start with option [0], Sqlite. If you run into problems during the installation, starting with sqlite will eliminate database/networking issues from having to troubleshoot. This database can be changed at a later date, and any configurations you build in sqlite can be exported and imported into another instance later. 
+Once the composer install finishes, we can finalize the DreamFactory setup. In your command prompt, cd into the dreamfactory installation directory. Start by running: 
+`php artisan df:env`.
+
+This command defines the system database for the DreamFactory enviornment. For initial installation, it is recommended to start with option [0], Sqlite. If you run into problems during the installation, starting with sqlite eliminates database/networking issues from the troubleshooting process. This database can be changed at a later date, and any configurations you build in sqlite can be exported and imported into another instance later. 
 
 When selecting a database name and user, it is recommended to stick with the default "dreamfactory" and "dfadmin" respectively. 
 
 Once the df:env command finishes, run:
 `php artisan df:setup`
-This command will prompt you to create your first admin user. This email and password will be used to login to the UI later. The root admin account details can be changed later.
+This command prompts you to create your first admin user. This email and password are used to log in to the UI later. The root admin account details can be changed later.
 
 Finally, add your license key to the end of the .env file located in the dreamfactory instalaltion directory. You can add it to the bottom of the file like:
 `DF_LICENSE_KEY={YOUR LICENSE KEY}`
-> without the curly brackets
+
+:::note Ensure that you remove curly brackets seen in the example above.:::
 
 ### Test DreamFactory
 
-In order to run a test/development Laravel server, from the dreamfactory installation direfctory run:
+In order to run a test/development Laravel server, from the dreamfactory installation directory run:
 `php artisan serve`
 
-This will start a web server at http://127.0.0.1:8000 If you can navigate to this url, login to the UI with the root admin created earlier, and you **don't** have a red banner at the top of the UI, you have done everything correctly. If not, go back and check the steps you missed before moving forward. 
+This starts a web server at http://127.0.0.1:8000. If you can navigate to this url, login to the UI with the root admin created earlier. If you **don't** have a red banner at the top of the UI, you have done everything correctly. If the red banner is still visible, go back and check for any steps you may have missed before moving forward. 
 
-From here, DreamFactory is installed, the next section will focus on getting IIS to serve DreamFactory on port 80
+From here, DreamFactory is installed, the next section focuses on getting IIS to serve DreamFactory on port 80.
 
 ## Serving DreamFactory with IIS
 
-This section will highlight the IIS configuration needed to serve DreamFactory. 
+This section highlights the IIS configuration needed to serve DreamFactory. 
 
 :::note
-Please note that we at DreamFactory are not Windows experts. The guidance provided herein outlines a basic, default IIS configuration that has been tested and is known to work with DreamFactory on Windows environments. This setup is intended as a foundation or starting point for your DreamFactory installation. It's important to understand that while this configuration works for us and is supported by our team, Windows and IIS are versatile platforms. As such, there may be alternative configurations that also work well, depending on your specific needs and environment. We encourage you to use this as a guide, but feel free to explore and implement what works best for your situation.
+We at DreamFactory are not Windows experts. The guidance provided here outlines a basic, default IIS configuration that has been tested and is known to work with DreamFactory on Windows environments. This setup is intended as a foundation for your DreamFactory installation. It's important to understand that while this configuration works for us and is supported by our team, Windows and IIS are versatile platforms. As such, there may be alternative configurations that also work well, depending on your specific needs and environment. We encourage you to use this as a guide, but feel free to explore and implement what works best for your situation.
 :::
 
-To begin, open the IIS manager, most of the steps here will take place in the IIS manager. 
+To begin, open the IIS manager, most of the steps here take place in the IIS manager. 
 
 ### Create DreamFactory site
 
-In the left panel of the IIS manager UI, open "sites" and right click > remove the default site.
+In the left panel of the IIS manager UI, open **sites**, right click, and select **remove the default site**.
 
-Next, right click on the "sites" folder and then "Add Website". Then fill in the dialog
+Next, right click on the **sites** folder and select **Add Website**. Then fill in the dialog:
 
 - Site name: typically set to "dreamfactory" but can be whatever you'd like
 - Physical Path: `{dreamfactory install dir}/public` if you've been following along this should be: `C:\inetpub\wwwroot\dreamfactory\public\`
 - Connect as...
- - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the "Specific User" option. Other options such as domain users can be used, however you might run into permission issues that you will need to solve. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non local admin account permissions. 
- - Use the "Test Settings" button, and ensure you have two green check marks. 
+  - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the **Specific User** option. Other options such as domain users can be used, however you might run into permission issues that will need to be solved. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non-local admin account permissions. 
+  - Use the "Test Settings" button, and ensure you have two green check marks. 
 
 :::note
-Due to the vast diversity in Windows environments, initial testing of DreamFactory necessitates the use of the local Administrator account. If DreamFactory is accessible with the local Administrator account but encounters issues with domain or non-admin user accounts, the problem often lies within permissions. We strongly recommend and support the use of the local Administrator account. Troubleshooting permission issues will likely be required for non-admin accounts to resolve access discrepancies.
+Due to the vast diversity in Windows environments, initial testing of DreamFactory necessitates the use of the local Administrator account. If DreamFactory is accessible with the local Administrator account but encounters issues with domain or non-admin user accounts, the problem often stems from permissions issues. We strongly recommend and support the use of the local Administrator account. Troubleshooting permission issues is often required for non-admin accounts to resolve access discrepancies.
 :::
 
 ### Handler mappings
 
-Handler mappings tell IIS how/where to use the php executeables in serving DreamFactory. To start, select the server on the lefthand side of the IIS manager. Then, click on the "Handler Mappings" icon. To create a new mapping, click "Add Module Mapping" on the righthand side. 
+Handler mappings tell IIS how/where to use the php executables in serving DreamFactory. Select the server on the left side of the IIS manager and click on the **Handler Mappings** icon. To create a new mapping, on the right side of the page, click **Add Module Mapping**. 
 
-Fill in the Add Module Mapping dialog:
+Fill in the **Add Module Mapping** dialog:
 
 - Request Path: `*.php`
 - Module: `FastCgiModule`
-- Executeable: `C:\php\php-cgi.exe`
+- Executable: `C:\php\php-cgi.exe`
 - Name: `PHP_via_FastCGI`
 
 Next, click on request restricions, and ensure the following are set:
@@ -308,29 +309,29 @@ Next, click on request restricions, and ensure the following are set:
 - Verbs: all
 - Access: script
 
-Click "OK" to save the handler mapping. 
+Click **OK** to save the handler mapping. 
 
-### PHP Manager config
+### PHP manager config
 
-Again, from the server view on the left, but this time click on the "PHP Manager" icon. 
+Again, from the server view on the left, click on the **PHP Manager** icon. 
 
-You will likley see a yellow notice that your PHP configuration is non optimal. Click on "View Recomendations" check the boxes and apply every available recommendation.
+Generally a yellow notice that your PHP configuration is non optimal is displayed. Click on **View Recomendations**, check the boxes and apply every available recommendation.
 
-Test that PHP is working, click the "Check phpinfo()" link and then test using the dreamfactory site. Ensure that you see a purple and white PHP info output in this screen. If not, go back and resolve PHP installation issues. 
+Test that PHP is working, click the **Check phpinfo()** link and then test using the DreamFactory site. Ensure that you see a purple and white PHP info output in this screen. If not, go back and resolve any PHP installation issues. 
 
-If your php.ini is built correctly from above, you should be able to access "Enable or disable an extention" and see them enabled. You can also enable extentions manually in the PHP Manager which will apply the appropriate edits to the `php.ini` file
+If your php.ini is built correctly you should be able to access **Enable or disable an extention** and see them enabled. You can also enable extentions manually in the PHP Manager which applies the appropriate edits to the `php.ini` file.
 
 ### FastCGI settings
 
-There is one small setting change to be made here to the default IIS error handling. 
+There is one setting change to be made to the default IIS error handling. 
 
-From the server view, select "FastCGI Settings", then slect the handler you made earlier and then "Edit..." on the right side. 
+From the server view, select **FastCGI Settings**, then select the handler you made earlier and click **Edit...**. 
 
-Change "Standard Error Mode" to "IgnoreAndReturn200" and click "OK" 
+Change **Standard Error Mode** to **IgnoreAndReturn200** and click **OK**. 
 
 ### Request filtering
 
-From the server view, select "Request Filtering" icon. Then Navigate to the "HTTP Verbs" tab. On the right side, click "Allow Verb" and add the following verbs one at a time:
+From the server view, select the **Request Filtering** icon. Then Navigate to the **HTTP Verbs** tab. On the right side, click **Allow Verb** and add the following verbs one at a time:
 
 - GET
 - HEAD
@@ -339,26 +340,26 @@ From the server view, select "Request Filtering" icon. Then Navigate to the "HTT
 - PUT
 - PATCH
 
-### URL Rewrite rules
+### URL rewrite rules
 
-Next, on the left hand side of the IIS management window, open the dreamfactory site, and then click on "URL Rewrite" module. To import the URL rewrite rules:
+On the left side of the IIS management window, open the DreamFactory site, and select the **URL Rewrite** module. To import the URL rewrite rules:
 
-1. Click "Import Rules" on the right side 
-2. Browse to the dreamfactory/public dir and open .htaccess
-3. click "import"
-4. If any of the imported rules have red "X"s on them, select them and remove that specific rule until everything in green checkmarks. 
-5. click "apply" on the right side. 
+1. on the right side of the page, click **Import Rules**. 
+2. Browse to the dreamfactory/public dir and open **.htaccess**.
+3. Click **Import**.
+4. If any of the imported rules have red **X**s on them, select them and remove that specific rule until everything shows a green checkmark. 
+5. Click **Apply** to complete the process. 
 
 ### Directory permissions
 
-IIS needs control over certian folders within the dreamfactory installation directory in order to function properly. Right click > properties on the following folders and give IIS_IUSRS full control over them. Additionally, be sure to unckeck the "read only" option, and apply all changes recursively if asked:
+IIS needs control over certian folders within the DreamFactory installation directory in order to function properly. Right click and select **Properties** on the following folders and give IIS_IUSRS full control over them. Additionally, be sure to unckeck the **read only** option, and apply all changes recursively if asked:
 
 - `storage`
 - `bootstrap/cache`
 - `public`
 
 :::note
-Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results using these two commands ran from the dreamfactory install directory:
+Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results by running these two commands from the DreamFactory install directory:
 
 `icacls "bootstrap\cache" /grant "IIS_IUSRS:(OI)(CI)F"`
 
@@ -368,8 +369,8 @@ Sometimes these permisions don't set correctly with the properties window. If yo
 
 ### Accessing DreamFactory
 
-After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are examples of the numerous additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, please consult Microsoft's documentation as needed.
+After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are some of the many additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, consult Microsoft's documentation as needed.
 
 ## Adding SSL
 
-We typically recommend [certbot](https://certbot.eff.org/instructions?ws=other&os=windows) 
+For details on adding SSL, DreamFactory recommends using [certbot](https://certbot.eff.org/instructions?ws=other&os=windows). Follow the instructions from the provided link to help you through the process. 

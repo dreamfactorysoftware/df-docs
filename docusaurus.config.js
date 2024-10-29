@@ -12,7 +12,7 @@ const config = {
   tagline: 'Instant API Generation',
   url: 'https://dreamfactory-docs.netlify.app',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'dreamfactorysoftware', // Usually your GitHub org/user name.
@@ -37,7 +37,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/dreamfactorysoftware/df-docs',
+            'https://github.com/dreamfactorysoftware/df-docs/tree/main/',
         },
         blog: {
           showReadingTime: true,
