@@ -34,18 +34,6 @@ const config = {
           editUrl:
             'https://github.com/dreamfactorysoftware/df-docs/tree/main/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl:
-            'https://github.com/dreamfactorysofware/df-docs/blog/',
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -69,7 +57,6 @@ const config = {
             position: 'left',
             label: 'Documentation',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/dreamfactorysoftware/dreamfactory',
             label: 'GitHub',
@@ -86,10 +73,6 @@ const config = {
               {
                 label: 'Documentation',
                 to: '/intro',
-              },
-              {
-                label: 'Blog',
-                to: '/blog'
               }
             ],
           },
