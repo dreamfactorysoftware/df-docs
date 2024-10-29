@@ -94,11 +94,11 @@ When an event script is executed, DreamFactory provides two primary resources:
 
 The event resource includes properties such as `request`, `response`, and `resource`, which represent the inbound REST API call, the response, and any additional resource names, respectively.
 
-| **Property** | **Type** | **Description**                                                                                                                              |
-| ------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **request**  | resource | Represents the inbound REST API call, i.e. the HTTP request                                                                                  |
-| **response** | resource | Represents the response to an inbound REST API call, i.e the HTTP response                                                                   |
-| **resource** | string   | Any additional resource names typically represented as a replaceable part of the path, i.e. “table name” on a db/\_table/{table\_name} call. |
+| **Property** | **Type** | **Description**                                                                                                                    |
+| ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **request**  | resource | Represents the inbound REST API call, i.e. the HTTP request                                                                        |
+| **response** | resource | Represents the response to an inbound REST API call, i.e the HTTP response                                                         |
+| **resource** | string   | Any additional resource names typically represented as a replaceable part of the path, i.e. `table name` on a `db/_table/{table_name}` call |
 
 ### Platform Resource
 
