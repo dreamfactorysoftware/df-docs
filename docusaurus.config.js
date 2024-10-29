@@ -4,7 +4,7 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-const {themes as prismThemes} = require('prism-react-renderer');
+const {themes: prismThemes} = require('prism-react-renderer');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -57,13 +57,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        // title: 'DreamFactory',
+        title: 'DreamFactory',
         logo: {
-<<<<<<< HEAD
           alt: 'DreamFactory Logo',
-=======
-          alt: 'My Site Logo',
->>>>>>> c9a29e28ae89c54d049077a3fef2c6c9ad51d1c1
           src: 'img/logo.png',
         },
         items: [
