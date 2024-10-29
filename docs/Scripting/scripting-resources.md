@@ -2,7 +2,8 @@
 sidebar_position: 1
 ---
 
-# Scripting Resources
+# Scripting resources
+
 
 This page provides a comprehensive overview of the resources available for scripting in DreamFactory, including links to sample scripts and documentation references for event scripting and scripted services.
 
@@ -11,6 +12,11 @@ This page provides a comprehensive overview of the resources available for scrip
 DreamFactory's scripting capabilities allow you to extend the functionality of your APIs by executing custom scripts in response to events or as standalone services. These scripts can be written in various supported languages and can interact with the DreamFactory platform to perform complex operations.
 
 ## Supported Scripting Languages
+
+DreamFactory offers an extraordinarily powerful solution for creating APIs and adding business logic to existing APIs using a variety of popular scripting languages including PHP, Python, Node.js, and JavaScript. In this section we walk through several examples to spur your imagination regarding the many ways you can take advantage of this great feature.
+
+## Supported scripting languages
+DreamFactory has several scripting languages available for customized scripting of endpoints and services. To get a list of the currently supported and configured scripts on a particular instance, use the API endpoint:
 
 DreamFactory supports several scripting languages:
 
@@ -28,7 +34,10 @@ When a script is executed, DreamFactory provides two primary resources:
 
 ### Event Resource
 
+The following languages are typically supported on DreamFactory installations
+
 The event resource includes properties such as `request`, `response`, and `resource`, which represent the inbound REST API call, the response, and any additional resource names, respectively.
+
 
 | **Property** | **Type** | **Description**                                                                                                                    |
 | ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -52,7 +61,17 @@ The **request** resource contains all the components of the original HTTP reques
 | **uri**           | string       | Resource path, i.e. /api/v2/php.                                                                                                                                         |
 | **service**       | string       | The type of service, i.e. php, nodejs, python.                                                                                                                           |
 
+## Where to use DreamFactory scripting
+
+Scripts can be used in two places in DreamFactory, ***Event Scripts*** and ***Scripted APIs***. ***Event Scripts*** is tied to and triggered by API calls, internal events, or other scrips. The other way scripts are used is through customize-able script APIs. There is a scripting API type for each supporting scripting language listed above.
+
+## Programatic resources available to a script
+
+When a script is executed, DreamFactory passes the script(s) two primary resources to allow the script to access many parts of the system, including the state, configuration and even the ability to call other internal or external APIs. They are the **event** and **platform** resources described below.
+
+
 #### Event Response
+
 
 The **response** resource contains the data being sent back to the client from the request.
 
@@ -65,6 +84,15 @@ The **response** resource contains the data being sent back to the client from t
 
 ### Platform Resource
 
+### Event resource
+
+The event resource contains the structured data about the event triggered (Event Scripts) or from the API service call (Script APIs). As seen below, this includes things like the request and response information available to this “event”.
+
+:::info
+In order for a script to modify the event resource, the script must be configured to allow modification to events. This is done in the script editing screen by checking the **Allow script to modify request payload** checkbox.
+:::
+
+
 The platform resource provides access to the instance's REST API, configuration settings, and session information. It includes methods for making internal API calls using REST verbs like `get`, `post`, `put`, `patch`, and `delete`.
 
 | **Property** | **Type**     | **Description**                                                         |
@@ -73,7 +101,11 @@ The platform resource provides access to the instance's REST API, configuration 
 | **config**   | resource     | An array/object consisting of the current configuration of the instance |
 | **session**  | resource     | An array/object consisting of the current session information           |
 
+
 #### Platform API
+
+#### Event request
+
 
 The **api** resource contains methods for instance API access. This object contains a method for each type of REST verb.
 
