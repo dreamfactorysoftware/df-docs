@@ -29,6 +29,7 @@ yarn-error.log*
 
 .yarn
 package-lock.json
+yarn.lock
 .eslintcache
 
 # Coverage and Test
