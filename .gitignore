@@ -1,3 +1,4 @@
+
 # Dependencies
 /node_modules
 
@@ -14,7 +15,46 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.iml
+*.code-workspace
+.changelog
+.history
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.yarn
+package-lock.json
+.eslintcache
+
+# Coverage and Test
+coverage
+types
+test-website
+test-website-in-workspace
+
+# Packages
+packages/create-docusaurus/lib/
+packages/lqip-loader/lib/
+packages/docusaurus/lib/
+packages/docusaurus-*/lib/*
+packages/eslint-plugin/lib/
+packages/stylelint-copyright/lib/
+
+# Website
+website/netlifyDeployPreview/*
+website/changelog
+!website/netlifyDeployPreview/index.html
+!website/netlifyDeployPreview/_redirects
+website/_dogfooding/_swizzle_theme_tests
+CrowdinTranslations_*.zip
+website/i18n/**/*
+#!website/i18n/fr
+#!website/i18n/fr/**/*
+
+# Netlify
+.netlify
