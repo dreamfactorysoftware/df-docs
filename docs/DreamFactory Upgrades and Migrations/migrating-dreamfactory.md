@@ -7,6 +7,3 @@ title: Migrating DreamFactory
 This page is under construction.
 
 :::
-
-**Hello World**
-
