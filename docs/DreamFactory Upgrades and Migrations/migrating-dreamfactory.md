@@ -23,6 +23,7 @@ The `.env` file contains essential configuration settings for your DreamFactory 
 - Caching preferences
 - API keys
 - Other environmental settings
+The primary component of the `.env` file that we're interested in is the `APP_KEY`. Once we've migrated the system database, we can initilize the new DreamFactory instance with the `APP_KEY` from the old instance.
 
 ### DreamFactory System Database
 The DreamFactory system database stores:
@@ -40,10 +41,14 @@ Migrating these ensures your new DreamFactory instance contains all your origina
 ### Step 1: Back Up the `.env` File
 
 1. Navigate to the DreamFactory root directory:  
-   `cd /opt/dreamfactory`
+   ```bash
+   cd /opt/dreamfactory
+   ```
 
 2. Copy the `.env` file to a secure location:  
-   `cp .env ~/.env`
+   ```bash
+   cp .env ~/.env
+   ```
 
 3. Use SFTP or another tool to transfer the `.env` file to an external location for safekeeping.
 
@@ -64,7 +69,7 @@ Migrating these ensures your new DreamFactory instance contains all your origina
   </TabItem>
   <TabItem value="sqlserver" label="MS SQL Server">    
     ```bash
-    TODO: Add MS SQL Server backup instructions
+    Use SSMS (SQL Server Management Studio) to export the database to a file.
     ```
   </TabItem>
   <TabItem value="postgresql" label="PostgreSQL">
@@ -86,15 +91,15 @@ Migrating these ensures your new DreamFactory instance contains all your origina
 
 ---
 
-### Step 3: Prepare the New Host Server
+### Step 3: Prepare the New DreamFactory Instance
 
-1. Set up a new server with a clean installation of your operating system (CentOS, Debian, Fedora, or Ubuntu).  
-2. Download and run the DreamFactory Automated Installer. Follow instructions in the [installation guide](../Installing-DreamFactory/installation.md).  
+1. Set up a new server with a clean installation of your operating system (Linux, Docker, Windows, etc.)
+2. Follow the corresponding DreamFactory installation instructions for your operating system found in the [install guide](/Installing%20DreamFactory/installation.md).  
 3. Complete the initial setup by creating an administrator account. This account will be replaced with imported data.
 
 ---
 
-### Step 4: Configure the New Server
+### Step 4: Additional Configuration
 
 #### MySQL Specific Configuration
 If your old instance used MySQL and you are upgrading versions (e.g., MySQL 5.6 to 5.7+), you may need to disable strict mode:  
@@ -108,20 +113,58 @@ Ensure all system dependencies, such as PHP, are up to date. DreamFactory suppor
 
 ### Step 5: Import the System Database Backup
 
-1. Transfer the `dump.sql` file to the new server.  
-2. Clear the default database schema:  
-   - `php artisan migrate:fresh`  
-   - `php artisan migrate:reset`
+1. **Transfer the `dump.sql` file to the new server.**
+2. **Clear the default database schema:**
+   ```bash
+   php artisan migrate:fresh
+   ```
+   ```bash
+   php artisan migrate:reset
+   ```
 
-3. Import the database backup:  
-   `mysql -u new_user -p new_database < dump.sql`
+3. **Import the database backup:**
+:::info[Import Method by Database Type]
+<Tabs>
+  <TabItem value="mysql" label="MySQL">
+    ```bash
+    mysql -u df_admin -p dreamfactory < ~/dump.sql
+    ```
+  </TabItem>
+  <TabItem value="sqlserver" label="MS SQL Server">    
+    ```bash
+    Use SSMS (SQL Server Management Studio) to import the database from the file.
+    ```
+  </TabItem>
+  <TabItem value="postgresql" label="PostgreSQL">
+    ```bash
+    psql -U df_admin -d dreamfactory < ~/dump.sql
+    ```
+  </TabItem>
+  <TabItem value="sqlite" label="SQLite">
+    ```bash
+    sqlite3 dreamfactory.db < ~/dump.sql
+    ```
+  </TabItem>
+</Tabs>
+:::
 
-4. Run database migrations to apply schema updates:  
-   `php artisan migrate --seed`
+4. **Run database migrations to apply schema updates:**
+   ```bash
+   php artisan migrate --seed
+   ```
 
-5. Clear caches to finalize the configuration:  
-   - `php artisan cache:clear`  
-   - `php artisan config:clear`
+5. **Replace the `APP_KEY` in the `.env` file:**
+   ```bash
+   APP_KEY=APP_KEY_FROM_OLD_INSTANCE
+   ```
+
+6. **Clear caches to finalize the configuration:**
+   ```bash
+   php artisan cache:clear
+   ```
+   ```bash
+   php artisan config:clear
+   ```
 
 ---
 
