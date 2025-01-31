@@ -1,108 +1,149 @@
 ---
 id: filtering
 title: Querying and Filtering Records in DreamFactory
+sidebar_position: 4
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Querying and Filtering Records in DreamFactory
 
-:::warning
-
-This page is under construction.
-
-:::
-
 ## Overview
-DreamFactory provides powerful filtering capabilities for database operations, allowing you to precisely query and manipulate your data through the REST API.
+DreamFactory provides powerful filtering capabilities for database operations, allowing you to precisely query and manipulate your data through the REST API. This guide will walk you through the basics and advanced features of filtering in DreamFactory.
 
-## Basic Endpoint Structure
-```bash
+## Basic Usage
+
+### Endpoint Structure
+```http
 GET https://{your-dreamfactory-url}/api/v2/{api_name}/_table/{table_name}?filter={filter_string}
 ```
 
-### URL Components
 | Component | Description | Example |
 |-----------|-------------|---------|
 | `api_name` | Name of your API service | `mysql`, `postgres` |
 | `table_name` | Database table to query | `customers`, `orders` |
 | `filter_string` | URL-encoded filter expression | `(status='active')` |
 
-## Filter Syntax
-
-### Logical Operators
-All logical conditions must be wrapped in parentheses. For example: 
-`(a=b) AND ((c=d) OR (e=f))` or `NOT((a=b) OR (c=d))`
-
-| Operator | Description | Example | URL Example |
-|----------|-------------|---------|-------------|
-| `AND` | Returns TRUE when both conditions are TRUE | `(first_name='John') AND (age>21)` | `?filter=(first_name='John') AND (age>21)` |
-| `OR` | Returns TRUE if either condition is TRUE | `(status='active') OR (status='pending')` | `?filter=(status='active') OR (status='pending')` |
-| `NOT` | Negates the following condition | `NOT(status='deleted')` | `?filter=NOT(status='deleted')` |
-
-### Comparison Operators
-
 :::note
 Your HTTP client will automatically handle URL encoding of special characters in the filter string.
 :::
 
-#### Basic Comparisons
-| Operator | Alternatives | Description | Example | URL Example |
-|----------|-------------|-------------|---------|-------------|
-| `=` | `EQ` | Equality | `status = 'active'` | `?filter=(status = 'active')` |
-| `!=` | `NE`, `<>` | Inequality | `status != 'deleted'` | `?filter=(status != 'deleted')` |
-| `>` | `GT` | Greater than | `age > 21` | `?filter=(age > 21)` |
-| `>=` | `GTE` | Greater than or equal | `price >= 100` | `?filter=(price >= 100)` |
-| `<` | `LT` | Less than | `quantity < 5` | `?filter=(quantity < 5)` |
-| `<=` | `LTE` | Less than or equal | `date <= '2024-01-01'` | `?filter=(date <= '2024-01-01')` |
+### Quick Examples
+```http
+# Basic filtering
+GET /api/v2/db/_table/users?filter=(status='active')
 
-#### Set Operations
-| Operator | Description | Example | URL Example |
-|----------|-------------|---------|-------------|
-| `IN` | Matches any value in a set | `status IN ('active','pending')` | `?filter=(status IN ('active','pending'))` |
-| `NOT IN` | Excludes values in a set | `category NOT IN ('archived','deleted')` | `?filter=(category NOT IN ('archived','deleted'))` |
+# Multiple conditions
+GET /api/v2/db/_table/orders?filter=(status='pending') AND (total>100)
 
-#### Pattern Matching
-| Operator | Description | Example | URL Example |
-|----------|-------------|---------|-------------|
-| `LIKE` | Generic pattern matching using `%` | `email LIKE '%@company.com'` | `?filter=(email LIKE '%@company.com')` |
-| `CONTAINS` | Contains string (v2.1.1+) | `description CONTAINS 'important'` | `?filter=(description CONTAINS 'important')` |
-| `STARTS WITH` | Begins with string (v2.1.1+) | `name STARTS WITH 'App'` | `?filter=(name STARTS WITH 'App')` |
-| `ENDS WITH` | Ends with string (v2.1.1+) | `file ENDS WITH '.pdf'` | `?filter=(file ENDS WITH '.pdf')` |
+# Pagination and sorting
+GET /api/v2/db/_table/products?limit=10&offset=0&order=name ASC
+```
 
-## Query Parameters
+## Filter Syntax
 
-### Field Selection
-| Parameter | Type | Description | Example |
-|-----------|------|-------------|---------|
-| `fields` | String/Array | Specify which fields to return | `?fields=id,name,status` |
-| `include_count` | Boolean | Include total record count in response | `?include_count=true` |
-| `include_schema` | Boolean | Include table schema in response | `?include_schema=true` |
+:::note
+DreamFactory uses SQL-like syntax for filtering. Ensure you are familiar with SQL operators and their usage in DreamFactory.
+:::
 
-### Pagination and Ordering
-| Parameter | Type | Description | Example |
-|-----------|------|-------------|---------|
-| `limit` | Integer | Maximum number of records to return | `?limit=10` |
-| `offset` | Integer | Number of records to skip | `?offset=20` |
-| `order` | String | Field to order results by (with direction) | `?order=name ASC` |
-| `group` | String | Field to group results by | `?group=category` |
+### Logical Operators
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `AND` | Both conditions must be true | `(status='active') AND (age>21)` |
+| `OR` | Either condition must be true | `(status='active') OR (status='pending')` |
+| `NOT` | Negates the condition | `NOT(status='deleted')` |
 
-### Batch Operations
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `continue` | Boolean | Continue processing batch even after failures |
-| `rollback` | Boolean | Rollback all changes if any operation fails |
+### Comparison Operators
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `=`, `!=` | Equality/Inequality | `(status = 'active')` |
+| `>`, `>=` | Greater than (or equal) | `(age > 21)` |
+| `<`, `<=` | Less than (or equal) | `(price < 100)` |
+| `IN` | Match any value in set | `(status IN ('active','pending'))` |
+| `LIKE` | Pattern matching | `(email LIKE '%@company.com')` |
+| `IS NULL` | Check for null values | `(phone IS NULL)` |
+| `BETWEEN` | Value in range | `(age BETWEEN (18,65))` |
+
+### String Operations
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `CONTAINS` | Contains string | `(description CONTAINS 'important')` |
+| `STARTS WITH` | Begins with string | `(name STARTS WITH 'App')` |
+| `ENDS WITH` | Ends with string | `(file ENDS WITH '.pdf')` |
+
+### Common Filter Examples
+```http
+# Name filters
+GET /api/v2/db/_table/contacts?filter=(first_name='John') AND (last_name='Smith')
+GET /api/v2/db/_table/contacts?filter=(first_name='John') OR (first_name='Jane')
+GET /api/v2/db/_table/contacts?filter=first_name!='John'
+
+# Pattern matching
+GET /api/v2/db/_table/contacts?filter=first_name like 'J%'
+GET /api/v2/db/_table/contacts?filter=email like '%@mycompany.com'
+
+# Numeric comparisons
+GET /api/v2/db/_table/users?filter=(age >= 30) AND (age < 40)
+
+# Social media handles
+GET /api/v2/db/_table/contacts?filter=(twitter like '%jon%') OR (skype like '%jon%')
+```
 
 ## Advanced Features
 
-### Using Parameters in Filters
-You can use replacement parameters in your filters for better security and reusability:
+### Field Selection and Metadata
+*Allows you to specify which fields to return in the response, reducing the amount of data transferred and improving performance. You can also include metadata such as record count and schema information.*
+```http
+# Select specific fields
+GET /api/v2/db/_table/users?fields=id,name,email
 
-```bash
-# Filter with parameter
-?filter=status=:status_param
+# Include record count
+GET /api/v2/db/_table/users?include_count=true
 
-# Request body
+# Include schema information
+GET /api/v2/db/_table/users?include_schema=true
+```
+
+### Pagination and Sorting
+*Allows you to control the number of records returned and the order in which they are displayed.*
+```http
+# Paginate results
+GET /api/v2/db/_table/users?limit=10&offset=20
+
+# Sort results
+GET /api/v2/db/_table/users?order=name ASC
+
+# Group results
+GET /api/v2/db/_table/users?group=category
+```
+
+### Related Record Filtering
+*Allows you to filter records based on values in related tables.*
+```http
+# Filter by related table
+GET /api/v2/db/_table/orders?filter=(customer.country='USA')
+
+# Filter with nested conditions
+GET /api/v2/db/_table/products?filter=(category.name CONTAINS 'Electronics')
+```
+
+### Aggregate Functions
+*Allows you to perform calculations on data, such as counting records or calculating averages, directly within the query.*
+```http
+# Count records by status
+GET /api/v2/db/_table/orders?group=status&fields=status,COUNT(*)
+
+# Calculate averages
+GET /api/v2/db/_table/products?fields=category,AVG(price)
+```
+
+### Parameter Replacement
+*Allows you to use placeholders for values, which are replaced with actual values at runtime.*
+
+```http
+GET /api/v2/db/_table/users?filter=status=:status_param
+
+# Request Body
 {
     "params": {
         ":status_param": "active"
@@ -110,45 +151,59 @@ You can use replacement parameters in your filters for better security and reusa
 }
 ```
 
-### Date and Time Handling
-DreamFactory supports consistent date/time formatting across different database types:
-
-| Type | Example Format | Configuration Key |
-|------|---------------|-------------------|
-| Time | `09:45:00` | `time_format` |
-| Date | `2003-01-16` | `date_format` |
-| DateTime | `2014-03-14 13:34:00` | `datetime_format` |
-| Timestamp | `2014-12-11T14:11:27Z` | `timestamp_format` |
-
-:::tip
-Date/time formats can be configured globally in your DreamFactory configuration.
+:::tip Security Best Practice
+Always use parameter replacement to prevent SQL injection attacks. This ensures that user input is safely handled.
 :::
 
-## Response Format
+### Batch Operations
+*Allows you to handle multiple records in a single call, with options to continue processing after failures or roll back all changes if any operation fails.*
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| `continue` | Continue processing after failures | `continue=true` |
+| `rollback` | Rollback all changes if any operation fails | `rollback=true` |
 
-### Standard Response
-```json
-{
-    "resource": [
-        {
-            "id": 352,
-            "name": "Example Record"
-        }
-    ]
-}
+### Record Identification
+```http
+# Get by single ID
+GET /api/v2/db/_table/users/123
+
+# Get by multiple IDs
+GET /api/v2/db/_table/users?ids=1,2,3
+
+# Get by custom ID field
+GET /api/v2/db/_table/users?id_field=email&ids=user@example.com
 ```
 
-### Response with Metadata
+## Best Practices
+
+1. **Use Parameters**: Enhance security with parameter replacement
+2. **Limit Results**: Always paginate large datasets
+3. **Select Fields**: Only request needed fields
+4. **URL Encoding**: Properly encode special characters
+5. **Error Handling**: Use `rollback=true` for critical operations
+6. **Test Incrementally**: Build complex filters step by step
+7. **Wrap Conditions**: Always wrap logical conditions in parentheses
+8. **Validate Schema**: Use `include_schema=true` to verify field names
+
+## Troubleshooting
+
+### Common Issues
+- Wrap all logical conditions in parentheses
+- Use proper quotes for string values
+- Verify field names with `include_schema=true`
+- Test complex filters incrementally
+
+### Response Format
 ```json
 {
     "resource": [
         {
-            "id": 352,
-            "name": "Example Record"
+            "id": 1,
+            "name": "Example"
         }
     ],
     "meta": {
-        "count": 8,
+        "count": 1,
         "schema": {
             "name": "table_name",
             "fields": [...]
@@ -157,58 +212,6 @@ Date/time formats can be configured globally in your DreamFactory configuration.
 }
 ```
 
-## Common Examples
-
-### Complex Filtering
-
-#### Multiple conditions
-
-```bash
-?filter=(status='active') AND (created_date>='2024-01-01')
-```
-
-#### Using IN clause
-
-```bash
-?filter=status IN ('active','pending')
-```
-
-#### Date filtering with parameters
-
-```bash
-?filter=created_date>=:start_date
-```
-### Pagination with Ordering
-
-#### Get second page of 10 records, sorted by name
-
-```bash
-?limit=10&offset=10&order=name ASC
-```
-
-#### Include total count
-
-```bash
-?limit=10&offset=0&include_count=true
-```
-
-## Best Practices
-
-1. **Use Parameters**: Always use parameter replacement for values in filters when possible
-2. **Limit Results**: Include `limit` and `offset` for large datasets
-3. **Select Fields**: Specify needed fields using `fields` parameter to reduce payload size
-4. **URL Encoding**: Ensure complex filters are properly URL encoded
-5. **Batch Operations**: Use `rollback=true` for critical batch operations
-
-## Troubleshooting
-
-### Common Issues
-- Ensure all logical conditions are wrapped in parentheses
-- Check that string values are properly quoted
-- Verify URL encoding for special characters
-- Confirm date formats match your configuration
-
-### Debugging Tips
-- Use `include_schema=true` to verify field names
-- Test complex filters in parts
-- Check response metadata for error details
+:::tip
+Date/time formats can be configured globally in your DreamFactory configuration. Detailed documentation is available [here](../DreamFactory%20Configuration/datetime).
+:::
