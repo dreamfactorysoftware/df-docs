@@ -88,9 +88,9 @@ Simply run the installer to install.
 
 ### PHP
 
-PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.1). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
+PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.3). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
 
-At the time of writing, the latest supported PHP version is 8.1.27. The 64-bit NTS version can be directly downloaded [here](https://windows.php.net/downloads/releases/php-8.1.27-nts-Win32-vs16-x64.zip).
+At the time of writing, the latest supported PHP version is 8.3.16. The 64-bit NTS version can be directly downloaded [here](https://windows.php.net/downloads/releases/php-8.3.16-nts-Win32-vs16-x64.zip).
 
 Just get the .zip downloaded. It is installed later in the process. 
 
@@ -121,9 +121,9 @@ Run **both** downloaded installers.
 
 For the drivers to be used, you also need the sqlsrv PHP extensions. Start by going to the releases page [here](https://github.com/microsoft/msphpsql/releases).
 
-Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the Windows-8.1.zip for PHP v8.1.
+Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the Windows_5.12.0RTW.zip for PHP v8.3.
 
-As of this writing, the latest release of the extension package can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows-8.1.zip).
+As of this writing, the latest release of the extension package can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows_5.12.0RTW.zip).
 
 ## Getting DreamFactory running
 
@@ -201,7 +201,7 @@ This is an optional step dependent on if you intend to use DreamFactory with SQL
 
 The v17 and v18 drivers should have been installed during the previous steps, if not, install them now. 
 
-Open the Windows-8.1.zip downloaded earlier, in the x64 folder there should be 4 .dll files. Copy/paste the **two** nts (Non Thread Safe) .dll into your php ext folder (`C:\php\ext\`)
+Open the Windows_5.12.0RTW.zip downloaded earlier, in the x64 folder there should be 4 .dll files. Copy/paste the **two** nts (Non Thread Safe) .dll into your php ext folder (`C:\php\ext\`)
 
 Then, rename both files removing the "_81_nts" at the end of the filename. The files are named:
 
@@ -216,18 +216,7 @@ Next, get the DreamFactory code by opening a command prompt, and running:
 
 `git clone https://github.com/dreamfactorysoftware/dreamfactory`
 
-This creates a `C:\inetpub\wwwroot\dreamfactory` folder on the server, refered to as the **DreamFactory installation folder** in this and other documentation. 
-
-:::warning
-At this time, the newest supported version of DreamFactory on Windows is v5.4.1
-Version 6+ is not currently supported so the following commands also need to be run:
-
-`cd C:\inetpub\wwwroot\dreamfactory`
-
-`git checkout 5.4.1`
-
-Once the new UI in v6 is made compatible with Windows, this notice will be removed and this checkout step will no longer be needed. 
-:::
+This creates a `C:\inetpub\wwwroot\dreamfactory` folder on the server, refered to as the **DreamFactory installation folder** in this and other documentation.
 
 ### Install DreamFactory dependencies
 
