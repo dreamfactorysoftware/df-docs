@@ -7,7 +7,9 @@ import TabItem from '@theme/TabItem';
 
 # Upgrading Your DreamFactory UI
 
-This guide walks through the process of upgrading the DreamFactory UI interface to the latest version. The UI upgrade process is separate from the core DreamFactory upgrade process and can be performed independently.
+This guide walks through the process of upgrading the DreamFactory UI interface to the latest version. The UI upgrade process is separate from the core DreamFactory upgrade process and can be performed independently. There are two ways to upgrade the UI:
+1. Manually installing the latest development release from the [DreamFactory UI GitHub repository](https://github.com/dreamfactorysoftware/df-admin-interface/releases) and then running the below script to install it.
+2. Using the automated script below to perform all of the below steps in one go.
 
 ## Prerequisites
 
@@ -18,7 +20,7 @@ Before beginning the upgrade process, ensure you have:
 - Appropriate system permissions
 - [Backup](/DreamFactory%20Upgrades%20and%20Migrations/migrating-dreamfactory#step-2-back-up-the-system-database) of your current installation (recommended)
 
-## Upgrade Process
+## Method 1: Manual Upgrade
 
 ### 1. Download the Latest UI Release
 ```bash
@@ -170,6 +172,39 @@ sudo systemctl restart php8.1-fpm
 :::note
 Your version of PHP may be different. If so, replace `php8.1-fpm` with the appropriate service name for your version of PHP.
 :::
+
+## Method 2: Automated Upgrade
+
+### 1. Navigate to the DreamFactory root directory
+:::info[Root Directory Location]
+<Tabs>
+  <TabItem value="linux" label="Linux">
+    ```bash
+    cd /opt/dreamfactory
+    ```
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    ```bash
+    docker exec -it {container_id} bash
+    ```
+  </TabItem>
+</Tabs>
+:::
+
+### 2. Download the Update Script
+```bash
+wget https://gist.githubusercontent.com/KonnorKurilla/169c85dbabca431d040d98d54e422619/raw/556472441a7a92c11e68d631a860b04a31f67564/df_ui_update.sh
+```
+
+### 3. Make the Script Executable
+```bash
+chmod +x ./df_ui_update.sh
+```
+
+### 4. Run the Update Script
+```bash
+sudo ./df_ui_update.sh
+```
 
 ## Verification
 
