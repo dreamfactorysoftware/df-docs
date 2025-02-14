@@ -231,7 +231,7 @@ Sometimes this command takes a while to run, if it feels hung, hit enter a coupl
 ### Build DreamFactory system database and root admin
 
 Once the composer install finishes, we can finalize the DreamFactory setup. In your command prompt, cd into the dreamfactory installation directory. Start by running: 
-`php artisan df:env`.
+`php artisan df:env --df_install=Windows`.
 
 This command defines the system database for the DreamFactory enviornment. For initial installation, it is recommended to start with option [0], Sqlite. If you run into problems during the installation, starting with sqlite eliminates database/networking issues from the troubleshooting process. This database can be changed at a later date, and any configurations you build in sqlite can be exported and imported into another instance later. 
 
