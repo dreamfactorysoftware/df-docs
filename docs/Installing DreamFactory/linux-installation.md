@@ -11,11 +11,11 @@ DreamFactory can be installed on most common Linux platforms using our automated
 DreamFactory currently supports the following flavors of Linux:
 
 - CentOS 7
-- RHEL 7/8
+- RHEL 7/8/9
 - Oracle Linux 7/8
 - Debian 10/11
 - Fedora 36/37
-- Ubuntu 20/22
+- Ubuntu 22/24
 
 ## Automated installer
 
