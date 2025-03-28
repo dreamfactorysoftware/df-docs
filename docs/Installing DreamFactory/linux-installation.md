@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Linux installation
 
-DreamFactory can be installed on most common Linux platforms using our automated installer. The installer is designed to deploy DreamFactory as the primary application on the server (the site is publised on port 80 of the local host).  This guide provides instructions for downloading and running the installer on a new Linux server. For custom installations or to install manually, follow the [Manual Installation](manual-installation.md) guide.
+DreamFactory can be installed on most common Linux platforms using our automated installer. The installer is designed to deploy DreamFactory as the primary application on the server (the site is published on port 80 of the local host).  This guide provides instructions for downloading and running the installer on a new Linux server.
 
 ## Supported operating Systems
 
