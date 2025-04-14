@@ -161,15 +161,15 @@ $u = \DreamFactory\Core\Models\User::where('email', '<known-admin-email>')->firs
 $u->password = '<new-16-character-password>';
 $u->save();
 ```
-**5. Exit the console:**
-```php
-exit
-```
-
+:::info
 You can confirm the password has been encrypted (hashed) by referencing the `$u` object's `password` attribute after setting it:
 
 ```php
 $u->password
 ```
-
 This will display the hashed version of your password, confirming the encryption is working.
+:::
+**5. Exit the console:**
+```php
+exit
+```
