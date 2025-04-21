@@ -368,7 +368,7 @@ For details on adding SSL, DreamFactory recommends using [certbot](https://certb
 The process of installing Oracle drivers is a more manual process than with our Linux installers. To begin you will need to download 3 things:
 - The Oracle "Basic" Instant Client package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-basic-windows.x64-23.7.0.25.01.zip)
 - The Oracle “SDK” Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
-- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.1 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you will most likely be using the non thread safe version of PHP.
+- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
 
 ![Web Server Role selection](/img/windows-install/PeclDLLPage.png)
 - `Note you will want to click on the DLL button under downloads on the Pecl site for windows .dll files`
@@ -380,11 +380,11 @@ The process of installing Oracle drivers is a more manual process than with our 
 
 - Next we will extract the "SDK" Instant Client to the same folder i.e. `C:\oracledrivers`. We want the SDK package to extract into the same subdirectory as in the previous step, not a new folder. Your driver folder should look like this:
 
-![Web Server Role selection](/img/windows-install/instant-client-folder.png)
+![Instant Client folder](/img/windows-install/instant-client-folder.png)
 
 - and the subdirectory should look like:
 
-![Web Server Role selection](/img/windows-install/instant-client-subdirectory.png)
+![Instant Client subdirectory](/img/windows-install/instant-client-subdirectory.png)
 
 - Note that there is now an `SDK` folder inside.
 
@@ -392,8 +392,8 @@ Next, we need to add the full path of the Instant Client to the environment vari
 
 1. Under System Variables, create OCI_LIB64 if it does not already exist. Set the value of OCI_LIB64 to the full path of the location of Instant Client.
 
-![Web Server Role selection](/img/windows-install/env-variable-path.png)
-![Web Server Role selection](/img/windows-install/oci-env-path.png)
+![Environment variable path](/img/windows-install/env-variable-path.png)
+![OCI_LIB64 path](/img/windows-install/oci-env-path.png)
 
 2.Under System Variables, edit PATH to include the same (C:\oracledrivers\instantclient_23_7)
 
@@ -403,7 +403,7 @@ Next, we need to add the full path of the Instant Client to the environment vari
 
 The fastCGI path is located in the IIS Manager > Your Server > fastCGI Settings > Full Path > Edit > 3 dots next to collections
 
-![Web Server Role selection](/img/windows-install/fastcgi-path.png)
+![FastCGI path](/img/windows-install/fastcgi-path.png)
 
-Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (It will be named along the lines of php_oci8-3.2.1-8.1-nts-vc15-x64) and move the php_oci8.dll file to the ext directory where PHP is located on your system (e.g PHP\v8.1\ext). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the server (use php -m to make sure that the oci8 extension is installed). Congratulations!
+Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (It will be named along the lines of php_oci8-3.2.1-8.3-nts-vc15-x64) and move the php_oci8.dll file to the ext directory where PHP is located on your system (e.g PHP\v8.3\ext). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
 
