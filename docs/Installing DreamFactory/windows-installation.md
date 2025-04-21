@@ -363,3 +363,6 @@ After completing the setup, you can navigate to the server's IP address or hostn
 ## Adding SSL
 
 For details on adding SSL, DreamFactory recommends using [certbot](https://certbot.eff.org/instructions?ws=other&os=windows). Follow the instructions from the provided link to help you through the process. 
+
+## Installing Oracle Driver
+
