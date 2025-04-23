@@ -1,6 +1,6 @@
 ---
 id: filtering
-title: Querying and Filtering Records in DreamFactory
+title: Querying and Filtering Records
 sidebar_position: 4
 ---
 import Tabs from '@theme/Tabs';
