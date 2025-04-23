@@ -1,6 +1,6 @@
 ---
-id: security-faq
 title: Security FAQ
+id: security-faq
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

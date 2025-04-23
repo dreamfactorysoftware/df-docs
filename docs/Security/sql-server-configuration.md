@@ -1,7 +1,7 @@
 ---
-id: sqlsrv-config
-title: Configuring Windows Authentication for SQL Server
 sidebar_position: 5
+title: Configuring Windows Authentication for SQL Server
+id: sqlsrv-config
 ---
 
 # Configuring Windows Authentication for SQL Server

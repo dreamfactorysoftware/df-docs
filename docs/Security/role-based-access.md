@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: Role Based Access
+id: role-based-access
 ---
 
 # Role Based Access
