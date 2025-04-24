@@ -61,8 +61,8 @@ Always use the Non-Thread-Safe (NTS) version of PHP with DreamFactory on Windows
      ```
 
 2. Enable required extensions in `php.ini`:
-   - See [PHP Extensions Guide](/Installing%20DreamFactory/windows-installation#php-extensions) for the complete list
-   - Ensure SQL Server extensions are properly configured if using [SQL Server](/Installing%20DreamFactory/windows-installation#installing-sql-server-drivers)
+   - See [PHP Extensions Guide](/getting-started/installing-dreamfactory/windows-installation#installing-php) for the complete list
+   - Ensure SQL Server extensions are properly configured if using [SQL Server](/getting-started/installing-dreamfactory/windows-installation#installing-sql-server-drivers-optional)
 
 ### 5. Configure IIS
 
@@ -86,7 +86,7 @@ Always use the Non-Thread-Safe (NTS) version of PHP with DreamFactory on Windows
 
 2. Test DreamFactory:
    - Access your DreamFactory instance
-   - Check the [System Information](/Administering%20DreamFactory/system-info) page
+   - Check the [System Information](/system-settings/config/system-info) page
    - Verify all services are functioning
 
 ## Troubleshooting
@@ -98,7 +98,7 @@ If you encounter issues:
    - Verify architecture matches (x64/x86)
 
 2. **Verify Extensions**:
-   - Review [required extensions](/Installing%20DreamFactory/windows-installation#php-extensions)
+   - Review [required extensions](/getting-started/installing-dreamfactory/windows-installation#installing-php)
    - Check extension paths in `php.ini`
 
 3. **Review Logs**:
@@ -106,12 +106,11 @@ If you encounter issues:
    - Review IIS logs
    - Examine DreamFactory logs
 
-For additional help, see our [Troubleshooting Guide](/Troubleshooting/common-issues) or contact [DreamFactory Support](https://www.dreamfactory.com/support).
+For additional help, contact [DreamFactory Support](https://www.dreamfactory.com/support).
 
 ## Related Documentation
 
-- [Windows Installation Guide](/Installing%20DreamFactory/windows-installation)
-- [PHP Requirements](/Installing%20DreamFactory/requirements#php-requirements)
-- [Upgrading to PHP 8.1](/DreamFactory%20Upgrades%20and%20Migrations/upgrading-to-php-8_1)
-- [System Configuration](/Configuring%20DreamFactory/config-options)
+- [Windows Installation Guide](/getting-started/installing-dreamfactory/windows-installation)
+- [Upgrading to PHP 8.1](/upgrades-and-migrations/upgrading-to-php-8.1)
+- [System Configuration](/getting-started/dreamfactory-configuration/basic-configuration)
 

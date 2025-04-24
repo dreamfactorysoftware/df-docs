@@ -494,7 +494,7 @@ CONVERT(varchar, DecryptByKey(<encryptedColumn>)) AS 'decryptedColumn'
 FROM SalesLT.Address;
 ```
 
-Now, we cannot call our table endpoint (e.g `/api/v2/<serviceName>/_table/<tableWithEncryptedField>`) and add this logic with DreamFactory, however we could put the same logic in a stored procedure, and have DreamFactory call that to return our decrypted result. As long as the SQLServer user has permissions to the certificate used for encryption, they are able to decrypt the field. You could then use [roles](../using-the-system-apis/#managing-roles) to make sure only certain users have access to this stored procedure.
+Now, we cannot call our table endpoint (e.g `/api/v2/<serviceName>/_table/<tableWithEncryptedField>`) and add this logic with DreamFactory, however we could put the same logic in a stored procedure, and have DreamFactory call that to return our decrypted result. As long as the SQLServer user has permissions to the certificate used for encryption, they are able to decrypt the field. You could then use [roles](/system-settings/dreamfactory-platform-apis/) to make sure only certain users have access to this stored procedure.
 
 The stored procedure looks something like this: 
 ```

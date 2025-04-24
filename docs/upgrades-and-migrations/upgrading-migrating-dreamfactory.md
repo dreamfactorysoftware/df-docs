@@ -137,7 +137,7 @@ Migrating these ensures your new DreamFactory instance contains all your origina
 ### Step 3: Prepare the New DreamFactory Instance
 
 1. Set up a new server with a clean installation of your operating system (Linux, Docker, Windows, etc.)
-2. Follow the corresponding DreamFactory installation instructions for your operating system found in the [install guide](/Installing%20DreamFactory/installation.md).  
+2. Follow the corresponding DreamFactory installation instructions for your operating system found in the [install guide](/getting-started/installing-dreamfactory/).  
 3. Complete the initial setup by creating an administrator account. This account will be replaced with imported data.
 
 ---

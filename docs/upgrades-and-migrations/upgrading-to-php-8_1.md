@@ -13,7 +13,7 @@ Estimated Upgrade Time: 1.5 Hours
 DreamFactory is committed to making the shift from PHP 7.2 to PHP 8.1 as simple as possible. Some services have undergone significant changes as a result of third-party API providers. We have compiled a list of all services that have experienced noticeable changes, which you can find below. While it's not necessary to update all of these services, if you are using any of them, we recommend that you review the relevant section to expedite the development of your dream API.
 
 :::warning
-This article assumes that you are not using our automatic installers. However, if you have a different operating system or prefer not to handle the installation process manually, you can refer to the relevant guide [here](../installing-and-configuring-dreamfactory/#using-the-dreamfactory-installer). Note that these steps are intended for those using the [_Supported Ubuntu Release_](https://wiki.ubuntu.com/Releases).
+This article assumes that you are not using our automatic installers. However, if you have a different operating system or prefer not to handle the installation process manually, you can refer to the relevant guide [here](/getting-started/installing-dreamfactory/). Note that these steps are intended for those using the [_Supported Ubuntu Release_](https://wiki.ubuntu.com/Releases).
 :::
 
 ## Switch to PHP 8.1
@@ -409,10 +409,6 @@ sudo phpenmod -v 8.1 -s ALL oci8
 
 ### SAP SQL Anywhere
 **Likelihood Of Impact: High**
-
-:::tip
-We have an [article](http://localhost:1313/docs/installing-and-configuring-dreamfactory/#installing-the-pdo-and-pdo_dblib-extensions) on installing the necessary dependencies for SQL Anywhere on CentOS.
-:::
 
 To complete this process, install the Sybase module from PPA. See the [how to add PPA to your Apt repositories](#installing-the-php-extension) section. This package provides `php8.1-pdo-dblib`, which is what is needed.
 

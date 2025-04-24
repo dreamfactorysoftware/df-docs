@@ -63,7 +63,7 @@ During the installation, you must point DreamFactory's installation to a system 
 
 `php artisan df:env`
 
-The configuration can also be changed manually by editing `/opt/dreamfactory/.env`. For more information, refer to our [DreamFactory Basic Configuration](../DreamFactory%20Configuration/configuration) documentation.
+The configuration can also be changed manually by editing `/opt/dreamfactory/.env`. For more information, refer to our [DreamFactory Basic Configuration](/getting-started/dreamfactory-configuration/basic-configuration) documentation.
 
 ### Supported system databases
 
