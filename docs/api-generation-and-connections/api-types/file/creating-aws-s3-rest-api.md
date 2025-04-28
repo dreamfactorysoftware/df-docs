@@ -17,24 +17,21 @@ Further, because the API is part of the DreamFactory API management ecosystem, y
 
 ## Generating the AWS S3 API and Companion Documentation
 
-To generate your S3 API, log into DreamFactory and click on the `Services` tab, then click the `Create` link located on the left side of the page. Click on the `Select Service Type` dropdown, navigate to the `File` category, and select `AWS S3`:
+To generate an AWS S3 REST API, log in to your DreamFactory instance using an administrator account and select the **API Generation & Connections** tab. Set your API Type to **File**, and then click the purple plus button to establish a new connection:
 
-[SCREENSHOT: Creating a DreamFactory AWS S3 API]
+![file api creation](/img/api-generation-and-connections/api-types/file/creating-aws-s3-rest-api/file-api-creation.png)
+
+Numerous file storage methods such as SFTP, Azure Blob, Rackspace, and more are available. For this tutorial, search for and select `AWS S3`:
+
+![aws s3 api selection](/img/api-generation-and-connections/api-types/file/creating-aws-s3-rest-api/aws-s3-api-selection.png)
 
 You'll be prompted to supply an API name, label, and description. Keep in mind the name must be lowercase and alphanumeric, as it will be used as the namespace within your generated API URI structure. The label and description are used for reference purposes within the administration console so you're free to title these as you please:
 
-[SCREENSHOT: AWS S3 API Info Screen]
+![aws s3 details](/img/api-generation-and-connections/api-types/file/creating-aws-s3-rest-api/aws-s3-details.png)
 
-Next, click the `Config` tab. There you'll supply the AWS S3 bucket connection credentials. There are however only 3 required fields:
+Next, you'll scroll down to `Advanced Options`. There you'll supply the AWS S3 bucket connection credentials.
 
-* **Access Key ID**: An AWS account root or IAM access key.
-* **Secret Access Key**: An AWS account root or IAM secret key.
-* **Region**: Select the region to be accessed by this service connection.
-* **Container**: Enter a Container (root directory) for your storage service. It will be created if it does not exist already.
-
-[SCREENSHOT: AWS S3 API Config Screen]
-
-After saving your changes, head over to the `API Docs` tab to review the generated documentation. You'll be presented with a list of generated endpoints. The operations listed for an SFTP connector are the same for the AWS S3 Container as well.
+![aws s3 config](/img/api-generation-and-connections/api-types/file/creating-aws-s3-rest-api/aws-s3-config.png)
 
 ## Downloading Files
 
@@ -46,8 +43,8 @@ https://abhii.apps.dreamfactory.com/api/v2/dreamfactorys3/DreamFactoryExtends&En
 
 If you're using a tool such as Insomnia, you can view many file types within the response preview:
 
-[SCREENSHOT: Downloading a File from a DreamFactory S3 API]
+![aws s3 download file](/img/api-generation-and-connections/api-types/file/creating-aws-s3-rest-api/aws-s3-download-file.png)
 
 Snapshot of the file on S3:
 
-[SCREENSHOT: AWS S3 Dashboard] 
+![aws s3 dashboard](/img/api-generation-and-connections/api-types/file/creating-aws-s3-rest-api/aws-s3-dashboard.png) 
