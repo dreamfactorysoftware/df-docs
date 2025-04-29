@@ -1,5 +1,4 @@
 ---
-draft: true
 sidebar_position: 1
 title: Creating an SFTP REST API
 id: creating-an-sftp-rest-api

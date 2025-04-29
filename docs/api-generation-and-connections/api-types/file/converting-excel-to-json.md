@@ -1,5 +1,4 @@
 ---
-draft: true
 sidebar_position: 3
 title: Converting Excel to a JSON Response
 id: converting-excel-to-json

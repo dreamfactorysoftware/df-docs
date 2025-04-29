@@ -1,5 +1,4 @@
 ---
-draft: true
 sidebar_position: 2
 title: Creating an AWS S3 REST API
 id: creating-an-aws-s3-rest-api

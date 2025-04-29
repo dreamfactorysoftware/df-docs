@@ -1,5 +1,4 @@
 ---
-draft: true
 sidebar_position: 1
 title: File System APIs
 id: file-system-apis
