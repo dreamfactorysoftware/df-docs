@@ -4,6 +4,8 @@ title: CORS and SSL
 id: cors-and-ssl
 draft: true
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # CORS and SSL
 
@@ -49,14 +51,27 @@ Certbot is an open-source utility that simplifies the process of obtaining and r
 
 ### Prerequisites
 
+<Tabs groupId="os-tabs">
+<TabItem value="ubuntu-debian" label="Ubuntu & Debian">
 Before installing Certbot, ensure you have:
 
-1. A server running Ubuntu
+1. A server running Ubuntu or Debian
 2. A registered domain name with DNS records pointing to your server's IP address
-3. NGINX web server installed and configured for your domain (DreamFactory installation typically handles this automatically)
+3. Nginx or Apache web server installed and configured for your domain (DreamFactory installation typically handles this automatically)
+</TabItem>
+<TabItem value="rhel-centos-fedora" label="RHEL-CentOS & Fedora">
+Before installing Certbot, ensure you have:
 
-### Configuring Firewall Rules with UFW
+1. A server running Red Hat Enterprise Linux, CentOS, or Fedora
+2. A registered domain name with DNS records pointing to your server's IP address
+3. Nginx or Apache web server installed and configured for your domain (DreamFactory installation typically handles this automatically)
+</TabItem>
+</Tabs>
 
+### Configuring Firewall Rules
+
+<Tabs groupId="os-tabs">
+<TabItem value="ubuntu-debian" label="Ubuntu & Debian">
 You can skip this section if you are using a different firewall, have already configured your firewall rules, or do not wish to use any firewall.
 
 **1. If UFW is not installed, install it now using apt or apt-get.**
@@ -85,9 +100,45 @@ sudo ufw status
 ```
 
 This should return a status of active and output the firewall rules that you just added.
+</TabItem>
+<TabItem value="rhel-centos-fedora" label="RHEL-CentOS & Fedora">
+You can skip this section if you are using a different firewall, have already configured your firewall rules, or do not wish to use any firewall.
+
+**1. If Firewalld is not installed, install it now using `dnf`.**
+```bash
+sudo dnf install firewalld
+```
+
+**2. Start firewalld and enable it to automatically start on boot.**
+```bash
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+```
+
+**3. Add firewall rules to allow ssh (port 22) connections as well as http (port 80) and https (port 443) traffic.**
+```bash
+sudo firewall-cmd --zone=public --permanent --add-service=ssh
+sudo firewall-cmd --zone=public --permanent --add-service=http
+sudo firewall-cmd --zone=public --permanent --add-service=https
+```
+If any of these services are already enabled, you may get a warning notice that you can safely ignore. Your server may require additional rules depending on which applications you're running (such as mail servers or database servers).
+
+**4. Reload firewalld to make these rules take effect.**
+```bash
+sudo firewall-cmd --reload
+```
+
+**5. Verify that the firewall rules have been properly configured.**
+```bash
+sudo firewall-cmd --zone=public --permanent --list-services
+```
+</TabItem>
+</Tabs>
 
 ### Installing Certbot
 
+<Tabs groupId="os-tabs">
+<TabItem value="ubuntu-debian" label="Ubuntu & Debian">
 [Snap](https://snapcraft.io/about) is a package manager developed by Canonical (creators of Ubuntu). Software is packaged as a snap (self-contained application and dependencies) and the snapd tool is used to manage these packages. Since certbot is packaged as a snap, we'll need to install snapd before installing certbot.
 
 **1. If snapd is not installed, install it now.**
@@ -116,22 +167,74 @@ sudo snap install --classic certbot
 ```bash
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 ```
+</TabItem>
+<TabItem value="rhel-centos-fedora" label="RHEL-CentOS & Fedora">
+[Snap](https://snapcraft.io/about) is a package manager developed by Canonical (creators of Ubuntu). Software is packaged as a snap (self-contained application and dependencies) and the snapd tool is used to manage these packages. Since certbot is packaged as a snap, we'll need to install snapd before installing certbot.
+
+**1. Add the EPEL repository.**
+```bash
+sudo dnf install epel-release
+sudo dnf upgrade
+```
+
+**2. If snapd is not installed, install it now.**
+```bash
+sudo dnf install snapd
+```
+
+**3. Enable the main snap communication socket.**
+```bash
+sudo systemctl enable --now snapd.socket
+```
+
+**4. Configure a symbolic link**
+```bash
+sudo ln -s /var/lib/snapd/snap /snap
+```
+:::important
+To use the `snap` command, log out of the session and log back in.
+:::
+
+**5. Remove any previously installed certbot packages to avoid conflicts with the new Snap package.**
+```bash
+sudo dnf remove certbot
+```
+
+**6. Use Snap to install Certbot.**
+```bash
+sudo snap install --classic certbot
+```
+
+**7. Configure a symbolic link to the Certbot directory using the `ln` command.**
+```bash
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+</TabItem>
+</Tabs>
 
 ### Requesting a TLS/SSL Certificate Using Certbot
 
+<Tabs groupId="os-tabs">
+<TabItem value="ubuntu-debian" label="Ubuntu & Debian">
 During the certificate granting process, Certbot asks a series of questions about the domain so it can properly request the certificate. You must agree to the terms of service and provide a valid administrative email address.
 
-**1. Run Certbot to start the certificate request.** When Certbot runs, it requests and installs certificate file along with a private key file. When used with the NGINX plugin (`--nginx`), Certbot also automatically edits the configuration files for NGINX, which dramatically simplifies configuring HTTPS for your web server.
+**1. Run Certbot to start the certificate request.** When Certbot runs, it requests and installs certificate file along with a private key file. When used with the web server plugin, Certbot also automatically edits the configuration files for your web server, which dramatically simplifies configuring HTTPS.
 
-- **Request a certificate and automatically configure it on NGINX (recommended):**
+- **Request a certificate and automatically configure it on Nginx (recommended):**
     ```bash
     sudo certbot --nginx
     ```
-- **Request a certificate without configuring NGINX:**
+- **Request a certificate and automatically configure it on Apache:**
     ```bash
-    sudo certbot certonly --nginx
+    sudo certbot --apache
     ```
-    To request the certificate without relying on your NGINX installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
+- **Request a certificate without configuring your web server:**
+    ```bash
+    sudo certbot certonly --nginx  # For Nginx
+    # or
+    sudo certbot certonly --apache  # For Apache
+    ```
+    To request the certificate without relying on your web server installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
 
 **2. Follow the prompts to complete the certificate request:**
    - Enter an email address for urgent notices
@@ -140,9 +243,42 @@ During the certificate granting process, Certbot asks a series of questions abou
    - Enter domain name(s) for the certificate (e.g., `example.com, www.example.com`)
 
 If the operation is successful, Certbot confirms the certificates are enabled and displays information about the certificate locations and expiration date.
+</TabItem>
+<TabItem value="rhel-centos-fedora" label="RHEL-CentOS & Fedora">
+During the certificate granting process, Certbot asks a series of questions about the domain so it can properly request the certificate. You must agree to the terms of service and provide a valid administrative email address.
+
+**1. Run Certbot to start the certificate request.** When Certbot runs, it requests and installs certificate file along with a private key file. When used with the web server plugin, Certbot also automatically edits the configuration files for your web server, which dramatically simplifies configuring HTTPS.
+
+- **Request a certificate and automatically configure it on Nginx (recommended):**
+    ```bash
+    sudo certbot --nginx
+    ```
+- **Request a certificate and automatically configure it on Apache:**
+    ```bash
+    sudo certbot --apache
+    ```
+- **Request a certificate without configuring your web server:**
+    ```bash
+    sudo certbot certonly --nginx  # For Nginx
+    # or
+    sudo certbot certonly --apache  # For Apache
+    ```
+    To request the certificate without relying on your web server installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
+
+**2. Follow the prompts to complete the certificate request:**
+   - Enter an email address for urgent notices
+   - Accept the terms of service
+   - Optionally subscribe to the mailing list
+   - Enter domain name(s) for the certificate (e.g., `example.com, www.example.com`)
+
+If the operation is successful, Certbot confirms the certificates are enabled and displays information about the certificate locations and expiration date.
+</TabItem>
+</Tabs>
 
 ### Automating Certificate Renewal
 
+<Tabs groupId="os-tabs">
+<TabItem value="ubuntu-debian" label="Ubuntu & Debian">
 Let's Encrypt certificates are valid for 90 days. Certbot automatically sets up a renewal process, but you can test it with:
 
 ```bash
@@ -158,6 +294,25 @@ sudo certbot renew
 :::tip
 Certbot does not renew certificates unless they are scheduled to expire soon. Avoid using the `--force-renewal` flag as it could exceed Let's Encrypt's rate limits.
 :::
+</TabItem>
+<TabItem value="rhel-centos-fedora" label="RHEL-CentOS & Fedora">
+Let's Encrypt certificates are valid for 90 days. Certbot automatically sets up a renewal process, but you can test it with:
+
+```bash
+sudo certbot renew --dry-run
+```
+
+To manually renew all certificates:
+
+```bash
+sudo certbot renew
+```
+
+:::tip
+Certbot does not renew certificates unless they are scheduled to expire soon. Avoid using the `--force-renewal` flag as it could exceed Let's Encrypt's rate limits.
+:::
+</TabItem>
+</Tabs>
 
 ### Troubleshooting SSL Issues
 
