@@ -2,7 +2,6 @@
 sidebar_position: 2
 title: CORS and SSL
 id: cors-and-ssl
-draft: true
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
