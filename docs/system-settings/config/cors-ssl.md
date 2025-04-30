@@ -220,21 +220,36 @@ During the certificate granting process, Certbot asks a series of questions abou
 
 **1. Run Certbot to start the certificate request.** When Certbot runs, it requests and installs certificate file along with a private key file. When used with the web server plugin, Certbot also automatically edits the configuration files for your web server, which dramatically simplifies configuring HTTPS.
 
-- **Request a certificate and automatically configure it on Nginx (recommended):**
-    ```bash
-    sudo certbot --nginx
-    ```
-- **Request a certificate and automatically configure it on Apache:**
-    ```bash
-    sudo certbot --apache
-    ```
-- **Request a certificate without configuring your web server:**
-    ```bash
-    sudo certbot certonly --nginx  # For Nginx
-    # or
-    sudo certbot certonly --apache  # For Apache
-    ```
-    To request the certificate without relying on your web server installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
+:::info[Certbot command by Webserver]
+<Tabs groupId="webserver-tabs">
+<TabItem value="nginx" label="Nginx">
+
+**Request a certificate and automatically configure it (recommended)**
+```bash
+sudo certbot --nginx
+```
+
+**Request a certificate without configuring your web server:**
+```bash
+sudo certbot certonly --nginx
+```
+</TabItem>
+<TabItem value="apache" label="Apache">
+
+**Request a certificate and automatically configure it (recommended)**
+```bash
+sudo certbot --apache
+```
+
+**Request a certificate without configuring your web server:**
+```bash
+sudo certbot certonly --apache
+```
+</TabItem>
+</Tabs>
+:::
+
+To request the certificate without relying on your web server installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
 
 **2. Follow the prompts to complete the certificate request:**
    - Enter an email address for urgent notices
@@ -249,21 +264,35 @@ During the certificate granting process, Certbot asks a series of questions abou
 
 **1. Run Certbot to start the certificate request.** When Certbot runs, it requests and installs certificate file along with a private key file. When used with the web server plugin, Certbot also automatically edits the configuration files for your web server, which dramatically simplifies configuring HTTPS.
 
-- **Request a certificate and automatically configure it on Nginx (recommended):**
-    ```bash
-    sudo certbot --nginx
-    ```
-- **Request a certificate and automatically configure it on Apache:**
-    ```bash
-    sudo certbot --apache
-    ```
-- **Request a certificate without configuring your web server:**
-    ```bash
-    sudo certbot certonly --nginx  # For Nginx
-    # or
-    sudo certbot certonly --apache  # For Apache
-    ```
-    To request the certificate without relying on your web server installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
+:::info[Certbot command by Webserver]
+<Tabs groupId="webserver-tabs">
+<TabItem value="nginx" label="Nginx">
+
+**Request a certificate and automatically configure it (recommended)**
+```bash
+sudo certbot --nginx
+```
+
+**Request a certificate without configuring your web server:**
+```bash
+sudo certbot certonly --nginx
+```
+</TabItem>
+<TabItem value="apache" label="Apache">
+
+**Request a certificate and automatically configure it (recommended)**
+```bash
+sudo certbot --apache
+```
+
+**Request a certificate without configuring your web server:**
+```bash
+sudo certbot certonly --apache
+```
+</TabItem>
+</Tabs>
+:::
+To request the certificate without relying on your web server installation, you can instead use the [standalone plugin](https://eff-certbot.readthedocs.io/en/latest/using.html#standalone) (--standalone).
 
 **2. Follow the prompts to complete the certificate request:**
    - Enter an email address for urgent notices
