@@ -29,7 +29,7 @@ Follow these steps to execute the script on your Linux machine:
     
     `wget https://github.com/dreamfactorysoftware/dreamfactory/raw/master/installers/dfsetup.run`
 
-2. Make the installer executeable:
+2. Make the installer executable:
 
     `chmod +x dfsetup.run`
 

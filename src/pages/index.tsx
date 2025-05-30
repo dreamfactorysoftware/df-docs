@@ -18,13 +18,13 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link className="button button--secondary button--lg" to="/introduction">
-            Get Started
+            Introduction
           </Link>
           <Link
             className="button button--secondary button--lg"
             to="https://github.com/dreamfactorysoftware/dreamfactory"
           >
-            Code Repository
+            GitHub
           </Link>
         </div>
       </div>

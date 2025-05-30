@@ -6,7 +6,7 @@ id: installing-dreamfactory
 
 # Installing DreamFactory
 
-Welcome to the installation guide for DreamFactory! This section focuses on the inital installation of DreamFactory on our supported platforms.
+Welcome to the installation guide for DreamFactory! This section focuses on the initial installation of DreamFactory on our supported platforms.
 
 DreamFactory is a powerful open-source REST API platform that allows you to quickly build and deploy secure and scalable applications. Whether you are running Linux, Windows, or prefer using Docker, we've got you covered. 
 
