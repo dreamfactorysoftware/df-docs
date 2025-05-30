@@ -105,7 +105,7 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 ```
 
 ```bash
-php composer-setup.php --install-dir=~/bin --filename=composer
+php composer-setup.php --install-dir=/home/<youruserhere>/bin --filename=composer
 ```
 
 After installing Composer, restart your terminal or log out and back in to ensure the changes take effect.
@@ -144,7 +144,7 @@ sudo apt-get install mariadb-server -y
     ```sql
     FLUSH PRIVILEGES;
     ```
-The user you create for the dreamfactory DB will need to be used when setting up dreamfactory, the default is dfadmin:dfadmin
+The user you create for the DreamFactory DB will need to be used when setting up DreamFactory, the default is dfadmin:dfadmin
 
 ## Installing DreamFactory
 
@@ -264,7 +264,7 @@ server {
         deny all;
     }
 
-    #By default we will limit login calls here using the limit_req_zone set above. The below will allow 1 per second over
+    #By default we will limit login calls here using the limit_req_zone set above. The below will allow 1 per second over a
     # 5 seconds (so 5 in 5 seconds)from a single IP  before returning a 429 too many requests. Adjust as needed.
     location /api/v2/user/session {
         try_files $uri $uri/ /index.php?$args;
@@ -286,4 +286,4 @@ sudo systemctl restart nginx php8.3-fpm.service
 
 ## Access your new DreamFactory instance
 
-After the services are restarted your web server should be ready to access. Go ahead and in your preffered browser type in the ip address of your Raspberry Pi and you should see the login page of the DreamFactory Web UI. To find your ip address on Raspberry Pi easily type in the command line ```hostname -I```
+After the services are restarted your web server should be ready to access. Go ahead and in your preferred browser type in the ip address of your Raspberry Pi and you should see the login page of the DreamFactory Web UI. To find your ip address on Raspberry Pi easily type in the command line ```hostname -I```

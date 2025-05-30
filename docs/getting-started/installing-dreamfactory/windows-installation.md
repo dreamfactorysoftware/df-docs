@@ -52,7 +52,7 @@ These are the web server roles DreamFactory recommends selecting:
 
 ## Downloads
 
-There are a few installation files to downloade and, in some cases, installed. This section covers the downloads needed before starting the actual installation and configuration of the server. Getting all of these files on the server ahead of time ensures that the rest of the installation runs smoothly.
+There are a few installation files to download and, in some cases, installed. This section covers the downloads needed before starting the actual installation and configuration of the server. Getting all of these files on the server ahead of time ensures that the rest of the installation runs smoothly.
 
 ### DreamFactory specific files
 
@@ -185,7 +185,7 @@ You can manually add PHP to your enviornment variable path, however this is done
 
 To start, run the composer installer you downloaded earlier. 
 
-You can select **Next** through most of the installtion. When asked to browse to your command line/CLI PHP, naviagate to: `C:\php\php.exe`. Then check the **Add to path** option. Click **Next** and wait. 
+You can select **Next** through most of the installation. When asked to browse to your command line/CLI PHP, navigate to: `C:\php\php.exe`. Then check the **Add to path** option. Click **Next** and wait. 
 
 :::info
 This is a great time to test both the PHP and Composer installations, open a new commmand prompt and run:
@@ -235,7 +235,7 @@ Sometimes this command takes a while to run, if it feels hung, hit enter a coupl
 Once the composer install finishes, we can finalize the DreamFactory setup. In your command prompt, cd into the dreamfactory installation directory. Start by running: 
 `php artisan df:env --df_install=Windows`.
 
-This command defines the system database for the DreamFactory enviornment. For initial installation, it is recommended to start with option [0], Sqlite. If you run into problems during the installation, starting with sqlite eliminates database/networking issues from the troubleshooting process. This database can be changed at a later date, and any configurations you build in sqlite can be exported and imported into another instance later. 
+This command defines the system database for the DreamFactory environment. For initial installation, it is recommended to start with option [0], Sqlite. If you run into problems during the installation, starting with sqlite eliminates database/networking issues from the troubleshooting process. This database can be changed at a later date, and any configurations you build in sqlite can be exported and imported into another instance later. 
 
 When selecting a database name and user, it is recommended to stick with the default "dreamfactory" and "dfadmin" respectively. 
 
@@ -243,7 +243,7 @@ Once the df:env command finishes, run:
 `php artisan df:setup`
 This command prompts you to create your first admin user. This email and password are used to log in to the UI later. The root admin account details can be changed later.
 
-Finally, add your license key to the end of the .env file located in the dreamfactory instalaltion directory. You can add it to the bottom of the file like:
+Finally, add your license key to the end of the .env file located in the dreamfactory installation directory. You can add it to the bottom of the file like:
 `DF_LICENSE_KEY={YOUR LICENSE KEY}`
 
 :::note Ensure that you remove curly brackets seen in the example above.:::
@@ -306,11 +306,11 @@ Click **OK** to save the handler mapping.
 
 Again, from the server view on the left, click on the **PHP Manager** icon. 
 
-Generally a yellow notice that your PHP configuration is non optimal is displayed. Click on **View Recomendations**, check the boxes and apply every available recommendation.
+Generally a yellow notice that your PHP configuration is non optimal is displayed. Click on **View Recommendations**, check the boxes and apply every available recommendation.
 
 Test that PHP is working, click the **Check phpinfo()** link and then test using the DreamFactory site. Ensure that you see a purple and white PHP info output in this screen. If not, go back and resolve any PHP installation issues. 
 
-If your php.ini is built correctly you should be able to access **Enable or disable an extention** and see them enabled. You can also enable extentions manually in the PHP Manager which applies the appropriate edits to the `php.ini` file.
+If your php.ini is built correctly you should be able to access **Enable or disable an extension** and see them enabled. You can also enable extensions manually in the PHP Manager which applies the appropriate edits to the `php.ini` file.
 
 ### FastCGI settings
 
@@ -369,7 +369,7 @@ For details on adding SSL, DreamFactory recommends using [certbot](https://certb
 ## Installing Oracle Driver
 The process of installing Oracle drivers is a more manual process than with our Linux installers. To begin you will need to download 3 things:
 - The Oracle "Basic" Instant Client package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-basic-windows.x64-23.7.0.25.01.zip)
-- The Oracle “SDK” Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
+- The Oracle "SDK" Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
 - The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
 
 ![Web Server Role selection](/img/windows-install/PeclDLLPage.png)
