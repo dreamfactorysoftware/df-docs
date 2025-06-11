@@ -2,7 +2,7 @@
 sidebar_position: 5
 title: Authenticating your APIs
 id: Authenticating your APIs
-draft: true
+draft: false
 ---
 
 One of DreamFactory's most popular features is the wide-ranging authentication support. While API Key-based authentication will suffice for many DreamFactory-powered applications, developers often require a higher degree of security through user-specific authentication. In some cases Basic HTTP authentication will get the job done, however many enterprises require more sophisticated and flexible approaches largely because of the growing adoption of Single Sign On (SSO)-based solutions such as Active Directory and LDAP, and use of third-party identity providers and solutions such as [AWS Cognito](https://aws.amazon.com/cognito/), [Auth0](https://auth0.com/), and [Okta](https://www.okta.com/).
