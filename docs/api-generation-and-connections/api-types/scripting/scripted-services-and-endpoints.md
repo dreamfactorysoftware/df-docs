@@ -31,13 +31,11 @@ http://example.com/api/v2/system/script_type
 
 To create a scripted service in DreamFactory, follow these steps:
 
-1. **Navigate to Services**: In the DreamFactory admin console, go to the "Services" tab.
-2. **Add a New Service**: Click the "Create" button to add a new service.
-3. **Select Service Type**: Choose "Script" as the service type.
-4. **Configure Service Details**: Enter the service name, label, and description.
-5. **Choose Scripting Language**: Select the desired scripting language from the available options.
-6. **Write the Script**: Enter your custom script in the provided editor.
-7. **Save the Service**: Click "Save" to create the scripted service.
+1. **Navigate to API Generations & Connections**: In the DreamFactory WEB UI navigate to API Generation & Connections > Scripting and press the + button.
+2. **Configure Service Details**: Enter the service name, label, and description.
+3. **Choose Scripting Language**: Select the desired scripting language from the available options. (Node.js, PHP, Python3)
+4. **Write the Script**: Enter your custom script in the provided editor.
+5. **Save the Service**: Click "Save" to create the scripted service.
 
 ## Example: PHP Scripted Service
 
