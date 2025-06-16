@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-title: Creating Scriped Services and Endpoints
+title: Creating Scripted Services and Endpoints
 id: scripted-services-and-endpoints
 ---
 
