@@ -29,6 +29,16 @@ mysql:
   rootPassword: "your-secure-password"
 ```
 
+Change replica count to 1 to start so when we get to the post installation steps we can grab the APP_KEY before scaling up the deployment:
+
+```yaml
+# Update this value in values.yaml
+ image:
+    repository: dreamfactorysoftware/df-docker
+    tag: latest
+  replicaCount: 1
+```
+
 ### 3. Install DreamFactory
 
 Start the DreamFactory pods using Helm:
@@ -57,7 +67,7 @@ For commercial DreamFactory installations, you'll need to build a custom Docker 
 ### 1. Pull the Base DreamFactory Image
 
 ```bash
-docker pull dreamfactory/dreamfactory:latest
+docker pull dreamfactorysoftware/df-docker:latest
 ```
 
 ### 2. Replace Commercial Composer Files
