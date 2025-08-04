@@ -1,7 +1,7 @@
 ---
 sidebar_position: 5
 title: Authenticating your APIs
-id: Authenticating your APIs
+id: authenticating-your-apis
 draft: false
 ---
 
