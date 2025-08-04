@@ -333,13 +333,13 @@ Replace `<pod-name>` with the actual name of your DreamFactory pod.
 
 The APP_KEY is a critical component of your DreamFactory instance. You will need to save it as it is what is used to encrypt your data entered into and retrieved from your system DB.
 
-In the Helm chart after successfully deploying the first time you will need to add the APP_KEY into your secrets.yaml file so that the APP_key is injected into all future pods. The line in question is: 
+In the Helm chart after successfully deploying the first time you will need to add the APP_KEY into your secrets.yaml file so that the APP_KEY is injected into all future pods. The line in question is: 
 
 ```bash
-app-key: {{ randAlphaNum 32 | b64enc | quote }} -- replace the braces and all with your app_key in quotes
+app-key: {{ randAlphaNum 32 | b64enc | quote }} -- replace the braces and all with your APP_KEY in quotes
 ```
 
-By default it will create a random number, after inital install we only want to use the key that was generated at the very start.
+By default it will create a random number, after initial install we only want to use the key that was generated at the very start.
 
 ## Uninstalling DreamFactory
 
