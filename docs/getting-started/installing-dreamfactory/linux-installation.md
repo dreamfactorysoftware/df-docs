@@ -43,7 +43,9 @@ Once the installer opens, an interactive menu displays:
 
 ![linux installer start](/img/linux-install/df-linux-installer-start.png)
 
-A typical installation uses options 0, 5, and 7 for a default build of the latest version of DreamFactory with NGINX as a web server. MariaDB is installed and configured as the system database, and a debug log is available in the `/tmp/` directory.
+A typical installation uses options 0, 5, and 8 for a default build of the latest version of DreamFactory with NGINX as a web server. MariaDB is installed and configured as the system database, and a debug log is available in the `/tmp/` directory.
+
+If using the options for Oracle or Trino drivers please refer to [Installing Additional Drivers](installing-additional-drivers.md) 
 
 The installer verifies the Linux platform is supported and then begins installing dependencies. As each dependency is installed, a progress bar (...) is visible along with any issues that are encountered. You can also tail the log file in the `/tmp` directory if needed.
 
