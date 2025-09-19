@@ -51,7 +51,7 @@ Key features include automatic API documentation generation, real-time API testi
 - [Event Scripts](/api-generation-and-connections/event-scripts.md): Custom event handling and scripting
 - [Interacting with APIs](/api-generation-and-connections/interacting-with-api.md): API usage patterns and best practices
 
-## Optional
+## Advanced
 
 - [Upgrades and Migrations](/upgrades-and-migrations/upgrading-migrating-dreamfactory.md): Platform upgrade procedures
 - [Performance Optimization](/getting-started/optimizing-dreamfactory/database.md): Database and system optimization
