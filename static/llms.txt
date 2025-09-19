@@ -1,0 +1,60 @@
+# DreamFactory Documentation
+
+> DreamFactory is an open-source REST API platform that automatically generates secure, scalable APIs for hundreds of data sources including databases, file systems, and third-party services. This documentation covers installation, configuration, API generation, authentication, security, and administration.
+
+DreamFactory enables developers to instantly create REST APIs from databases (MySQL, PostgreSQL, SQL Server, MongoDB), file systems (AWS S3, SFTP), and integrate with third-party APIs. The platform provides comprehensive authentication support including OAuth, SAML, LDAP, Active Directory, and role-based access control. Built with PHP/Laravel, it offers both on-premise and cloud deployment options with Docker, Kubernetes, and traditional server installations.
+
+Key features include automatic API documentation generation, real-time API testing, event scripting, caching, rate limiting, and extensive security controls. The platform is designed for enterprise use across healthcare, finance, telecommunications, and government sectors.
+
+## Getting Started
+
+- [Introduction to DreamFactory](/introduction/introduction.md): Overview of the platform and its capabilities
+- [Installing DreamFactory](/getting-started/installing-dreamfactory/installing-dreamfactory.md): Installation guide for all supported platforms
+- [Docker Installation](/getting-started/installing-dreamfactory/docker-installation.md): Quick start with Docker containers
+- [Linux Installation](/getting-started/installing-dreamfactory/linux-installation.md): Traditional Linux server installation
+- [Windows Installation](/getting-started/installing-dreamfactory/windows-installation.md): Windows server installation guide
+- [Basic Configuration](/getting-started/dreamfactory-configuration/basic-configuration.md): Initial setup and configuration
+
+## API Generation and Management
+
+- [API Creation and Management](/api-generation-and-connections/api-creation-management.md): Core API creation workflows
+- [Database APIs](/api-generation-and-connections/api-types/database/generating-database-backed-api.md): Creating APIs from database connections
+- [File APIs](/api-generation-and-connections/api-types/file/index.md): File system and cloud storage APIs
+- [Scripted Services](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints.md): Custom PHP, Python, and Node.js services
+- [API Keys](/api-generation-and-connections/api-keys.md): Managing API authentication keys
+- [Advanced Database Features](/api-generation-and-connections/advanced-database-api-features.md): Advanced database API capabilities
+
+## Security and Authentication
+
+- [Authentication APIs](/Security/authentication-apis.md): Comprehensive authentication setup guide
+- [Role-Based Access Control](/Security/role-based-access.md): User permissions and access management
+- [OAuth Integration](/Security/authentication-apis.md#oauth): OAuth provider configuration
+- [SAML 2.0 Setup](/Security/authentication-apis.md#saml-20): SAML authentication configuration
+- [Active Directory](/Security/authentication-apis.md#active-directory): AD integration setup
+- [LDAP Authentication](/Security/authentication-apis.md#standard-ldap): LDAP server configuration
+- [Rate Limiting](/Security/rate-limiting.md): API rate limiting and throttling
+- [Security FAQ](/Security/security-faq.md): Common security questions and answers
+
+## Administration
+
+- [Admin Settings](/admin-settings/admins.md): System administrator configuration
+- [User Management](/admin-settings/users.md): User account administration
+- [System Configuration](/system-settings/config/system-info.md): Global system settings
+- [Database Configuration](/system-settings/config/cache.md): Database and caching setup
+- [Email Templates](/system-settings/config/email-templates.md): Email notification configuration
+- [Logging and Monitoring](/admin-settings/logs.md): System logging and monitoring
+- [Reporting](/system-settings/reporting.md): System reports and analytics
+
+## Platform APIs
+
+- [DreamFactory Platform APIs](/system-settings/dreamfactory-platform-apis.md): Built-in platform management APIs
+- [Event Scripts](/api-generation-and-connections/event-scripts.md): Custom event handling and scripting
+- [Interacting with APIs](/api-generation-and-connections/interacting-with-api.md): API usage patterns and best practices
+
+## Optional
+
+- [Upgrades and Migrations](/upgrades-and-migrations/upgrading-migrating-dreamfactory.md): Platform upgrade procedures
+- [Performance Optimization](/getting-started/optimizing-dreamfactory/database.md): Database and system optimization
+- [Web Server Configuration](/getting-started/optimizing-dreamfactory/webserver.md): NGINX and Apache configuration
+- [Helm Installation](/getting-started/installing-dreamfactory/helm-installation.md): Kubernetes deployment with Helm
+- [Raspberry Pi Installation](/getting-started/installing-dreamfactory/raspberrypi-install.md): ARM-based deployment
