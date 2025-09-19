@@ -6,6 +6,16 @@ DreamFactory enables developers to instantly create REST APIs from databases (My
 
 Key features include automatic API documentation generation, real-time API testing, event scripting, caching, rate limiting, and extensive security controls. The platform is designed for enterprise use across healthcare, finance, telecommunications, and government sectors.
 
+## Metadata
+
+- **Version**: 7.x (Documentation v1.0.0)
+- **Maintainer**: DreamFactory Software, Inc.
+- **Repository**: https://github.com/dreamfactorysoftware/dreamfactory
+- **Website**: https://dreamfactory.com
+- **Documentation Site**: https://docs.dreamfactory.com
+- **Community**: https://community.dreamfactory.com
+- **License**: Open Source (Commercial licenses available)
+
 ## Getting Started
 
 - [Introduction to DreamFactory](/introduction/introduction.md): Overview of the platform and its capabilities
@@ -13,6 +23,7 @@ Key features include automatic API documentation generation, real-time API testi
 - [Docker Installation](/getting-started/installing-dreamfactory/docker-installation.md): Quick start with Docker containers
 - [Linux Installation](/getting-started/installing-dreamfactory/linux-installation.md): Traditional Linux server installation
 - [Windows Installation](/getting-started/installing-dreamfactory/windows-installation.md): Windows server installation guide
+- [Helm Installation](/getting-started/installing-dreamfactory/helm-installation.md): Kubernetes deployment with Helm
 - [Basic Configuration](/getting-started/dreamfactory-configuration/basic-configuration.md): Initial setup and configuration
 
 ## API Generation and Management
@@ -23,15 +34,13 @@ Key features include automatic API documentation generation, real-time API testi
 - [Scripted Services](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints.md): Custom PHP, Python, and Node.js services
 - [API Keys](/api-generation-and-connections/api-keys.md): Managing API authentication keys
 - [Advanced Database Features](/api-generation-and-connections/advanced-database-api-features.md): Advanced database API capabilities
+- [Event Scripts](/api-generation-and-connections/event-scripts.md): Custom event handling and scripting
+- [Interacting with APIs](/api-generation-and-connections/interacting-with-api.md): API usage patterns and best practices
 
 ## Security and Authentication
 
-- [Authentication APIs](/Security/authentication-apis.md): Comprehensive authentication setup guide
+- [Authentication APIs](/Security/authentication-apis.md): Comprehensive authentication setup guide including OAuth, SAML, LDAP, and Active Directory
 - [Role-Based Access Control](/Security/role-based-access.md): User permissions and access management
-- [OAuth Integration](/Security/authentication-apis.md#oauth): OAuth provider configuration
-- [SAML 2.0 Setup](/Security/authentication-apis.md#saml-20): SAML authentication configuration
-- [Active Directory](/Security/authentication-apis.md#active-directory): AD integration setup
-- [LDAP Authentication](/Security/authentication-apis.md#standard-ldap): LDAP server configuration
 - [Rate Limiting](/Security/rate-limiting.md): API rate limiting and throttling
 - [Security FAQ](/Security/security-faq.md): Common security questions and answers
 
@@ -44,17 +53,11 @@ Key features include automatic API documentation generation, real-time API testi
 - [Email Templates](/system-settings/config/email-templates.md): Email notification configuration
 - [Logging and Monitoring](/admin-settings/logs.md): System logging and monitoring
 - [Reporting](/system-settings/reporting.md): System reports and analytics
-
-## Platform APIs
-
 - [DreamFactory Platform APIs](/system-settings/dreamfactory-platform-apis.md): Built-in platform management APIs
-- [Event Scripts](/api-generation-and-connections/event-scripts.md): Custom event handling and scripting
-- [Interacting with APIs](/api-generation-and-connections/interacting-with-api.md): API usage patterns and best practices
 
 ## Advanced
 
 - [Upgrades and Migrations](/upgrades-and-migrations/upgrading-migrating-dreamfactory.md): Platform upgrade procedures
 - [Performance Optimization](/getting-started/optimizing-dreamfactory/database.md): Database and system optimization
 - [Web Server Configuration](/getting-started/optimizing-dreamfactory/webserver.md): NGINX and Apache configuration
-- [Helm Installation](/getting-started/installing-dreamfactory/helm-installation.md): Kubernetes deployment with Helm
 - [Raspberry Pi Installation](/getting-started/installing-dreamfactory/raspberrypi-install.md): ARM-based deployment
