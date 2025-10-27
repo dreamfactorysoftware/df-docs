@@ -54,7 +54,7 @@ This guide will walk you through setting up Okta Single Sign-On (SSO) authentica
 
 ![okta SAML Service Creation Blank Page](/img/okta-auth-config/okta-saml-blank-service-page.png)
 
-2. You will need to fill in the Namespace field, this will become part of the URI structure for the service
+2. You will need to fill in the Namespace field, this will become part of the URI structure for the service. The Namespace field must end with _sso, for instance a valid Namespace would be DreamFactoryOkta_sso.
 
 3. The Label of the service will become the text in the button to login with Okta at the main login page for your DreamFactory instance
 
