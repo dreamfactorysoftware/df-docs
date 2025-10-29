@@ -47,6 +47,10 @@ const config: Config = {
         theme: {
           customCss: "./src/css/custom.css",
         },
+        gtag: {
+          trackingID: 'G-J8Y3DGXB4D',
+          anonymizeIP: true,
+        },
       } satisfies Preset.Options,
     ],
   ],
@@ -68,7 +72,7 @@ const config: Config = {
           label: "Documentation",
         },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/dreamfactorysoftware/df-docs",
           label: "GitHub",
           position: "right",
         },
@@ -115,15 +119,11 @@ const config: Config = {
           title: "More",
           items: [
             {
-              label: "Legacy Blog",
+              label: "DreamFactory Blog",
               to: "https://blog.dreamfactory.com",
             },
             {
-              label: "Legacy Wiki",
-              to: "https://wiki.dreamfactory.com",
-            },
-            {
-              label: "Legacy Docs",
+              label: "Legacy Guide",
               to: "https://guide.dreamfactory.com/docs",
             },
           ],

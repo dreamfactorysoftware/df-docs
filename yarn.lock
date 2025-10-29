@@ -1986,10 +1986,10 @@
   dependencies:
     "@types/mdx" "^2.0.0"
 
-"@node-rs/jieba-darwin-arm64@1.10.4":
+"@node-rs/jieba-linux-x64-gnu@1.10.4":
   version "1.10.4"
-  resolved "https://registry.npmjs.org/@node-rs/jieba-darwin-arm64/-/jieba-darwin-arm64-1.10.4.tgz"
-  integrity sha512-G++RYEJ2jo0rxF9626KUy90wp06TRUjAsvY/BrIzEOX/ingQYV/HjwQzNPRR1P1o32a6/U8RGo7zEBhfdybL6w==
+  resolved "https://registry.npmjs.org/@node-rs/jieba-linux-x64-gnu/-/jieba-linux-x64-gnu-1.10.4.tgz"
+  integrity sha512-WZO8ykRJpWGE9MHuZpy1lu3nJluPoeB+fIJJn5CWZ9YTVhNDWoCF4i/7nxz1ntulINYGQ8VVuCU9LD86Mek97g==
 
 "@node-rs/jieba@^1.6.0":
   version "1.10.4"
