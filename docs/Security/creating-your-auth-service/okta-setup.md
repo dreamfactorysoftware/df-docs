@@ -72,11 +72,6 @@ This guide will walk you through setting up Okta Single Sign-On (SSO) authentica
 
 ![okta SAML Service Creation ](/img/okta-auth-config/okta-saml-2-service-creation.png)
 
-### 2.5 Configure Service
-1. **Info Tab**: Configure basic service information
-2. **Config Tab**: Configure according to your Okta Setup instructions
-3. **API Docs Tab**: Review the new endpoints for Okta integration
-
 ## Step 3: Okta Second Configuration
 
 ### 3.1 Assign Application to Users
