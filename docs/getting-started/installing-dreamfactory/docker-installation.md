@@ -116,6 +116,10 @@ If you are a commercial customer and have a license key for DreamFactory, you sh
   ![lines to uncomment in Dockerfile](/img/docker-install/dockerfile-uncomment-commercial.png)
   4. continue with steps 2-5 above
 
+## Installing Oracle Drivers
+
+To enable Oracle database connectivity in your DreamFactory Docker container, see the [Installing Additional Drivers](installing-additional-drivers.md#enabling-oracle-in-docker) guide for detailed instructions on installing Oracle Instant Client and the PHP OCI8 extension in Docker containers.
+
 ## Upgrading your Docker instance
 
 As new features and enhancements are added to DreamFactory, you may want to upgrade to a newer version. To install a newer version of DreamFactory, you should:
