@@ -409,3 +409,25 @@ The fastCGI path is located in the IIS Manager > Your Server > fastCGI Settings 
 
 Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (It will be named along the lines of php_oci8-3.2.1-8.3-nts-vc15-x64) and move the php_oci8.dll file to the ext directory where PHP is located on your system (e.g PHP\v8.3\ext). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
 
+
+## MCP Daemon
+
+If you plan to use the MCP Service, you must also run the background daemon server. This can be done using the provided PowerShell script:
+
+```
+cd {dreamfactory path}\vendor\dreamfactory\df-mcp-server\scripts
+.\start-daemon-win.ps1
+```
+
+The script will automatically:
+- Install all required npm dependencies.
+- Start the daemon in the background using npx tsx.
+- Use default host 127.0.0.1 and port 8006, unless overridden via environment variables:
+  - MCP_DAEMON_HOST — host to bind the daemon (default: 127.0.0.1)
+  - MCP_DAEMON_PORT — port to bind the daemon (default: 8006)
+  - NODE_ENV — Node environment (default: production)
+
+After starting, you can verify the daemon is running by checking its health endpoint:
+```
+Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
+```
