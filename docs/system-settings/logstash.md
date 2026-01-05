@@ -2,7 +2,7 @@
 sidebar_position: 2
 title: Logstash
 id: logstash
-draft: true
+draft: false
 ---
 # DreamFactory ELK Stack & Grafana Integration Guide
 
