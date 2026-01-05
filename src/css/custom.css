@@ -54,11 +54,25 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   cursor: zoom-out;
   align-items: center;
   justify-content: center;
-  display: none;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
-.lightbox-overlay:target {
-  display: flex;
+.lightbox-overlay.active {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Only use :target if there's no active class (for manual lightboxes) */
+.lightbox-overlay:target:not(.active) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .lightbox-content {
@@ -81,16 +95,18 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 }
 
 .lightbox-close {
-  position: absolute;
+  position: absolute !important;
   top: 20px;
   right: 40px;
   color: #fff;
   font-size: 40px;
   font-weight: bold;
-  cursor: pointer;
-  z-index: 10000;
+  cursor: pointer !important;
+  z-index: 10001 !important;
   text-decoration: none;
   line-height: 1;
+  pointer-events: auto !important;
+  user-select: none;
 }
 
 .lightbox-close:hover {
@@ -99,4 +115,34 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 
 .image-container {
   text-align: center;
+}
+
+/* Auto-lightbox wrapper styles */
+.image-lightbox-wrapper {
+  display: inline-block;
+  text-decoration: none;
+  cursor: zoom-in !important;
+  position: relative;
+  z-index: 1;
+}
+
+.image-lightbox-wrapper:active {
+  opacity: 0.9;
+}
+
+.image-lightbox-wrapper img {
+  pointer-events: auto;
+  cursor: zoom-in !important;
+}
+
+/* Ensure images in article content get lightbox by default */
+article img:not(.lightbox-content):not(.lightbox-close),
+.markdown img:not(.lightbox-content):not(.lightbox-close) {
+  cursor: zoom-in;
+  transition: opacity 0.3s;
+}
+
+article img:not(.lightbox-content):not(.lightbox-close):hover,
+.markdown img:not(.lightbox-content):not(.lightbox-close):hover {
+  opacity: 0.8;
 }

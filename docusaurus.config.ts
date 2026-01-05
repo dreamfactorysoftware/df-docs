@@ -145,6 +145,7 @@ const config: Config = {
         indexPages: true,
       },
     ],
+    require.resolve('./src/plugins/lightboxPlugin.js'),
   ],
 };
 
