@@ -30,3 +30,119 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 .navbarSearchContainer_node_modules-\@docusaurus-theme-classic-lib-theme-Navbar-Search-styles-module {
   display: none !important;
 }
+
+/* Lightbox styles for zoomable images */
+.image-lightbox {
+  cursor: zoom-in;
+  transition: opacity 0.3s;
+  max-width: 100%;
+  height: auto;
+}
+
+.image-lightbox:hover {
+  opacity: 0.8;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  cursor: zoom-out;
+  align-items: center;
+  justify-content: center;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.lightbox-overlay.active {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Only use :target if there's no active class (for manual lightboxes) */
+.lightbox-overlay:target:not(.active) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  animation: zoomIn 0.3s;
+  cursor: default;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.lightbox-close {
+  position: absolute !important;
+  top: 20px;
+  right: 40px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer !important;
+  z-index: 10001 !important;
+  text-decoration: none;
+  line-height: 1;
+  pointer-events: auto !important;
+  user-select: none;
+}
+
+.lightbox-close:hover {
+  opacity: 0.7;
+}
+
+.image-container {
+  text-align: center;
+}
+
+/* Auto-lightbox wrapper styles */
+.image-lightbox-wrapper {
+  display: inline-block;
+  text-decoration: none;
+  cursor: zoom-in !important;
+  position: relative;
+  z-index: 1;
+}
+
+.image-lightbox-wrapper:active {
+  opacity: 0.9;
+}
+
+.image-lightbox-wrapper img {
+  pointer-events: auto;
+  cursor: zoom-in !important;
+}
+
+/* Ensure images in article content get lightbox by default */
+article img:not(.lightbox-content):not(.lightbox-close),
+.markdown img:not(.lightbox-content):not(.lightbox-close) {
+  cursor: zoom-in;
+  transition: opacity 0.3s;
+}
+
+article img:not(.lightbox-content):not(.lightbox-close):hover,
+.markdown img:not(.lightbox-content):not(.lightbox-close):hover {
+  opacity: 0.8;
+}
