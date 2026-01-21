@@ -54,7 +54,7 @@ This guide will walk you through setting up Okta Single Sign-On (SSO) authentica
 
 ![okta SAML Service Creation Blank Page](/img/okta-auth-config/okta-saml-blank-service-page.png)
 
-2. You will need to fill in the Namespace field, this will become part of the URI structure for the service
+2. You will need to fill in the Namespace field, this will become part of the URI structure for the service. The Namespace field must end with _sso, for instance a valid Namespace would be DreamFactoryOkta_sso.
 
 3. The Label of the service will become the text in the button to login with Okta at the main login page for your DreamFactory instance
 
@@ -91,7 +91,7 @@ This guide will walk you through setting up Okta Single Sign-On (SSO) authentica
 ## Step 4: Application Configuration
 
 ### 4.1 Configure SSO Endpoint
-You can now sign in by going to the `/sso` endpoint (see DreamFactory configuration > Step 2.5). Since we used the SAML 2.0 you should now see on the login landing page for your DreamFactory instance a new button below the normal login credentials fields, clicking this should redirect you to the Okta SSO page and proceed with requesting users to authenticate.
+You can now sign in by going to the `/sso` endpoint. Since we used the SAML 2.0 you should now see on the login landing page for your DreamFactory instance a new button below the normal login credentials fields, clicking this should redirect you to the Okta SSO page and proceed with requesting users to authenticate.
 
 ### 4.2 Configure CORS
 **Important**: Don't forget to add your application and Okta domains to DreamFactory > Config > CORS. For detailed instructions on configuring CORS settings, see our [CORS and SSL documentation](../system-settings/config/cors-ssl.md).
