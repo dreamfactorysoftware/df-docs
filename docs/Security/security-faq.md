@@ -1,6 +1,9 @@
 ---
 title: Security FAQ
 id: security-faq
+description: "Answers to common security questions about DreamFactory's platform, compliance, encryption, and best practices"
+keywords: [security, compliance, HIPAA, GDPR, encryption, data protection, password recovery, hardening]
+difficulty: "beginner"
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

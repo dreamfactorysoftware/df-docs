@@ -1,10 +1,29 @@
 ---
 sidebar_position: 1
-title: Role Based Access
+title: Role Based Access Control (RBAC)
 id: role-based-access
+description: Configure granular permissions for API access using DreamFactory's role-based access control system
+keywords: [RBAC, role-based access, API security, permissions, access control, API keys]
+difficulty: "beginner"
 ---
 
-# Role Based Access
+# Role Based Access Control (RBAC)
+
+## Quick Reference
+
+| Concept | Description |
+|---------|-------------|
+| **Role** | A named set of permissions that define which services and operations are allowed |
+| **Service** | An API endpoint (database, file storage, etc.) |
+| **Component** | A specific resource within a service (e.g., `_table/employees`) |
+| **Access** | HTTP methods allowed (GET, POST, PUT, PATCH, DELETE) |
+| **API Key** | Authentication token associated with one or more roles |
+
+## Permission Hierarchy
+
+```
+API Key → Role(s) → Service Access → Component Access → HTTP Methods
+```
 
 ## Creating Role Based Access Controls
 

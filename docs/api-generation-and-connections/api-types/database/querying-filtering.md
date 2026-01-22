@@ -2,11 +2,26 @@
 sidebar_position: 2
 title: Querying and Filtering Records
 id: querying-and-filtering
+description: Learn how to query, filter, sort, and paginate database records using DreamFactory's REST API
+keywords: [database query, API filtering, REST API query, pagination, sorting, SQL filter, LIKE operator, IN operator]
+difficulty: "intermediate"
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Querying and Filtering Records in DreamFactory
+
+## Quick Reference
+
+| Parameter | Purpose | Example |
+|-----------|---------|---------|
+| `filter` | Filter records | `filter=(status='active')` |
+| `fields` | Select columns | `fields=id,name,email` |
+| `limit` | Max records | `limit=10` |
+| `offset` | Skip records | `offset=20` |
+| `order` | Sort results | `order=name ASC` |
+| `include_count` | Get total count | `include_count=true` |
+| `ids` | Get by IDs | `ids=1,2,3` |
 
 ## Overview
 DreamFactory provides powerful filtering capabilities for database operations, allowing you to precisely query and manipulate your data through the REST API. This guide will walk you through the basics and advanced features of filtering in DreamFactory.
@@ -62,14 +77,19 @@ DreamFactory uses SQL-like syntax for filtering. Ensure you are familiar with SQ
 | `IN` | Match any value in set | `(status IN ('active','pending'))` |
 | `LIKE` | Pattern matching | `(email LIKE '%@company.com')` |
 | `IS NULL` | Check for null values | `(phone IS NULL)` |
-| `BETWEEN` | Value in range | `(age BETWEEN (18,65))` |
+| Range check | Value in range | `(age>=18) AND (age<=65)` |
 
 ### String Operations
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `CONTAINS` | Contains string | `(description CONTAINS 'important')` |
-| `STARTS WITH` | Begins with string | `(name STARTS WITH 'App')` |
-| `ENDS WITH` | Ends with string | `(file ENDS WITH '.pdf')` |
+
+:::note Database Compatibility
+The `CONTAINS`, `STARTS WITH`, and `ENDS WITH` operators have limited database support. For maximum compatibility across all databases (MySQL, PostgreSQL, SQL Server, etc.), use the `LIKE` operator with wildcards instead.
+:::
+
+| Operator | Description | Example | Recommended Alternative |
+|----------|-------------|---------|-------------------------|
+| `CONTAINS` | Contains string | `(description CONTAINS 'important')` | `(description LIKE '%important%')` |
+| `STARTS WITH` | Begins with string | `(name STARTS WITH 'App')` | `(name LIKE 'App%')` |
+| `ENDS WITH` | Ends with string | `(file ENDS WITH '.pdf')` | `(file LIKE '%.pdf')` |
 
 ### Common Filter Examples
 ```http

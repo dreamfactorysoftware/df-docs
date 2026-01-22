@@ -2,6 +2,9 @@
 sidebar_position: 4
 title: Role Management
 id: role-management
+description: "Create and configure roles via the System API using verb masks to control API endpoint access permissions"
+keywords: [role management, system API, verb mask, permissions, RBAC, access control, role assignment]
+difficulty: "advanced"
 ---
 
 # Role Management

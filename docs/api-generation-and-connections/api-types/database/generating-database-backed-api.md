@@ -2,9 +2,23 @@
 sidebar_position: 1
 title: Generating a Database-backed API
 id: generating-a-database-backed-api
+description: Generate REST APIs from MySQL, PostgreSQL, SQL Server, Oracle, MongoDB and 15+ other databases in minutes
+keywords: [database API, REST API, MySQL API, PostgreSQL API, SQL Server API, Oracle API, MongoDB API, auto-generated API, CRUD API]
 ---
 
 # Generating a Database-backed API
+
+## Quick Reference
+
+| Property | Value |
+|----------|-------|
+| **Time to First API** | 5-10 minutes |
+| **Supported Databases** | 18+ (MySQL, PostgreSQL, SQL Server, Oracle, MongoDB, etc.) |
+| **Generated Endpoints** | CRUD operations, stored procedures, schema management |
+| **Documentation** | Auto-generated OpenAPI/Swagger |
+| **Authentication** | API keys, JWT, OAuth, LDAP/AD |
+
+## Overview
 
 DreamFactory's capabilities are vast, however its most popular feature is the ability to generate a database-backed REST API. By embracing this automated approach, development teams can shave weeks if not months off the development cycle, and in doing so greatly reduce the likelihood of bugs or security issues due to mishaps such as SQL injection. This approach doesn't come with any trade offs either, because DreamFactory's database-backed APIs are fully-featured REST interfaces. They offer comprehensive CRUD (create, retrieve, update, delete) capabilities, endpoints for executing stored procedures, and even endpoints for managing the schema.
 

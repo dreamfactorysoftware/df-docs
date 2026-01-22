@@ -2,6 +2,9 @@
 title: "Advanced Database API Features"
 linkTitle: "Advanced Database API Features"
 weight: 5
+description: "Use database transactions, functions, and virtual fields to extend DreamFactory API capabilities"
+keywords: [database transactions, SQL functions, virtual fields, rollback, nested inserts, data transformation]
+difficulty: "advanced"
 ---
 
 [Generating a Database-backed API](./api-types/database/generating-database-backed-api.md) provides a solid introduction to carrying out CRUD operations in conjunction with a DreamFactory-generated API, however you're going to need some additional firepower in order to successfully integrate these APIs into your projects. This chapter introduces several of DreamFactory's advanced database API-related features, covering topics such as database transactions, calling database functions via API endpoints, and more.

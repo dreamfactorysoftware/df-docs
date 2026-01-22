@@ -2,6 +2,9 @@
 sidebar_position: 3
 title: Interacting With the API
 id: interacting-with-the-api
+description: "Learn to interact with DreamFactory APIs using HTTP clients for CRUD operations, filtering, joins, and stored procedures"
+keywords: [REST API, CRUD operations, database API, HTTP requests, table joins, stored procedures, query parameters]
+difficulty: "beginner"
 ---
 
 # Interacting with the API
@@ -12,7 +15,7 @@ The following topic contains examples to help you become familiar with the many 
 
 Let's begin by retrieving all of a particular table's records just as was done within the API Docs example. Open your client and in the address bar set the URL to `/api/v2/{service_name}/{table_name}`, replacing `{service_name}` with the name of your API and `{table_name}` with the name of a table found within the database (and to which your API key's associated role has access). For the remainder of this example we use `mysql` as the service name, and in this particular example the table we're querying is called `employees` so the URL looks like this:
 
-```
+```text
 http://localhost/api/v2/_table/employees
 ```
 
@@ -28,101 +31,101 @@ With the URL and header in place, request the URL and you should see the table r
 
 The equivalent SQL query would look like this:
 
-```
+```sql
 SELECT * FROM employees;
 ```
 
 ### Limiting results
 
 The previous example returns all records found in the `employees` table. But what if you only wanted to return five or ten records? You can use the `limit` parameter to do so. Modify your URL to look like this:
-```
+```text
 http://localhost/api/v2/_table/employees?limit=10
 ```
 The equivalent SQL query would look like this:
-```
+```sql
 SELECT * FROM employees LIMIT 10;
 ```
 ### Offsetting results
 
 The above example limits your results found in the `employees` table to 10, but what if you want to select records 11 - 20? You would use the `offset` parameter like this:
-```
+```text
 http://localhost/api/v2/_table/employees?limit=10&offset=10
 ```
 The equivalent SQL query would look like this:
-```
+```sql
 SELECT * FROM employees LIMIT 10 OFFSET 10;
 ```
 ### Ordering results
 
 You can order results by any column using the `order` parameter. For instance to order the `employees` tab by the `emp_no` field, modify your URL to look like this:
-```
+```text
 http://localhost/api/v2/_table/employees?order=emp_no
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT * FROM employees ORDER BY emp_no;
 ```
 To order in descending fashion, just append `desc` to the `order` string:
-```
+```text
 http://localhost/api/v2/_table/employees?order=emp_no%20desc
 ```
 :::note Note
 The space separating `emp_no` and `desc` has been HTML encoded. Most programming languages offer HTML encoding capabilities either natively or through a third-party library so there's no need for you to do this manually within your applications. The equivalent SQL query looks like this:
 :::
 
-```
+```sql
 SELECT * FROM employees ORDER BY emp_no DESC;
 ```
 ### Selecting specific fields
 
 Often you only require a few of the fields found in a table. To limit the fields returned, use the `fields` parameter:
-```
+```text
 http://localhost/api/v2/_table/employees?fields=emp_no%2Clast_name
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT emp_no, last_name FROM employees;
 ```
 ### Filtering records by condition
 
 You can filter records by a particular condition using the `filter` parameter. For instance to return only those records having a `gender` equal to `M`, set the `filter` parameter like so:
-```
+```text
 http://localhost/api/v2/_table/employees?filter=(gender=M)
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT * FROM employees where gender='M';
 ```
 You're free to use any of the typical comparison operators, such as `LIKE`:
-```
+```text
 http://localhost/api/v2/_table/employees?filter=(last_name%20like%20G%25)
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT * FROM employees where last_name LIKE 'G%';
 ```
 ### Combining parameters
 
 The REST API's capabilities really begin to shine when combining multiple parameters together. For example, let's query the `employees` table to retrieve only those records having a `last_name` beginning with `G`, ordering the results by `emp_no`:
-```
+```text
 http://localhost/api/v2/_table/employees?filter=(last_name%20like%20G%25)&order=emp_no
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT * FROM employees where last_name LIKE 'G%' ORDER BY emp_no;
 ```
 ### Querying by primary key
 
 You may want to select a specific record using a column that uniquely defines it. Often (but not always) this unique value is the *primary key*. You can retrieve a record using its primary key by appending the value to the URL like so:
-```
+```text
 /api/v2/_table/supplies/45
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT * FROM supplies where id = 5;
 ```
 If you'd like to use this URL format to search for another unique value not defined as a primary key, you must also pass along the `id_field` and `id_type` fields like so:
-```
+```text
 /api/v2/_table/employees/45abchdkd?id_field=guid&id_type=string
 ```
 ### Joining tables
@@ -132,16 +135,16 @@ One of DreamFactory's most interesting database-related features is the automati
 <img src="/img/database-backed-api/mysql-relationships.png" width="800" alt="Joining Tables with DreamFactory" />
 
 Using these aliases along with the `related` parameter we can easily return sets of joined records via the API. For instance, the following URI would be used to join the `employees` and `departments` tables together:
-```
+```text
 /api/v2/mysql/_table/employees?related=dept_emp_by_emp_no
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 SELECT * FROM employees
     LEFT JOIN departments on employees.emp_no = departments.emp_no;
 ```
 The joined results are presented within a JSON array having a name matching that of the alias:
-```
+```json
     {
         "emp_no": 10001,
         "birth_date": "1953-09-02",
@@ -164,11 +167,11 @@ The joined results are presented within a JSON array having a name matching that
 ### Inserting records
 
 To insert a record, send a `POST` request to the API, passing along a JSON-formatted payload. For instance, to add a new record to the `supplies` table, send a `POST` request to the following URI:
-```
+```text
 /api/v2/mysql/_table/supplies
 ```
 The body payload would look like this:
-```
+```json
     {
         "resource": [
             {
@@ -178,7 +181,7 @@ The body payload would look like this:
     }
 ```
 If the request is successful, DreamFactory returns a `200` status code and a response containing the record's primary key:
-```
+```json
     {
         "resource": [
           {
@@ -214,7 +217,7 @@ The table schemas look like this:
 
 Remember from the last example that DreamFactory creates convenient join aliases which can be used in conjunction with the `related` parameter. In this case, that alias is `locations_by_supply_id`. To create the relationship alongside the new `supplies` record, use that alias to nest the location name within the payload, as demonstrated here:
 
-```
+```json
     {
         "resource": [
             {
@@ -229,11 +232,11 @@ Remember from the last example that DreamFactory creates convenient join aliases
     }
 ```
 With the payload sorted out, all that remains is to make a request to the `supplies` table endpoint:
-```
+```text
 /api/v2/mysql/_table/supplies
 ```
 If the nested insert is successful, a `200` status code is returned along with the primary key ID of the newly inserted `supplies` record:
-```
+```json
     {
         "resource": [
             {
@@ -254,7 +257,7 @@ Let's work through update examples involving each method.
 #### Updating records with PUT
 
 When updating records with `PUT` you must send along *all* of the record attributes within the request payload:
-```
+```json
     {
         "resource": [
             {
@@ -269,11 +272,11 @@ When updating records with `PUT` you must send along *all* of the record attribu
     }
 ```
 With the payload in place, send a `PUT` request to the `employees` table endpoint:
-```
+```text
 /api/v2/mysql/_table/employees
 ```
 If successful, DreamFactory returns a `200` status code and a response body containing the primary key of the updated record:
-```
+```json
     {
         "resource": [
             {
@@ -283,24 +286,24 @@ If successful, DreamFactory returns a `200` status code and a response body cont
     }
 ```
 The equivalent SQL query looks like this:
-```
+```sql
     UPDATE supplies SET first_name = 'Johnny', last_name = 'Football',
     birthdate = '1900-12-15', gender = 'm', hire_date = '2007-01-01' WHERE emp_no = 500015;
 ```
 #### Updating records with PATCH
 
 To update one or more (but not all) attributes associated with a particular record found in the `supplies` table, send a `PATCH` request to the `supplies` table endpoint, accompanied by the primary key:
-```
+```text
 /api/v2/mysql/_table/supplies/8
 ```
 Suppose the `supplies` table includes attributes such as `name`, `description`, and `purchase_date`, but we only want to modify the `name` value. The JSON request body would look like this:
-```
+```json
     {
       "name": "Silver Stapler"
     }
 ```
 If successful, DreamFactory returns a `200` status code and a response body containing the primary key of the updated record:
-```
+```json
     {
       "id": 8
     }
@@ -312,11 +315,11 @@ The equivalent SQL query looks like this:
 ### Deleting records
 
 To delete a record, send a `DELETE` request to the table endpoint associated with the record you'd like to delete. For instance, to delete a record from the `employees` table, reference this URL:
-```
+```text
 /api/v2/mysql/_table/employees/500016
 ```
 If deletion is successful, DreamFactory returns a 200 status code with a response body containing the deleted record's primary key:
-```
+```json
     {
         "resource": [
             {
@@ -326,7 +329,7 @@ If deletion is successful, DreamFactory returns a 200 status code with a respons
     }
 ```
 The equivalent SQL query looks like this:
-```
+```sql
 DELETE FROM employees WHERE emp_no = 500016;
 ```
 
@@ -347,14 +350,14 @@ Procedures can use input parameters ('IN') and output parameters ('OUT'), as wel
 ### Listing available stored procedures
 
 The following call lists the available stored procedures, based on role access allowed:
-```
+```text
 GET http(s)://<dfServer>/api/v2/<serviceName>/_proc
 ```
 
 ### Getting stored procedure details
 
 We can use the `ids` url parameter and pass a comma delimited list of resource names to retrieve details about each of the stored procedures. For example if you have a stored procedure named `getCustomerByLastName` a GET call to `http(s)://<dfServer>/api/v2/<serviceName>?ids=getCustomerByLastName` returns the following:
-```
+```json
 {
   "resource": [
     {
@@ -382,7 +385,6 @@ We can use the `ids` url parameter and pass a comma delimited list of resource n
     }
   ]
 }
-
 ```
 
 ### Calling a stored procedure
@@ -390,19 +392,19 @@ We can use the `ids` url parameter and pass a comma delimited list of resource n
 #### Using GET
 
 When passing no payload is required, any IN or INOUT parameters can be sent by passing the values in the order required inside parentheses:
-```
+```text
 /api/v2/<serviceName>/_proc/myproc(val1, val2, val3)
 ```
 Or as URL parameters by parameter name:
-```
+```text
 /api/v2/<serviceName>/_proc/myproc?param1=val1&param2=val2&param3=val3
 ```
 In the below example, there is a stored procedure `getUsernameByDepartment` which takes two input parameters, a department code, and a userID. Making the following call:
-```
+```text
 /api/v2/<serviceName>/_proc/getUserNameByDepartment(AB,1234)
 ```
 In the above example, AB is the department code and 1234 is the userID, which returns:
-```
+```json
 {
   "userID": "1234",
   "username": "Tomo"
@@ -412,7 +414,7 @@ In the above example, AB is the department code and 1234 is the userID, which re
 #### Using POST
 
 If a payload is required, i.e. passing values that are not url compliant, or passing schema formatting data, include the parameters directly in order. The same call as above can be made with a POST request with the following in the body:
-```
+```json
 {
   "params": ["AB", 1234]
 }
@@ -430,7 +432,7 @@ _schema_ - When a result set of records is returned from the call, the server us
 _wrapper_ - Just like the URL parameter, the wrapper designation can be passed in the posted data.
 
 Request with formatting configuration:
-```
+```json
 {
   "schema": {
     "id": "integer",
@@ -440,7 +442,7 @@ Request with formatting configuration:
 }
 ```
 Response without formatting:
-```
+```json
 {
   "resource": [
     {
@@ -460,7 +462,7 @@ Response without formatting:
 }
 ```
 Response with formatting applied:
-```
+```json
 {
   "data": [
     {
@@ -485,7 +487,7 @@ Response with formatting applied:
 SQL Server has the ability to perform column level encryption using symmetric keys which can be particularly useful for storing sensitive information such as passwords. A good example of how to do so can be found [here](https://www.sqlshack.com/an-overview-of-the-column-level-sql-server-encryption/)
 
 Typically, you would then decrypt this column (assuming the user has access to the certificate) with a statement in your sql server workbench such as:
-```
+```sql
 OPEN SYMMETRIC KEY SymKey
 DECRYPTION BY CERTIFICATE <CertificateName>;
 
@@ -497,7 +499,7 @@ FROM SalesLT.Address;
 Now, we cannot call our table endpoint (e.g `/api/v2/<serviceName>/_table/<tableWithEncryptedField>`) and add this logic with DreamFactory, however we could put the same logic in a stored procedure, and have DreamFactory call that to return our decrypted result. As long as the SQLServer user has permissions to the certificate used for encryption, they are able to decrypt the field. You could then use [roles](/system-settings/dreamfactory-platform-apis/) to make sure only certain users have access to this stored procedure.
 
 The stored procedure looks something like this: 
-```
+```sql
 CREATE PROCEDURE dbo.<procedureName>
 AS
 BEGIN
@@ -505,7 +507,7 @@ BEGIN
   OPEN SYMMETRIC KEY SymKey
   DECRYPTION BY CERTIFICATE <CertificateName>;
 
-  SELECT <oneField>, CONVERT(nvarchar, DecryptByKey(<encryptedField>)) AS 'decrypted'  
+  SELECT <oneField>, CONVERT(nvarchar, DecryptByKey(<encryptedField>)) AS 'decrypted'
   FROM <table>;
 END
 return;

@@ -2,6 +2,9 @@
 sidebar_position: 2
 title: User Management
 id: user-management
+description: "Manage users and admins via the System API with endpoints for creating, updating, and deleting accounts"
+keywords: [user management, admin API, system API, user creation, user deletion, email invitation]
+difficulty: "intermediate"
 ---
 
 # User Management
@@ -22,7 +25,7 @@ curl -X GET "https://{url}/api/v2/system/user" -H "accept: application/json" \
 
 You can retrieve an individual user / admin's details using the `?ids=<id_number>` parameter. If you don't know the id number off hand, you can filter by any field which you do know, such as an email address by using the filter parameter. For example:
 
-```
+```text
 https://{url}/api/v2/system/user?filter=email=tomo@example.com
 ```
 

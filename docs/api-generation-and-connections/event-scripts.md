@@ -2,6 +2,9 @@
 sidebar_position: 3
 title: Event Scripts
 id: event-scripts
+description: "Execute custom scripts on API events to validate requests, modify responses, and add business logic to your APIs"
+keywords: [event scripts, pre-process, post-process, PHP scripting, API customization, business logic, request validation]
+difficulty: "intermediate"
 ---
 
 # Event Scripts

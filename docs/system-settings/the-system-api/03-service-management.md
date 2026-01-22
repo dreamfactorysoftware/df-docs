@@ -2,6 +2,9 @@
 sidebar_position: 3
 title: Service Management
 id: service-management
+description: "Create and manage API services programmatically using DreamFactory's System API for automated deployments"
+keywords: [service management, system API, API automation, service types, database API, scripted deployment]
+difficulty: "intermediate"
 ---
 
 # Service Management
@@ -52,7 +55,7 @@ This will return a rather lengthy response containing the names and configuratio
 
 If you just want to retrieve a list of service type names, issue the same GET request but with the `fields=name` parameter attached:
 
-```
+```text
 /api/v2/system/service_type?fields=name
 ```
 
@@ -187,13 +190,13 @@ After submitting a successful request, a 201 Created status code is returned alo
 
 To retrieve configuration details about a specific API, issue a GET request to `/api/v2/system/service`. You can pass along either an API ID or the API name (namespace). For instance to retrieve a service configuration by ID, you'll pass the ID like this:
 
-```
+```text
 /api/v2/system/service/8
 ```
 
 It is likely more natural to reference an API by its namespace. You can pass the name in using the filter parameter:
 
-```
+```text
 /api/v2/system/service?filter=name=mysql
 ```
 
@@ -311,12 +314,12 @@ For performance purposes DreamFactory caches all service definitions so the conf
 
 To clear the cache for a specific service, issue a DELETE request to the following URI, appending the service ID to it:
 
-```
+```text
 /api/v2/system/admin/session/8
 ```
 
 To clear the cache for all defined services, issue a DELETE request to the following URI:
 
-```
+```text
 /api/v2/system/admin/session
 ```

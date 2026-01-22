@@ -2,6 +2,9 @@
 sidebar_position: 2
 title: Creating an AWS S3 REST API
 id: creating-an-aws-s3-rest-api
+description: "Generate a REST API for AWS S3 buckets to manage files with role-based access and rate limiting"
+keywords: [AWS S3, file storage, REST API, cloud storage, S3 bucket, file upload, file download]
+difficulty: "intermediate"
 ---
 
 # Creating an AWS S3 REST API

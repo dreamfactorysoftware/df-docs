@@ -2,6 +2,9 @@
 sidebar_position: 5
 title: Microsoft SQL Server
 id: sql-server
+description: "Connect Microsoft SQL Server to DreamFactory and generate secure REST APIs with RBAC, rate limiting, and SSO"
+keywords: [SQL Server, MSSQL, database API, REST API, RBAC, rate limiting, stored procedures, Azure]
+difficulty: "intermediate"
 ---
 
 # Connecting Microsoft SQL Server to DreamFactory
