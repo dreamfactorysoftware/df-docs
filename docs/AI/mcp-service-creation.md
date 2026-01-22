@@ -2,9 +2,23 @@
 sidebar_position: 2
 title: Creating an MCP Server Service
 id: mcp-service-creation
+description: Step-by-step guide to creating an MCP (Model Context Protocol) server service in DreamFactory for AI assistant integration
+keywords: [MCP, Model Context Protocol, AI integration, ChatGPT, Claude, Cursor, database API, AI assistant]
 ---
 
 # Creating an MCP Server Service
+
+## Quick Reference
+
+| Property | Value |
+|----------|-------|
+| **Service Type** | MCP Server |
+| **Required Fields** | API Name, Database Service |
+| **Auto-Generated** | OAuth Client ID, OAuth Client Secret |
+| **Authentication** | OAuth 2.0 |
+| **Supported AI Clients** | ChatGPT, Claude, Cursor, any MCP-compatible client |
+
+## Overview
 
 The Model Context Protocol (MCP) is a standardized protocol that enables AI assistants and development tools to interact with your DreamFactory database services through a consistent interface. Despite the growing popularity of direct API integrations, MCP-based connections remain an essential part of modern development workflows, allowing AI assistants like ChatGPT, Claude, and Cursor to seamlessly query and manipulate your database resources.
 
@@ -20,7 +34,7 @@ In this tutorial we'll show you how to configure DreamFactory's MCP server servi
 
 ## Generating the MCP Server and Companion Documentation
 
-To generate an SFTP REST API, log in to your DreamFactory instance using an administrator account, select AI tab, and then click the purple plus button to establish a new connection:
+To create an MCP Server service, log in to your DreamFactory instance using an administrator account, select the **AI** tab, and then click the purple plus button to create a new connection:
 
 ![ai api creation](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/ai-api-creation.png)
 

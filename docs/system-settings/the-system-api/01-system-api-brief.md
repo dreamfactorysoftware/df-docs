@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: Using the System APIs
 id: using-the-system-apis
+description: Programmatically manage DreamFactory users, services, roles, and API keys through REST System APIs for DevOps automation.
+keywords: [System API, DreamFactory administration, user management, service management, role management, API automation, DevOps]
+difficulty: intermediate
 ---
 
 # Using the System APIs
@@ -44,7 +47,7 @@ To see the API calls that DreamFactory makes:
 When you create a user through the admin console, you'll see a call like this:
 
 **Request:**
-```
+```http
 POST /api/v2/system/user
 Headers:
   X-DreamFactory-Session-Token: your-session-token

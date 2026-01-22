@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: Creating Scripted Services and Endpoints
 id: scripted-services-and-endpoints
+description: "Build custom API services using PHP, Python, or Node.js scripts to add business logic and integrations"
+keywords: [scripted services, PHP API, Python API, Node.js, custom endpoints, business logic, API scripting]
+difficulty: "intermediate"
 ---
 
 # Creating Scripted Services and Endpoints

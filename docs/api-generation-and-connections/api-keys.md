@@ -2,6 +2,9 @@
 sidebar_position: 2
 title: API Keys
 id: api-keys
+description: "Create and configure API keys in DreamFactory to authenticate requests and control access to your APIs"
+keywords: [API key, authentication, app configuration, DreamFactory API, access control, API security]
+difficulty: "beginner"
 ---
 
 # API Keys

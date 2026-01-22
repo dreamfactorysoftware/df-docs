@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: File System APIs
 id: file-system-apis
+description: "Create REST APIs for file operations with SFTP, AWS S3, Azure Blob, and other file storage services"
+keywords: [file API, SFTP, AWS S3, file storage, REST API, file management, Excel to JSON]
+difficulty: "beginner"
 ---
 
 # File System APIs

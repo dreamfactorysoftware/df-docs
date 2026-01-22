@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: MCP Server
 id: mcp-server
+description: Integrate DreamFactory with AI assistants and dev tools using the Model Context Protocol (MCP) for database operations.
+keywords: [MCP, Model Context Protocol, AI integration, Claude, ChatGPT, database tools, streaming API, JSON-RPC]
+difficulty: advanced
 ---
 
 # MCP Server

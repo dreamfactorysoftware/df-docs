@@ -2,6 +2,9 @@
 sidebar_position: 5
 title: API Key Management
 id: api-key-management
+description: "Manage API keys programmatically via the System API and create bulk automation scripts for database fields"
+keywords: [API key management, system API, app management, bulk actions, scripted services, automation]
+difficulty: "advanced"
 ---
 
 # API Key Management
@@ -135,7 +138,7 @@ You can add an id number of a role if you would like a default role for your app
 
 There is a useful DreamFactory feature that allows the administrator to add a database function to a column so when that column is retrieved by the API, the function runs in its place. For instance, imagine if you want to change the format of the date field, you could use ORACLE's `TO_DATE()` function to do that:
 
-```
+```sql
 TO_DATE({value}, 'DD-MON-YY HH.MI.SS AM')
 ```
 

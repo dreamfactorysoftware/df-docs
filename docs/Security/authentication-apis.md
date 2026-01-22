@@ -3,6 +3,9 @@ sidebar_position: 5
 title: Authenticating your APIs
 id: authenticating-your-apis
 draft: false
+description: Configure API authentication with Active Directory, LDAP, OAuth, SAML 2.0, OpenID Connect, Okta, and Auth0 SSO providers.
+keywords: [API authentication, OAuth, SAML, LDAP, Active Directory, SSO, OpenID Connect, Okta, Auth0, JWT]
+difficulty: intermediate
 ---
 
 One of DreamFactory's most popular features is the wide-ranging authentication support. While API Key-based authentication will suffice for many DreamFactory-powered applications, developers often require a higher degree of security through user-specific authentication. In some cases Basic HTTP authentication will get the job done, however many enterprises require more sophisticated and flexible approaches largely because of the growing adoption of Single Sign On (SSO)-based solutions such as Active Directory and LDAP, and use of third-party identity providers and solutions such as [AWS Cognito](https://aws.amazon.com/cognito/), [Auth0](https://auth0.com/), and [Okta](https://www.okta.com/).

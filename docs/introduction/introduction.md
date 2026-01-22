@@ -3,6 +3,9 @@ sidebar_position: 1
 title: Introduction
 id: introduction
 slug: /
+description: DreamFactory is an open-source REST API platform that auto-generates secure, documented APIs for databases, files, and services.
+keywords: [DreamFactory, REST API, API platform, database API, API generation, open source, API documentation, enterprise API]
+difficulty: beginner
 ---
 
 # Welcome to DreamFactory Documentation

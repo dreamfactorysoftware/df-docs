@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: Introducing REST and DreamFactory
 id: introducing-rest-and-dreamfactory
+description: Learn REST API fundamentals and how DreamFactory automates API generation, security, documentation, and business logic integration.
+keywords: [REST API, HTTP methods, GET POST PUT DELETE, API basics, DreamFactory overview, API automation, RESTful services]
+difficulty: beginner
 ---
 
 # Introducing REST and DreamFactory
@@ -51,7 +54,7 @@ A proper REST API URL pattern implementation is centered around the *resource* (
     GET /api/v2/employees
 
 If the endpoint exists and records are found, the REST API server responds with a `200` status code and JSON-formatted results. Here's an example response returned by DreamFactory:
-```
+```json
     {
       "resource": [
         {
@@ -78,7 +81,7 @@ This is not RESTful because the implementer has incorporated an action into the 
     `GET /api/v2/employees/42`
 
 The addition of an ID (often but not always a resource's primary key) indicates the client is interested in retrieving the employee record associated with a unique identifier which has been assigned the value `42`. The JSON response might look like this:
-```
+```json
     {
       "id": 42,
       "first_name": "Claudi",
@@ -91,7 +94,7 @@ Many REST API implementations, DreamFactory included, support the passage of que
     `GET /api/v2/employees/42?fields=first_name`
 
 The response would look something like this:
-```
+```json
     {
       "first_name": "Claudi"
     }
@@ -106,7 +109,7 @@ If you want to insert a new record into the `employees` table, then the `POST` m
     `POST /api/v2/employees`
 
 Of course, the request must be accompanied by the data to be created. This is passed along by the request body and might look like this:
-```
+```json
     {
       "resource": [
         {
@@ -129,7 +132,7 @@ When updating resources with `PUT` you send a `PUT` request like this:
     `PUT /api/v2/employees`
 
 You must send *all* of the resource attributes within the request payload:
-```
+```json
     {
       "resource": [
         {
@@ -146,7 +149,7 @@ To only update one or more (but not all) attributes associated with a particular
     `/api/v2/employees/42`
 
 If the `employees` table includes attributes such as `first_name`, `last_name`, and `employee_id`, but we only want to modify the `first_name` value. The JSON request body would look like this:
-```
+```json
     {
       "resource": [
         {
