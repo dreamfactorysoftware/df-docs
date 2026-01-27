@@ -103,23 +103,27 @@ Claude Desktop supports remote MCP servers with OAuth authentication through its
 
 First, ensure you have an MCP service configured in DreamFactory. Navigate to the **AI** tab in the DreamFactory admin to see your existing MCP services:
 
-![DreamFactory AI Services List](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/df-ai-services-list.png)
+![DreamFactory AI tab showing the list of configured MCP services with their name, label, description, and type](images/df-ai-services-list.png)
 
-To create a new MCP service, click the purple **+** button. Select **MCP Server Service** as the service type:
+To create a new MCP service, click the purple **+** button. Select **MCP Server Service** as the service type from the dropdown:
 
-![Service Type Selection](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/df-service-type-dropdown.png)
+![Service Type dropdown expanded showing the MCP Server Service option](images/df-mcp-service-type-dropdown.png)
 
 Fill in the service details — **Namespace** (used in the endpoint URL), **Label**, and **Description**. Under **Advanced Options**, select the database service to expose via the **API Name** dropdown. The **OAuth Client ID** and **OAuth Client Secret** are auto-generated:
 
-![MCP Service Configuration](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/df-mcp-service-create-filled.png)
+![MCP service creation form with MCP Server Service selected, showing Namespace, Label, Description fields and the Advanced Options section with API Name, OAuth Client ID, and OAuth Client Secret](images/df-mcp-create-form-with-options.png)
 
 Click **Save** to create your MCP service. You can review the configuration at any time by clicking on the service in the AI list:
 
-![MCP Service Detail View](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/df-mcp-service-config-detail.png)
+![Saved MCP service detail view showing the completed configuration with namespace, label, description, API Name set to a database service, and the auto-generated OAuth credentials](images/df-mcp-service-config.png)
 
 #### Step 2: Get Your MCP Endpoint URL
 
-After saving, go to the **API Docs** tab and run the GET request to find your `mcp_endpoint`. It will look like:
+After saving, go to the **API Docs** tab and run the GET request to find your `mcp_endpoint`. The API Docs page shows the available endpoints for your MCP service, including the GET endpoint that returns the `mcp_endpoint` URL:
+
+![API Docs page for the MCP service showing the Swagger/OAS3 documentation with the GET endpoint to retrieve MCP service configuration](images/df-mcp-api-docs.png)
+
+Your `mcp_endpoint` will look like:
 
 ```
 https://your-dreamfactory-instance.com/mcp/your-service-name
@@ -127,18 +131,30 @@ https://your-dreamfactory-instance.com/mcp/your-service-name
 
 #### Step 3: Connect Claude Desktop
 
-1. Open Claude Desktop and go to **Settings > Connectors**.
+1. Open Claude Desktop and go to **Settings**. You'll see the Settings sidebar with several options. Click on **Connectors** in the left navigation:
 
-2. Click **Add Connector** and paste your DreamFactory MCP endpoint URL.
+![Claude Desktop Settings page showing the sidebar with General, Account, Privacy, Billing, Usage, Capabilities, Connectors, and Claude Code options](images/claude-desktop-settings.png)
 
-3. Click **Connect**. Claude will automatically:
+2. On the Connectors page, you'll see both built-in connectors (Google Drive, Gmail, GitHub, etc.) and any custom MCP connectors you've previously added. Scroll down past the built-in connectors to find the custom connector section, then click **Add Connector**:
+
+![Claude Desktop Connectors page showing built-in connectors like Google Drive, Gmail, Google Calendar, and GitHub, along with custom MCP connectors at the bottom](images/claude-desktop-connectors.png)
+
+3. In the **Add custom connector** dialog, enter a **Name** for your connector (e.g., "DreamFactory MCP") and paste your DreamFactory `mcp_endpoint` URL into the **Remote MCP server URL** field:
+
+![Add custom connector dialog with Name and Remote MCP server URL fields, Advanced settings toggle, and Add button](images/claude-desktop-add-connector.png)
+
+   You can optionally expand **Advanced settings** to manually provide OAuth Client ID and OAuth Client Secret, though DreamFactory's DCR support means these are typically not required:
+
+![Add custom connector dialog with Advanced settings expanded, showing optional OAuth Client ID and OAuth Client Secret fields](images/claude-desktop-add-connector-advanced.png)
+
+4. Click **Add**. Claude will automatically:
    - Discover the OAuth authorization and token endpoints
    - Register itself as an OAuth client via Dynamic Client Registration (DCR)
    - Open a browser window for you to log in to DreamFactory
 
-4. Log in with your DreamFactory credentials. After successful authentication, you'll be redirected back to Claude Desktop.
+5. Log in with your DreamFactory credentials. After successful authentication, you'll be redirected back to Claude Desktop.
 
-5. Your connector is now active. You can start using natural language to interact with your database:
+6. Your connector is now active. You can start using natural language to interact with your database:
    ```
    Show me all tables in the database
    List the first 10 records from the customers table
@@ -178,7 +194,7 @@ Cursor IDE supports MCP servers for AI-assisted development. Unlike Claude Deskt
 
    You can find these values in the DreamFactory admin under **AI > your MCP service > Advanced Options**:
 
-   ![MCP OAuth Credentials](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/df-mcp-service-config-detail.png)
+   ![MCP service Advanced Options showing OAuth Client ID and OAuth Client Secret fields](images/df-mcp-service-config.png)
 
 5. Save and connect. Cursor will prompt you to authenticate via your DreamFactory login page.
 
