@@ -89,3 +89,57 @@ Show me tables in my database/list tables
 ![mcp-example-list](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/mcp-example-list.png)
 
 The Agent will connect to the MCP server using the mcp_endpoint and return the available database tables, allowing you to interact with your data directly from ChatGPT.
+
+### Claude Desktop
+
+Claude Desktop supports remote MCP servers with OAuth authentication through its Connectors feature. DreamFactory fully supports Claude's Dynamic Client Registration (DCR), making setup straightforward.
+
+**Requirements:**
+- Claude Pro, Max, Team, or Enterprise subscription
+- Claude Desktop application installed
+- Your DreamFactory MCP endpoint URL
+
+**Setup Steps:**
+
+1. Open Claude Desktop and go to **Settings > Connectors**.
+
+2. Click **Add Connector** and select **MCP Server**.
+
+3. Enter your DreamFactory MCP endpoint URL:
+   ```
+   https://your-dreamfactory-instance.com/mcp/your-service-name
+   ```
+   Replace `your-dreamfactory-instance.com` with your DreamFactory hostname and `your-service-name` with your MCP service name.
+
+4. Click **Connect**. Claude will automatically:
+   - Discover the OAuth endpoints
+   - Register as a client (Dynamic Client Registration)
+   - Open a browser window for you to log in to DreamFactory
+
+5. Log in with your DreamFactory credentials. After successful authentication, you'll be redirected back to Claude Desktop.
+
+6. Your connector is now active. You can start using natural language to interact with your database:
+   ```
+   Show me all tables in the database
+   List the first 10 records from the customers table
+   ```
+
+**Troubleshooting:**
+
+- **"Redirect URI not registered" error**: Ensure your DreamFactory instance is accessible over HTTPS. Claude uses `https://claude.ai/api/mcp/auth_callback` as its redirect URI, which is automatically registered during DCR.
+
+- **Connection timeout**: Verify your DreamFactory instance is publicly accessible or that Claude can reach it through your network configuration.
+
+- **Authentication failed**: Check that your DreamFactory user account has appropriate permissions to access the database service exposed through MCP.
+
+### Cursor
+
+Cursor IDE supports MCP servers for AI-assisted development. To connect:
+
+1. Open Cursor Settings and navigate to the MCP configuration section.
+
+2. Add a new MCP server with your DreamFactory endpoint URL.
+
+3. Configure OAuth credentials using the Client ID and Client Secret from your MCP service configuration in DreamFactory.
+
+4. Once connected, you can use Cursor's AI features to query and manipulate your database directly from the IDE.
