@@ -48,7 +48,7 @@ The DreamFactory docker application is set up to use docker-compose. To build an
     ```
     df-docker-web
       - The DreamFactory application and web portal.
-    mysql:5.7
+    mysql:8.0
       - A MySQL container for the system database.
     redis
       - A Redis instance used for caching.
