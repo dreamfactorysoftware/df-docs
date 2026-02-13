@@ -30,7 +30,7 @@ You need access to an SMTP server:
 | -------- | ----------- | ---- | -------- |
 | Gmail | smtp.gmail.com | 587 | TLS |
 | Microsoft 365 | smtp.office365.com | 587 | TLS |
-| Amazon SES | email-smtp.{region}.amazonaws.com | 587 | TLS |
+| Amazon SES | email-smtp.`{region}`.amazonaws.com | 587 | TLS |
 | Yahoo | smtp.mail.yahoo.com | 587 | TLS |
 | Self-hosted | Your server | 25/465/587 | Varies |
 
