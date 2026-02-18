@@ -5,6 +5,56 @@ import localSearch from "@easyops-cn/docusaurus-search-local";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const structuredData = {
+  softwareApplication: {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "DreamFactory",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Linux, Windows, Docker, Kubernetes",
+    description:
+      "Auto-generate secure REST APIs from any database. Self-hosted, enterprise-grade, with built-in RBAC and API key management.",
+    url: "https://www.dreamfactory.com",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      description: "Open-source community edition available free",
+    },
+    applicationSubCategory: "API Management Platform",
+    downloadUrl: "https://github.com/dreamfactorysoftware/dreamfactory",
+    softwareVersion: "7.0",
+    author: {
+      "@type": "Organization",
+      name: "DreamFactory Software, Inc.",
+      url: "https://www.dreamfactory.com",
+    },
+  },
+  organization: {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "DreamFactory Software, Inc.",
+    url: "https://www.dreamfactory.com",
+    logo: "https://www.dreamfactory.com/hs-fs/hubfs/DreamFactory_Horizontal_Color.png",
+    sameAs: [
+      "https://github.com/dreamfactorysoftware",
+      "https://twitter.com/dreamfactory",
+      "https://www.linkedin.com/company/dreamfactory-software-inc",
+      "https://www.youtube.com/@DreamfactorySoftware",
+    ],
+  },
+  webSite: {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "DreamFactory Documentation",
+    url: "https://docs.dreamfactory.com",
+    publisher: {
+      "@type": "Organization",
+      name: "DreamFactory Software, Inc.",
+    },
+  },
+};
+
 const config: Config = {
   title: "DreamFactory Docs",
   tagline: "Governed API Access to Any Data Source",
@@ -23,6 +73,24 @@ const config: Config = {
 
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
+
+  headTags: [
+    {
+      tagName: "script",
+      attributes: { type: "application/ld+json" },
+      innerHTML: JSON.stringify(structuredData.softwareApplication),
+    },
+    {
+      tagName: "script",
+      attributes: { type: "application/ld+json" },
+      innerHTML: JSON.stringify(structuredData.organization),
+    },
+    {
+      tagName: "script",
+      attributes: { type: "application/ld+json" },
+      innerHTML: JSON.stringify(structuredData.webSite),
+    },
+  ],
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
