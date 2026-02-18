@@ -7,7 +7,7 @@ import localSearch from "@easyops-cn/docusaurus-search-local";
 
 const config: Config = {
   title: "DreamFactory Docs",
-  tagline: "Instant API Generation",
+  tagline: "Governed API Access to Any Data Source",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -58,6 +58,10 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: "img/docusaurus-social-card.jpg",
+    metadata: [
+      { name: "description", content: "DreamFactory documentation — a self-hosted platform providing governed API access to any data source for enterprise apps and local LLMs." },
+      { name: "keywords", content: "DreamFactory, API platform, governed API access, self-hosted, enterprise data access, RBAC, database API, LLM" },
+    ],
     navbar: {
       title: "DreamFactory",
       logo: {

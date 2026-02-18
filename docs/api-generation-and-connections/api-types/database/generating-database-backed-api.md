@@ -2,8 +2,8 @@
 sidebar_position: 1
 title: Generating a Database-backed API
 id: generating-a-database-backed-api
-description: Generate REST APIs from MySQL, PostgreSQL, SQL Server, Oracle, MongoDB and 15+ other databases in minutes
-keywords: [database API, REST API, MySQL API, PostgreSQL API, SQL Server API, Oracle API, MongoDB API, auto-generated API, CRUD API]
+description: Generate governed REST APIs from MySQL, PostgreSQL, SQL Server, Oracle, MongoDB and 15+ databases — with RBAC and audit logging built in.
+keywords: [database API, REST API, MySQL API, PostgreSQL API, SQL Server API, Oracle API, MongoDB API, auto-generated API, governed data access, enterprise API]
 ---
 
 # Generating a Database-backed API

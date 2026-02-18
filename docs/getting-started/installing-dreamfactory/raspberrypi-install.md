@@ -1,8 +1,12 @@
 ---
 sidebar_position: 4
+title: Raspberry Pi Installation
+id: raspberrypi-install
+description: Install DreamFactory on Raspberry Pi 4 with Nginx, PHP, and MySQL. Full guide for the self-hosted API platform on ARM64.
+keywords: [DreamFactory Raspberry Pi, Raspberry Pi API server, self-hosted API ARM, DreamFactory IoT, Raspberry Pi Nginx PHP]
 ---
 
-# Raspberry PI installation
+# Raspberry Pi Installation
 
 DreamFactory has been tested for install on Raspberry Pi 4 with 4GB of ram using the Raspberry Pi lite OS 64bit (Bookworm release 12). The install process focuses on an Nginx web server with MySql as the default database (the site is published on port 80 of the localhost).  This guide provides instructions for downloading, installing and running the necessary packages to host DreamFactory.
 

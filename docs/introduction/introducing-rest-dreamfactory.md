@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-title: Introducing REST and DreamFactory
+title: DreamFactory Platform Overview & REST Basics
 id: introducing-rest-and-dreamfactory
-description: Learn REST API fundamentals and how DreamFactory automates API generation, security, documentation, and business logic integration.
-keywords: [REST API, HTTP methods, GET POST PUT DELETE, API basics, DreamFactory overview, API automation, RESTful services]
+description: DreamFactory provides governed API access to any data source. Learn how it auto-generates secure REST APIs with RBAC, SSO, and audit logging.
+keywords: [DreamFactory platform, DreamFactory features, governed API access, REST API, API management, enterprise API platform, self-hosted API, DreamFactory overview]
 difficulty: beginner
 ---
 
-# Introducing REST and DreamFactory
+# DreamFactory Platform Overview & REST API Basics
 
 No matter your role in today's IT industry, APIs are an inescapable part of the job. Marketers regularly integrate Salesforce, Pipedrive, and MailChimp APIs into campaigns, software developers rely upon Stripe, Google Maps, and Twitter APIs to build compelling web applications, and Data scientists grapple with an increasingly unwieldy avalanche of company metrics using Amazon Machine Learning, Elasticsearch, and IBM EventStore APIs. Meanwhile, the executive team relies upon Geckoboard, Google Analytics, and Baremetrics to monitor company progress and future direction.
 

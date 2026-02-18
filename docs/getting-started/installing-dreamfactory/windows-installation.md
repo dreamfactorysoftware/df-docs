@@ -2,6 +2,8 @@
 sidebar_position: 4
 title: Windows Installation
 id: windows-installation
+description: Step-by-step guide to installing DreamFactory on Windows Server 2019/2022 with IIS, PHP, and required dependencies.
+keywords: [DreamFactory Windows install, Windows Server IIS, DreamFactory installation, self-hosted API Windows]
 ---
 
 

@@ -2,6 +2,8 @@
 sidebar_position: 1
 title: Date and Time Configuration
 id: date-and-time-configuration
+description: Configure consistent date and time handling across MySQL, PostgreSQL, SQL Server, and other databases in DreamFactory APIs.
+keywords: [DreamFactory date time, database date format, API date configuration, timezone settings, SQL date format]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -2,6 +2,8 @@
 sidebar_position: 2
 title: Linux Installation
 id: linux-installation
+description: Install DreamFactory on Ubuntu, RHEL, CentOS, Debian, or Fedora using the automated installer. Self-hosted API platform deployment.
+keywords: [DreamFactory Linux install, Ubuntu DreamFactory, RHEL DreamFactory, self-hosted API Linux, DreamFactory automated installer]
 ---
 
 # Linux installation

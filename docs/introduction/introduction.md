@@ -1,16 +1,16 @@
 ---
 sidebar_position: 1
-title: Introduction
+title: DreamFactory Docs
 id: introduction
 slug: /
-description: DreamFactory is an open-source REST API platform that auto-generates secure, documented APIs for databases, files, and services.
-keywords: [DreamFactory, REST API, API platform, database API, API generation, open source, API documentation, enterprise API]
+description: DreamFactory is a self-hosted platform providing governed API access to any data source for enterprise apps and local LLMs.
+keywords: [DreamFactory, governed API access, self-hosted API platform, enterprise data access, API security, RBAC, database API, LLM data access]
 difficulty: beginner
 ---
 
-# Welcome to DreamFactory Documentation
+# DreamFactory Documentation
 
-DreamFactory is an open-source REST API platform that automatically generates secure, fully documented APIs for any data source in minutes. Whether you're connecting to databases, external services, or file systems, DreamFactory eliminates the need to write backend code.
+DreamFactory is a secure, self-hosted enterprise data access platform that provides governed API access to any data source. Connect enterprise applications and on-prem LLMs to databases, file storage, and external services — with role-based access control, identity passthrough, and full API lifecycle management.
 
 ---
 

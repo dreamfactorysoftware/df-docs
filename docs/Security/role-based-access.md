@@ -2,8 +2,8 @@
 sidebar_position: 1
 title: Role Based Access Control (RBAC)
 id: role-based-access
-description: Configure granular permissions for API access using DreamFactory's role-based access control system
-keywords: [RBAC, role-based access, API security, permissions, access control, API keys]
+description: Govern API access with DreamFactory's RBAC system — control permissions per service, endpoint, and HTTP method with API key binding.
+keywords: [RBAC, role-based access, API security, governed API access, permissions, access control, API keys, identity passthrough]
 difficulty: "beginner"
 ---
 

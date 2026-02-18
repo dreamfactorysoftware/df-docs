@@ -2,6 +2,8 @@
 sidebar_position: 1
 title: Upgrading and Migrating DreamFactory
 id: upgrading-and-migrating-dreamfactory
+description: Upgrade DreamFactory in-place for minor versions or migrate to a new server for major releases. Covers backup, restore, and environment setup.
+keywords: [DreamFactory upgrade, DreamFactory migration, version upgrade, server migration, DreamFactory backup]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

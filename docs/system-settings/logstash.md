@@ -1,8 +1,10 @@
 ---
 sidebar_position: 2
-title: Logstash
+title: ELK Stack & Logstash Integration
 id: logstash
 draft: false
+description: Monitor DreamFactory API activity with Elasticsearch, Logstash, and Grafana. Step-by-step ELK stack setup and dashboard configuration.
+keywords: [DreamFactory Logstash, ELK stack API monitoring, Elasticsearch DreamFactory, Grafana API dashboard, API audit logging]
 ---
 # DreamFactory ELK Stack & Grafana Integration Guide
 

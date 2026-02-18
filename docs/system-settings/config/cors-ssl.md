@@ -1,7 +1,9 @@
 ---
 sidebar_position: 2
-title: CORS and SSL
+title: CORS and SSL Configuration
 id: cors-and-ssl
+description: Configure CORS policies and SSL certificates for DreamFactory. Secure API access with Certbot, Let's Encrypt, and cross-origin settings.
+keywords: [DreamFactory CORS, SSL certificate, API security, Certbot, Let's Encrypt, cross-origin, HTTPS setup]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
