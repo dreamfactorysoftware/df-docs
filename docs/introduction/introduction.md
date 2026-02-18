@@ -4,7 +4,7 @@ title: DreamFactory Docs
 id: introduction
 slug: /
 description: DreamFactory is a self-hosted platform providing governed API access to any data source for enterprise apps and local LLMs.
-keywords: [DreamFactory, governed API access, self-hosted API platform, enterprise data access, API security, RBAC, database API, LLM data access, dreamfactory open source, dreamfactory community edition, what is dreamfactory, dreamfactory version]
+keywords: [DreamFactory, governed API access, self-hosted API platform, enterprise data access, API security, RBAC, database API, LLM data access, dreamfactory open source, dreamfactory community edition, what is dreamfactory, dreamfactory version, dreamfactory latest]
 difficulty: beginner
 ---
 
@@ -62,12 +62,39 @@ DreamFactory runs wherever your data lives — no cloud dependency, no vendor lo
 
 New to DreamFactory? Start here to get up and running quickly.
 
-- **[Introducing REST & DreamFactory](/introduction/introducing-rest-and-dreamfactory)** - Understanding REST APIs and how DreamFactory works
-- **[Docker Installation](/getting-started/installing-dreamfactory/docker-installation)** - Quick start with Docker containers
-- **[Helm/Kubernetes Installation](/getting-started/installing-dreamfactory/helm-installation)** - Deploy to Kubernetes clusters
-- **[Linux Installation](/getting-started/installing-dreamfactory/linux-installation)** - Traditional Linux server installation
-- **[Windows Installation](/getting-started/installing-dreamfactory/windows-installation)** - Install on Windows servers
-- **[Basic Configuration](/getting-started/dreamfactory-configuration/basic-configuration)** - Essential setup after installation
+### Install DreamFactory
+
+Choose the deployment that matches your environment:
+
+- **[Linux Installation](/getting-started/installing-dreamfactory/linux-installation)** — Native install on Ubuntu, Debian, CentOS, RHEL using the automated installer
+- **[Windows Installation](/getting-started/installing-dreamfactory/windows-installation)** — Windows Server with IIS and PHP FastCGI
+- **[Docker Installation](/getting-started/installing-dreamfactory/docker-installation)** — Single-command startup; ideal for dev environments and quick evaluations
+- **[Deploy DreamFactory on Kubernetes with Helm](/getting-started/installing-dreamfactory/helm-installation)** — Production-grade cluster deployment with horizontal scaling
+- **[Raspberry Pi Installation](/getting-started/installing-dreamfactory/raspberrypi-install)** — ARM64 deployment for edge computing and IoT API gateway use cases
+- **[Basic Configuration](/getting-started/dreamfactory-configuration/basic-configuration)** — Essential setup after installation
+
+### Connect Your Data
+
+Generate REST APIs for your databases and file storage in minutes:
+
+- **[Generate a Database API](/api-generation-and-connections/api-types/database/generating-a-database-backed-api)** — Connect MySQL, PostgreSQL, MongoDB, SQL Server, Oracle, and 20+ other databases
+- **[Query & Filter Data](/api-generation-and-connections/api-types/database/querying-and-filtering)** — Filter, sort, paginate, and use dynamic user placeholders for row-level security
+- **[Excel to JSON API](/api-generation-and-connections/api-types/file/converting-excel-to-json)** — Expose Excel workbooks and CSV files as queryable REST endpoints
+
+### Secure & Govern
+
+Lock down your APIs with enterprise-grade access control:
+
+- **[Role-Based Access Control](/Security/role-based-access)** — Per-endpoint, per-method, per-field permissions for every user and app
+- **[API Keys](/api-generation-and-connections/api-keys)** — Generate scoped API keys and bind them to specific roles
+- **[Authenticating Your APIs](/Security/authenticating-your-apis)** — SAML, LDAP, OAuth, OpenID Connect, and identity passthrough
+
+### Automate & Extend
+
+Add custom business logic without rebuilding your stack:
+
+- **[Event Scripts](/api-generation-and-connections/event-scripts)** — Attach PHP, Python, or Node.js scripts to any API event (pre/post request hooks)
+- **[Scripted Services & Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints)** — Build fully custom API services from script
 
 ---
 

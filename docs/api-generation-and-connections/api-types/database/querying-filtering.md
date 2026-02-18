@@ -3,7 +3,7 @@ sidebar_position: 2
 title: Querying and Filtering Records
 id: querying-and-filtering
 description: Learn how to query, filter, sort, and paginate database records using DreamFactory's REST API
-keywords: [database query, API filtering, REST API query, pagination, sorting, SQL filter, LIKE operator, IN operator]
+keywords: [database query, API filtering, REST API query, pagination, sorting, SQL filter, LIKE operator, IN operator, filter placeholder, row level security, user id placeholder, text placeholder api]
 difficulty: "intermediate"
 ---
 import Tabs from '@theme/Tabs';
@@ -193,6 +193,89 @@ GET /api/v2/db/_table/users?ids=1,2,3
 # Get by custom ID field
 GET /api/v2/db/_table/users?id_field=email&ids=user@example.com
 ```
+
+## Using URL Filter Parameters and Placeholders
+
+DreamFactory supports dynamic placeholder tokens in filter strings that are resolved server-side at query time. This is the foundation of DreamFactory's row-level security model — you can restrict which rows a user sees without writing any custom code.
+
+### Filter Parameter Syntax
+
+The `filter` URL parameter accepts SQL-like expressions. Special characters must be URL-encoded when passed in a query string:
+
+```http
+# Unencoded (some HTTP clients encode automatically)
+GET /api/v2/mydb/_table/orders?filter=status='active'
+
+# Manually URL-encoded (use this in raw curl or manual URL construction)
+GET /api/v2/mydb/_table/orders?filter=status%3D%27active%27
+```
+
+The `=` operator encodes to `%3D`; single quotes encode to `%27`. Most REST clients (Postman, Insomnia, curl with `--data-urlencode`) handle this automatically.
+
+### Built-In User Placeholder Tokens
+
+DreamFactory automatically resolves the following placeholder tokens to the currently authenticated user's attributes **before executing the SQL query**. The replacement happens in DreamFactory's request pipeline — the database never sees the placeholder string.
+
+| Token | Resolves to | Type |
+|---|---|---|
+| `{user.id}` | The authenticated user's integer ID | Integer |
+| `{user.email}` | The authenticated user's email address | String |
+| `{user.name}` | The user's display name (`first_name last_name`) | String |
+| `{user.is_admin}` | `1` if the user is a DreamFactory admin, `0` otherwise | Integer |
+
+### Row-Level Security with `{user.id}`
+
+The most common use case is restricting database rows to only the records that belong to the authenticated user. For example, if your `orders` table has a `user_id` column that stores the DreamFactory user ID:
+
+```http
+GET /api/v2/mydb/_table/orders?filter=user_id%3D{user.id}
+```
+
+DreamFactory replaces `{user.id}` with the actual user ID of the caller before running the query. User A (ID 42) gets only their orders; user B (ID 99) gets only their orders — using the same API endpoint, no custom code required.
+
+A full curl example:
+
+```bash
+curl -X GET \
+  "https://your-df-instance/api/v2/mydb/_table/orders?filter=user_id%3D{user.id}" \
+  -H "X-DreamFactory-API-Key: YOUR_API_KEY" \
+  -H "X-DreamFactory-Session-Token: USER_SESSION_TOKEN"
+```
+
+### Enforcing Placeholders via Role-Based Access (Recommended)
+
+Passing `{user.id}` as a URL parameter in every client request is convenient, but a determined caller could omit the filter and retrieve all records if the role permits broad `GET` access. The secure approach is to **enforce the filter at the Role level**, so it applies automatically regardless of what the client sends.
+
+To configure a mandatory filter in a Role:
+
+1. In the DreamFactory Admin panel, navigate to **Roles** in the left sidebar.
+2. Open or create the role you want to restrict.
+3. Under **Service Access**, find the database service and table you want to restrict.
+4. Click the table row to expand its settings, then click **Advanced Filters**.
+5. Add a filter condition: field `user_id`, operator `=`, value `{user.id}`.
+6. Save the role.
+
+With this configuration, every API request made by a user assigned to this role automatically has `user_id = {user.id}` appended to any filter — the client cannot override or omit it.
+
+This pattern — combining RBAC with `{user.id}` placeholder filters — is DreamFactory's recommended approach to multi-tenant row-level security. See [Role-Based Access Control](/Security/role-based-access) for a full explanation of the Role Service Access configuration.
+
+### Combining Placeholders with Other Filters
+
+Placeholder tokens work anywhere a value is expected in a filter expression. You can combine them with additional conditions:
+
+```http
+# Orders belonging to the current user that are in 'pending' status
+GET /api/v2/mydb/_table/orders?filter=(user_id={user.id}) AND (status='pending')
+
+# Documents the current user created, sorted newest first
+GET /api/v2/mydb/_table/documents?filter=created_by={user.id}&order=created_at DESC
+```
+
+:::tip Security Best Practice
+Always enforce row-level filters at the Role level (Advanced Filters) rather than relying on client-supplied filter parameters. Role-enforced filters cannot be bypassed by the API caller.
+:::
+
+---
 
 ## Best Practices
 

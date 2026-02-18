@@ -1,12 +1,12 @@
 ---
 sidebar_position: 5
-title: Helm / Kubernetes Installation
+title: Deploy DreamFactory on Kubernetes with Helm
 id: helm-installation
-description: Deploy DreamFactory on Kubernetes using the official Helm chart. Covers configuration, TLS, scaling, and production best practices.
-keywords: [DreamFactory Helm, Kubernetes DreamFactory, Helm chart, DreamFactory K8s, self-hosted API Kubernetes, container deployment]
+description: Self-hosted DreamFactory on Kubernetes: Helm chart setup, TLS config, horizontal scaling, and production deployment guide.
+keywords: [DreamFactory Helm, Kubernetes DreamFactory, Helm chart, DreamFactory K8s, self-hosted API Kubernetes, container deployment, deploy dreamfactory kubernetes]
 ---
 
-# Helm / Kubernetes Installation
+# Deploy DreamFactory on Kubernetes with Helm
 
 This guide covers how to install DreamFactory 7.x using the official Helm chart.
 
