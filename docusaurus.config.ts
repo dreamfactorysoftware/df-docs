@@ -52,6 +52,15 @@ const structuredData = {
       "@type": "Organization",
       name: "DreamFactory Software, Inc.",
     },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate:
+          "https://docs.dreamfactory.com/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
   },
 };
 

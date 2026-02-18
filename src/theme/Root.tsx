@@ -206,6 +206,118 @@ function buildFaqJsonLd(data: (typeof faqSchemas)[string]): object {
   };
 }
 
+const SITE_URL = "https://docs.dreamfactory.com";
+
+const DF_PUBLISHER = {
+  "@type": "Organization",
+  name: "DreamFactory Software, Inc.",
+  url: "https://www.dreamfactory.com",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://www.dreamfactory.com/hs-fs/hubfs/DreamFactory_Horizontal_Color.png",
+  },
+};
+
+// Friendly labels for URL path segments used in breadcrumbs.
+const segmentLabels: Record<string, string> = {
+  "getting-started": "Getting Started",
+  "installing-dreamfactory": "Installing DreamFactory",
+  "docker-installation": "Docker Installation",
+  "linux-installation": "Linux Installation",
+  "windows-installation": "Windows Installation",
+  "helm-installation": "Helm Installation",
+  "raspberrypi-install": "Raspberry Pi Installation",
+  "optimizing-dreamfactory": "Optimizing DreamFactory",
+  "dreamfactory-configuration": "DreamFactory Configuration",
+  "basic-configuration": "Basic Configuration",
+  "date-and-time-configuration": "Date and Time Configuration",
+  "date-time": "Date and Time",
+  "api-generation-and-connections": "API Generation and Connections",
+  "api-types": "API Types",
+  "database": "Database APIs",
+  "generating-database-backed-api": "Generating a Database-Backed API",
+  "file": "File APIs",
+  "converting-excel-to-json": "Converting Excel to JSON",
+  "event-scripts": "Event Scripts",
+  "scripting": "Scripting",
+  "scripting-resources": "Scripting Resources",
+  "system-settings": "System Settings",
+  "config": "Configuration",
+  "cors-ssl": "CORS and SSL",
+  "logstash": "Logstash",
+  Security: "Security",
+  "security-faq": "Security FAQ",
+  "authentication-apis": "Authentication APIs",
+  "role-based-access": "Role-Based Access Control",
+  "sql-server-configuration": "SQL Server Configuration",
+  AI: "AI",
+  "mcp-server": "MCP Server",
+  "mcp-service-creation": "MCP Service Creation",
+  introduction: "Introduction",
+  "introducing-rest-dreamfactory": "Introducing REST & DreamFactory",
+  "upgrading-migrating-dreamfactory": "Upgrading & Migrating",
+};
+
+/** Convert a URL segment to a human-readable label. */
+function segmentToLabel(segment: string): string {
+  if (segmentLabels[segment]) return segmentLabels[segment];
+  // Fallback: replace hyphens with spaces, title-case each word
+  return segment
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function buildBreadcrumbJsonLd(path: string): object | null {
+  const segments = path.split("/").filter(Boolean);
+  if (segments.length === 0) return null;
+
+  const items = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: SITE_URL,
+    },
+    ...segments.map((seg, i) => ({
+      "@type": "ListItem",
+      position: i + 2,
+      name: segmentToLabel(seg),
+      item: `${SITE_URL}/${segments.slice(0, i + 1).join("/")}`,
+    })),
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items,
+  };
+}
+
+function buildTechArticleJsonLd(path: string): object | null {
+  const segments = path.split("/").filter(Boolean);
+  if (segments.length === 0) return null;
+
+  // Use the last segment as headline
+  const headline = segmentToLabel(segments[segments.length - 1]);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline,
+    url: `${SITE_URL}${path}`,
+    author: DF_PUBLISHER,
+    publisher: DF_PUBLISHER,
+    image: `${SITE_URL}/img/logo.png`,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}${path}`,
+    },
+  };
+}
+
+// Pages to exclude from TechArticle/Breadcrumb schemas (non-doc pages).
+const excludedPaths = ["/search", "/404"];
+
 export default function Root({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
 
@@ -220,8 +332,33 @@ export default function Root({ children }: { children: React.ReactNode }) {
   // Check for FAQ schema match
   const faq = faqSchemas[normalizedPath];
 
+  // Build BreadcrumbList and TechArticle for doc pages
+  const isDocPage =
+    normalizedPath.length > 0 &&
+    !excludedPaths.some((p) => normalizedPath.startsWith(p));
+  const breadcrumb = isDocPage
+    ? buildBreadcrumbJsonLd(normalizedPath)
+    : null;
+  const techArticle = isDocPage
+    ? buildTechArticleJsonLd(normalizedPath)
+    : null;
+
   return (
     <>
+      {breadcrumb && (
+        <Head>
+          <script type="application/ld+json">
+            {JSON.stringify(breadcrumb)}
+          </script>
+        </Head>
+      )}
+      {techArticle && (
+        <Head>
+          <script type="application/ld+json">
+            {JSON.stringify(techArticle)}
+          </script>
+        </Head>
+      )}
       {howTo && (
         <Head>
           <script type="application/ld+json">
