@@ -1,4 +1,9 @@
 {
   "label": "Installing DreamFactory",
-  "position": 1
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "DreamFactory Installation Guides",
+    "description": "Deploy DreamFactory on any platform — Linux, Windows Server, Docker, Kubernetes (Helm), or Raspberry Pi. All guides cover self-hosted installation with step-by-step configuration for PHP, Nginx/IIS, and your chosen database."
+  }
 }

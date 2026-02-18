@@ -54,3 +54,54 @@ Here is an example of a role that gives GET (read) level access to API Generatio
 <img src="/img/database-backed-api/mysql-example-role.png" width="800" alt="Basic all access role for GETs" />
 
 This role is a good starting point for individuals that will be making API calls using API Docs. Being GET only the Database will not be permanently altered by accident. From here you can change or add additional permissons to fine tune the users permissions in the UI. For instance you could add PATCH or DELETE to the Access column if the user needs those for testing purposes.
+
+## RBAC and SSO Integration
+
+DreamFactory's RBAC system integrates directly with your identity provider (IdP) when users authenticate via SSO (SAML 2.0, OAuth 2.0, LDAP, or Active Directory). This section explains how roles are assigned at login, how to configure attribute-to-role mapping, and how identity passthrough works in the context of RBAC.
+
+### How Roles Are Assigned via SSO
+
+When a user authenticates through an SSO service configured in DreamFactory, the platform evaluates IdP-supplied attributes — such as group membership, department, or job title — and maps them to DreamFactory roles. This mapping is configured per SSO service and happens automatically at login, so users inherit the correct API permissions without any manual role assignment.
+
+The general flow is:
+
+1. User authenticates against your IdP (e.g., Okta, Azure AD, Google Workspace).
+2. The IdP sends a SAML assertion or OAuth token containing user attributes (e.g., `memberOf: CN=DataAnalysts,OU=Groups,DC=corp,DC=example,DC=com`).
+3. DreamFactory evaluates the Role Mapping rules configured for that SSO service.
+4. The matching DreamFactory role(s) are applied to the user's session.
+5. An API key bound to those roles controls which endpoints and HTTP methods the user can call.
+
+For details on configuring SSO services, see [SSO & Authentication](/Security/authenticating-your-apis).
+
+### Configuring Attribute-to-Role Mapping
+
+Role mapping is configured per SSO service in the DreamFactory admin panel:
+
+1. Navigate to **Admin > Services** and open your SSO service (e.g., `azure-ad-saml`).
+2. Click the **Role Mapping** tab.
+3. Add a mapping rule specifying the IdP attribute name, the expected value, and the target DreamFactory role.
+
+**Example configuration** — mapping an Active Directory group to a DreamFactory role:
+
+| IdP Attribute | Attribute Value | DreamFactory Role |
+|---|---|---|
+| `memberOf` | `CN=DataAnalysts,OU=Groups,DC=corp,DC=example,DC=com` | `Analyst-Read-Only` |
+| `memberOf` | `CN=DataEngineers,OU=Groups,DC=corp,DC=example,DC=com` | `Engineer-Full-Access` |
+| `department` | `Finance` | `Finance-ReadWrite` |
+
+The `Analyst-Read-Only` role in this example would be configured with GET-only access to the relevant database services, while `Engineer-Full-Access` would permit GET, POST, PUT, PATCH, and DELETE. Users in neither group fall back to the default role configured on the SSO service.
+
+### Identity Passthrough and Database Audit Logs
+
+DreamFactory's identity passthrough feature extends RBAC beyond the API layer into your underlying data source. When a user authenticates via SSO and DreamFactory is configured to pass their identity to the database connection, the database's own audit log records the real user identity — not the generic DreamFactory service account.
+
+**Why this matters for compliance**: In environments subject to HIPAA, SOX, PCI-DSS, or internal audit requirements, database-level audit logs must show which individual accessed or modified data. Without identity passthrough, all database activity appears to come from a single shared service account, which is insufficient for per-user audit trails.
+
+**How it works in practice**:
+
+1. User `alice@corp.example.com` authenticates via SAML SSO.
+2. DreamFactory applies the role mapped from Alice's AD group.
+3. When Alice's API call reaches the database, DreamFactory sets the database session context to Alice's identity (e.g., via `SET SESSION application_name = 'alice@corp.example.com'` in PostgreSQL, or equivalent in other databases).
+4. The database audit log records Alice's identity for that query.
+
+This behavior is configured on the database service connection — contact DreamFactory support or review the [database service documentation](/api-generation-and-connections/api-types/database/generating-a-database-backed-api) for connector-specific configuration options.

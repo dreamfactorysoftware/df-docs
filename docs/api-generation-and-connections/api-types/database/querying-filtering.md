@@ -24,6 +24,9 @@ import TabItem from '@theme/TabItem';
 | `ids` | Get by IDs | `ids=1,2,3` |
 
 ## Overview
+
+This guide assumes you have already [generated a database-backed API](/api-generation-and-connections/api-types/database/generating-a-database-backed-api). If not, start there first to connect your database and generate your REST API endpoints before applying filters and queries.
+
 DreamFactory provides powerful filtering capabilities for database operations, allowing you to precisely query and manipulate your data through the REST API. This guide will walk you through the basics and advanced features of filtering in DreamFactory.
 
 ## Basic Usage

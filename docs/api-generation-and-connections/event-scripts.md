@@ -48,6 +48,8 @@ DreamFactory event scripts support the following languages:
 
 Community Edition users can use PHP for all event scripting. Enterprise Edition unlocks Python and Node.js for teams that prefer those languages or need ecosystem-specific libraries (e.g., NumPy for data transformation, npm packages for webhook integration).
 
+See [Scripting Resources](/api-generation-and-connections/api-types/scripting/scripting-resources) for sample scripts and language reference documentation for each supported engine.
+
 ## Common Event Script Use Cases
 
 ### Validating Request Parameters
@@ -94,7 +96,7 @@ event['response']['content']['resource'] = records
 
 ### Enforcing Row-Level Security
 
-Automatically inject a WHERE clause filter on all GET requests for a service so that users only ever retrieve records belonging to their own account — regardless of what filter parameters they pass.
+Automatically inject a WHERE clause filter on all GET requests for a service so that users only ever retrieve records belonging to their own account — regardless of what filter parameters they pass. For declarative access control without scripting, see [Role-Based Access Control](/Security/role-based-access).
 
 ```php
 <?php
@@ -317,7 +319,7 @@ DF_SCRIPT_TIMEOUT=15
 
 ### Accessing platform resources from within scripts
 
-Scripts have access to the `$platform` (PHP) or `platform` (Python/Node.js) object for making internal DreamFactory API calls:
+Scripts have access to the `$platform` (PHP) or `platform` (Python/Node.js) object for making internal DreamFactory API calls. To create a fully custom scripted API service (rather than attaching logic to an existing endpoint), see [Scripted Services and Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints).
 
 ```php
 <?php
@@ -338,3 +340,9 @@ Internal API calls made via `$platform['api']` bypass authentication (the script
 5. **Monitor performance**: Be mindful of script execution time, especially for pre- and post-process scripts.
 
 By mastering event scripts, you can extend DreamFactory's functionality and create powerful, customized API behaviors tailored to your specific needs.
+
+## Related Documentation
+
+- [Scripting Resources](/api-generation-and-connections/api-types/scripting/scripting-resources) — Sample scripts, event/platform object reference, and language-specific documentation for PHP, Python, and Node.js.
+- [Scripted Services and Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints) — Create fully custom standalone API services using scripting, rather than attaching scripts to existing endpoints.
+- [Role-Based Access Control](/Security/role-based-access) — Configure declarative access control per service, endpoint, and HTTP method without writing scripts.

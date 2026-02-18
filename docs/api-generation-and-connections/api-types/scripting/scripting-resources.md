@@ -8,6 +8,7 @@ keywords: [DreamFactory scripting, PHP scripts, Python API scripts, Node.js API,
 
 # Scripting resources
 
+Event scripts attach to existing API endpoints and run at request time — see [Event Scripts](/api-generation-and-connections/event-scripts) for setup instructions and use cases. For custom standalone API services built entirely from script, see [Scripted Services and Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints).
 
 This page provides a comprehensive overview of the resources available for scripting in DreamFactory, including links to sample scripts and documentation references for event scripting and scripted services.
 
