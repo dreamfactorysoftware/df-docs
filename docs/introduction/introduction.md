@@ -4,13 +4,57 @@ title: DreamFactory Docs
 id: introduction
 slug: /
 description: DreamFactory is a self-hosted platform providing governed API access to any data source for enterprise apps and local LLMs.
-keywords: [DreamFactory, governed API access, self-hosted API platform, enterprise data access, API security, RBAC, database API, LLM data access]
+keywords: [DreamFactory, governed API access, self-hosted API platform, enterprise data access, API security, RBAC, database API, LLM data access, dreamfactory open source, dreamfactory community edition, what is dreamfactory, dreamfactory version]
 difficulty: beginner
 ---
 
 # DreamFactory Documentation
 
 DreamFactory is a secure, self-hosted enterprise data access platform that provides governed API access to any data source. Connect enterprise applications and on-prem LLMs to databases, file storage, and external services — with role-based access control, identity passthrough, and full API lifecycle management.
+
+## What is DreamFactory?
+
+DreamFactory is a self-hosted API generation platform that instantly creates secure, governed REST and GraphQL APIs for any data source — without writing backend code. Point DreamFactory at a MySQL, PostgreSQL, Oracle, MongoDB, or any of 20+ supported databases and it introspects the schema, generates a fully documented API, and enforces access control — all through a point-and-click admin interface. The same applies to file storage (S3, SFTP, Azure Blob), email providers, caching services (Redis, Memcached), and legacy SOAP services.
+
+DreamFactory is available in two editions. **DreamFactory Community Edition** is open source under the Apache 2.0 license — the full source code is available on [GitHub](https://github.com/dreamfactorysoftware/dreamfactory) and can be self-hosted at no cost. **DreamFactory Enterprise** adds SSO and identity passthrough (SAML, LDAP, Active Directory, OAuth), advanced RBAC with field-level permissions, commercial database connectors (Oracle, IBM Db2, SAP HANA), dedicated support SLAs, and Logstash/ELK audit logging. Both editions are fully self-hosted — no data leaves your infrastructure.
+
+The current stable release is **DreamFactory 4.x**. See the [GitHub releases page](https://github.com/dreamfactorysoftware/dreamfactory/releases) for the latest version, changelog, and upgrade notes. If you are upgrading from an earlier version, see the [Upgrading & Migrating DreamFactory](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory) guide.
+
+## Quick Navigation
+
+**Developers — build and customize APIs**
+- [API Generation: Databases](/api-generation-and-connections/api-types/database/generating-a-database-backed-api) — Connect MySQL, PostgreSQL, MongoDB, SQL Server, Oracle and more
+- [Event Scripts](/api-generation-and-connections/event-scripts) — Attach PHP, Python, or Node.js logic to any API event
+- [Scripted Services & Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints) — Build entirely custom API services from script
+- [Querying & Filtering](/api-generation-and-connections/api-types/database/querying-and-filtering) — Advanced filtering, sorting, pagination, and field selection
+
+**DevOps — install and operate DreamFactory**
+- [Docker Installation](/getting-started/installing-dreamfactory/docker-installation) — Quickest path to a running instance
+- [Kubernetes / Helm Installation](/getting-started/installing-dreamfactory/helm-installation) — Production-grade cluster deployment
+- [Linux Installation](/getting-started/installing-dreamfactory/linux-installation) — Traditional Linux server setup
+- [Windows Installation](/getting-started/installing-dreamfactory/windows-installation) — Windows Server with IIS
+
+**Security teams — govern API access**
+- [Role-Based Access Control](/Security/role-based-access) — Per-endpoint, per-method, per-field permissions
+- [SSO & Authentication](/Security/authenticating-your-apis) — SAML, LDAP, OAuth, OpenID Connect, identity passthrough
+- [API Keys](/api-generation-and-connections/api-keys) — Generate and scope API keys per role
+
+**Data teams — connect and query data**
+- [Database API Overview](/api-generation-and-connections/api-types/database/database-overview) — Supported databases and connector configuration
+- [Querying & Filtering](/api-generation-and-connections/api-types/database/querying-and-filtering) — DreamFactory's query parameter syntax
+- [Converting Excel to JSON](/api-generation-and-connections/api-types/file/converting-excel-to-json) — Transform Excel workbooks into queryable REST APIs
+
+## Deployment Options
+
+DreamFactory runs wherever your data lives — no cloud dependency, no vendor lock-in.
+
+| Platform | Description | Guide |
+|---|---|---|
+| **Docker** | Single-command startup using the official Docker image; ideal for dev environments and quick evaluations | [Docker Installation](/getting-started/installing-dreamfactory/docker-installation) |
+| **Kubernetes / Helm** | Production-grade deployment with the official Helm chart; supports horizontal scaling and secrets management | [Helm Installation](/getting-started/installing-dreamfactory/helm-installation) |
+| **Linux** | Native installation on Ubuntu, Debian, CentOS, RHEL, or Amazon Linux using the automated installer script | [Linux Installation](/getting-started/installing-dreamfactory/linux-installation) |
+| **Windows Server** | IIS-based deployment on Windows Server 2019/2022 with PHP FastCGI | [Windows Installation](/getting-started/installing-dreamfactory/windows-installation) |
+| **Raspberry Pi** | Lightweight ARM deployment for edge computing and IoT data gateway use cases | [Linux Installation](/getting-started/installing-dreamfactory/linux-installation) |
 
 ---
 
