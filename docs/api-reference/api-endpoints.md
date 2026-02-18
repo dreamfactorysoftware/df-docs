@@ -452,40 +452,51 @@ Delete an application.
 
 ### Session Management
 
-#### `POST /api/v2/user/session`
+> ⚠️ **Admin vs regular user login use different endpoints.** See [Authentication](authentication.md) for the full breakdown.
 
-Login and create a session.
+#### `POST /api/v2/system/admin/session` — Admin Login
 
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "your-password"
-}
+Requires `X-DreamFactory-API-Key` header and `Content-Type: application/json`.
+
+```bash
+curl -X POST "https://example.com/api/v2/system/admin/session" \
+  -H "Content-Type: application/json" \
+  -H "X-DreamFactory-API-Key: your-admin-app-api-key" \
+  -d '{"email":"admin@example.com","password":"yourpassword"}'
 ```
 
-**Example Response:**
+#### `POST /api/v2/user/session` — Regular User Login
+
+```bash
+curl -X POST "https://example.com/api/v2/user/session" \
+  -H "Content-Type: application/json" \
+  -H "X-DreamFactory-API-Key: your-app-api-key" \
+  -d '{"email":"user@example.com","password":"yourpassword"}'
+```
+
+**Response (both endpoints):**
 ```json
 {
   "session_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-  "id": 5,
-  "name": "User Name",
-  "email": "user@example.com",
-  "is_sys_admin": false,
-  "session_id": "abc123..."
+  "id": 1,
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "is_sys_admin": true,
+  "token_expiry_date": "2026-02-19 19:45:18"
 }
 ```
 
-#### `GET /api/v2/user/session`
+#### `GET /api/v2/system/admin/session`
 
-Get current session info.
+Refresh token and get current session info.
 
-#### `DELETE /api/v2/user/session`
+#### `DELETE /api/v2/system/admin/session`
 
 Logout and destroy session.
 
 ```bash
-curl -X DELETE "https://example.com/api/v2/user/session" \
+curl -X DELETE "https://example.com/api/v2/system/admin/session" \
+  -H "X-DreamFactory-API-Key: your-api-key" \
   -H "X-DreamFactory-Session-Token: your-session-token"
 ```
 
