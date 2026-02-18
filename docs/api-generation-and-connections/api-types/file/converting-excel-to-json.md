@@ -1,10 +1,12 @@
 ---
 sidebar_position: 3
-title: Converting Excel to a JSON Response
+title: Convert Excel to JSON via REST API
 id: converting-excel-to-json
+description: Turn Excel workbooks and CSV files into JSON responses via DreamFactory's REST API. Supports S3, SFTP, Azure Blob, and local storage.
+keywords: [Excel to JSON API, Excel REST API, CSV to JSON, Excel API converter, DreamFactory file connector]
 ---
 
-# Converting Excel to a JSON Response
+# Convert Excel to JSON via REST API
 
 DreamFactory's Excel connector is capable of turning an entire Excel workbook or specific worksheet into a JSON response (CSV files are also supported). Workbooks can be retrieved from any DreamFactory supported file-system (AWS S3, SFTP, and Azure Blob Storage, among others), or as in the example we will run through below, uploaded directly to the server's local file system. Access is controlled just like any other connector with role-based access control and API keys.
 

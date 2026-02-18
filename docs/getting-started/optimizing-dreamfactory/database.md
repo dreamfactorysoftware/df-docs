@@ -1,7 +1,9 @@
 ---
 sidebar_position: 1
-title: Database APIs
+title: Optimizing Database API Performance
 id: database-apis
+description: Optimize DreamFactory database API performance with indexing, caching, and resource allocation best practices.
+keywords: [DreamFactory performance, database API optimization, API caching, database indexing, DreamFactory tuning]
 ---
 
 # Database APIs

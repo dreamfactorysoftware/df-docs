@@ -1,7 +1,9 @@
 ---
 sidebar_position: 5
-title: Configuring Windows Authentication for SQL Server
+title: SQL Server Windows Authentication Setup
 id: sqlsrv-config
+description: Configure Windows Authentication for DreamFactory's SQL Server connector using IIS application pool identity and Active Directory.
+keywords: [SQL Server Windows authentication, DreamFactory SQL Server, IIS application pool, Active Directory SQL, Windows integrated auth]
 ---
 
 # Configuring Windows Authentication for SQL Server

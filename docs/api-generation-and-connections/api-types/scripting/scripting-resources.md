@@ -2,6 +2,8 @@
 sidebar_position: 2
 title: Scripting Resources
 id: scripting-resources
+description: Sample scripts, language references, and documentation for DreamFactory event scripting and scripted API services.
+keywords: [DreamFactory scripting, PHP scripts, Python API scripts, Node.js API, scripting examples, API automation]
 ---
 
 # Scripting resources

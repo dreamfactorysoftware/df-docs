@@ -1,10 +1,10 @@
 ---
 sidebar_position: 5
-title: Authenticating your APIs
+title: SSO & API Authentication Setup
 id: authenticating-your-apis
 draft: false
-description: Configure API authentication with Active Directory, LDAP, OAuth, SAML 2.0, OpenID Connect, Okta, and Auth0 SSO providers.
-keywords: [API authentication, OAuth, SAML, LDAP, Active Directory, SSO, OpenID Connect, Okta, Auth0, JWT]
+description: Configure SSO and API authentication with Active Directory, LDAP, OAuth, SAML 2.0, OpenID Connect, Okta, and Auth0 in DreamFactory.
+keywords: [DreamFactory SSO, API authentication, OAuth, SAML, LDAP, Active Directory, SSO API, OpenID Connect, Okta, Auth0, identity passthrough]
 difficulty: intermediate
 ---
 
