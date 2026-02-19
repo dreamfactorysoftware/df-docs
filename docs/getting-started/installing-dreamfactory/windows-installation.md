@@ -159,9 +159,10 @@ The rest of the procedure involves two primary objectives: getting DreamFactory 
 You might need to enable file name extentions in the **View** tab of the file explorer.
 :::
 
-3. Open the newly created php.ini and copy/paste the following at the bottom of the file: 
+3. Open the newly created php.ini and copy/paste the following at the bottom of the file:
 
-```
+```ini
+; Extensions required by DreamFactory
 extension=ldap
 extension=curl
 extension=ffi
@@ -189,11 +190,39 @@ extension=xsl
 extension=php_pdo_sqlsrv.dll
 extension=php_sqlsrv.dll
 
+; OPcache — required for acceptable performance
 zend_extension=opcache
-
 opcache.enable=1
+opcache.memory_consumption=256
+opcache.interned_strings_buffer=16
+opcache.max_accelerated_files=20000
+opcache.revalidate_freq=0
+opcache.validate_timestamps=1
+opcache.fast_shutdown=1
+opcache.enable_cli=0
+
+; DreamFactory recommended PHP settings
+memory_limit=256M
+max_execution_time=300
+max_input_time=300
+post_max_size=100M
+upload_max_filesize=100M
+cgi.fix_pathinfo=0
+display_errors=Off
+display_startup_errors=Off
+expose_php=Off
+date.timezone=UTC
 ```
+
 4. Save and close php.ini.
+
+:::note
+The `memory_limit` of 256M is a minimum. If you're running complex joins, large result sets, or heavy scripting workloads, increase to 512M.
+:::
+
+:::warning
+Do not skip the OPcache tuning block. Running OPcache with default settings on a DreamFactory installation will result in degraded performance — DreamFactory's codebase exceeds the default `max_accelerated_files` limit of 10,000 files.
+:::
 
 :::note
 You can manually add PHP to your enviornment variable path, however this is done automatically during the Composer installation. 
@@ -266,6 +295,26 @@ Finally, add your license key to the end of the .env file located in the dreamfa
 
 :::note Ensure that you remove curly brackets seen in the example above.:::
 
+### Production .env settings
+
+Before going live, update the following values in your `.env` file. The defaults from `df:env` are appropriate for initial setup and testing but must be changed for any production or customer-facing deployment:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_LOG_LEVEL=warning
+```
+
+| Setting | Dev Default | Production Value | Why |
+|---------|-------------|-----------------|-----|
+| `APP_ENV` | `local` | `production` | Enables Laravel production optimizations |
+| `APP_DEBUG` | `true` | `false` | Prevents stack traces from appearing in API error responses |
+| `APP_LOG_LEVEL` | `debug` | `warning` | Prevents logs from flooding with routine request/response info |
+
+:::danger
+Leaving `APP_DEBUG=true` in production means every PHP exception will return a full stack trace — including file paths, SQL queries, and environment details — to anyone calling your API. Change this before pointing any external traffic at the server.
+:::
+
 ### Test DreamFactory
 
 In order to run a test/development Laravel server, from the dreamfactory installation directory run:
@@ -332,11 +381,37 @@ If your php.ini is built correctly you should be able to access **Enable or disa
 
 ### FastCGI settings
 
-There is one setting change to be made to the default IIS error handling. 
+There are a few setting changes to make to the default FastCGI configuration.
 
-From the server view, select **FastCGI Settings**, then select the handler you made earlier and click **Edit...**. 
+From the server view, select **FastCGI Settings**, then select the handler you made earlier and click **Edit...**.
 
-Change **Standard Error Mode** to **IgnoreAndReturn200** and click **OK**. 
+Make the following changes:
+
+| Setting | Value | Why |
+|---------|-------|-----|
+| **Standard Error Mode** | `IgnoreAndReturn200` | Prevents PHP stderr from generating IIS 500 errors |
+| **Activity Timeout** | `120` | Gives PHP scripts enough time to complete |
+| **Request Timeout** | `300` | Must be ≥ `max_execution_time` in php.ini |
+| **Max Instances** | `20` | Allows concurrent requests; increase for high-traffic installs |
+
+Click **OK** to save.
+
+:::warning
+The **Standard Error Mode** change is required. Leaving it at the default `ReturnStdErrIn500` will cause DreamFactory to return 500 errors for normal PHP warnings and notices.
+:::
+
+### Application Pool tuning
+
+From the IIS Manager left panel, click **Application Pools**, select the DreamFactory pool, and click **Advanced Settings** on the right.
+
+Make the following changes:
+
+| Setting | Value | Why |
+|---------|-------|-----|
+| **Start Mode** | `AlwaysRunning` | Eliminates cold-start latency after app pool recycles |
+| **Idle Time-out (minutes)** | `0` | Prevents IIS from suspending the pool between requests |
+
+Click **OK** to save, then recycle the app pool.
 
 ### Request filtering
 
@@ -379,6 +454,60 @@ Sometimes these permisions don't set correctly with the properties window. If yo
 ### Accessing DreamFactory
 
 After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are some of the many additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, consult Microsoft's documentation as needed.
+
+## Post-Installation Configuration
+
+### Scheduled task (required for DreamFactory scheduler)
+
+DreamFactory includes a built-in task scheduler for running scripts, reports, and maintenance on a schedule. For it to work, Windows Task Scheduler must call `php artisan schedule:run` every minute.
+
+Open **Task Scheduler** and create a new task with the following settings:
+
+- **Name:** `DreamFactory Scheduler`
+- **Trigger:** Daily, repeat every **1 minute** indefinitely
+- **Action:** Start a program
+  - **Program:** `C:\php\php.exe`
+  - **Arguments:** `artisan schedule:run`
+  - **Start in:** `C:\inetpub\wwwroot\dreamfactory`
+- **Run whether user is logged on or not:** checked
+- **Run with highest privileges:** checked
+
+:::note
+Without this task, any scheduled scripts or workflows configured in the DreamFactory UI will never execute. There will be no error — they just won't run.
+:::
+
+### Node.js scripting on IIS — known issue
+
+If you are using Node.js scripted APIs with `platform.api.post()` (or PUT/PATCH) for internal loopback calls, you must explicitly pass a `Content-Length` header. Without it, Node.js uses chunked transfer encoding, which IIS/FastCGI does not handle correctly on loopback connections — the request hangs until FastCGI's request timeout fires.
+
+**This affects POST, PUT, and PATCH only. GET is not affected.**
+
+Add `Content-Length` to every `platform.api.post()` call:
+
+```javascript
+const payload = JSON.stringify({ resource: [record] });
+
+platform.api.post('myservice/_table/mytable', payload, {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(payload)  // required on IIS
+}, function(result, response) {
+    // handler
+});
+```
+
+The same applies to `platform.api.put()` and `platform.api.patch()`.
+
+### Scripting temp file cleanup
+
+DreamFactory writes temporary files to `storage\scripting\` when executing Node.js scripts. These files are not automatically cleaned up. On a busy instance they will accumulate over time.
+
+Add a second scheduled task to clean up files older than 1 day:
+
+- **Name:** `DreamFactory Scripting Cleanup`
+- **Trigger:** Daily at a low-traffic time (e.g. 2:00 AM)
+- **Action:** Start a program
+  - **Program:** `cmd.exe`
+  - **Arguments:** `/c forfiles /p "C:\inetpub\wwwroot\dreamfactory\storage\scripting" /s /m *.js /d -1 /c "cmd /c del @path" 2>nul`
 
 ## Adding SSL
 
