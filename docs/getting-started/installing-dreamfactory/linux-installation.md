@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: Linux Installation: Ubuntu, RHEL, CentOS & Fedora Guide
+title: "Linux Installation: Ubuntu, RHEL, CentOS & Fedora Guide"
 id: linux-installation
 description: Install DreamFactory on Ubuntu, RHEL, CentOS, Debian, or Fedora using the automated installer. Self-hosted API platform deployment.
 keywords: [DreamFactory Linux install, Ubuntu DreamFactory, RHEL DreamFactory, CentOS DreamFactory, Fedora DreamFactory, Debian DreamFactory, install DreamFactory Ubuntu 22.04, self-hosted API Linux, DreamFactory automated installer]
