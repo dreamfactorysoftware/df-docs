@@ -10,6 +10,109 @@ import TabItem from '@theme/TabItem';
 
 # Upgrading and Migrating DreamFactory
 
+## Current Version & Changelog
+
+The current stable release of DreamFactory is **v7.x**. For the full list of releases, version history, and release notes, see the [DreamFactory GitHub Releases page](https://github.com/dreamfactorysoftware/dreamfactory/releases).
+
+Each release includes a changelog describing new features, bug fixes, and any breaking changes. Before upgrading, review the changelog for your target version to identify any actions required on your end (e.g., PHP version changes, `.env` configuration additions, or deprecated API behaviors).
+
+To check the version currently running on your instance, log in to the DreamFactory admin panel and navigate to **Admin > About DreamFactory**, or run:
+
+```bash
+php artisan df:version
+```
+
+## Upgrade Path by Version
+
+Use the table below to identify the appropriate upgrade method based on your current and target versions:
+
+| From Version | To Version | Method | Notes |
+|---|---|---|---|
+| 4.x | 5.x | In-place (`git pull`) | PHP 7.4+ required; run `php artisan migrate --seed` |
+| 5.x | 6.x | In-place (`git pull`) | Review `.env` for new required variables; check deprecated connectors |
+| 6.x | 7.x | In-place or fresh migration | PHP 8.1+ required; significant dependency updates — test in staging first |
+| Any | Cross-server | Full migration (see below) | Use the Major Version Migration process to copy `.env` and system database |
+
+**Breaking changes to watch for:**
+- **3.x → 4.x**: System database schema changed significantly — a fresh migration is required; data can be re-imported via the 4.x import tools.
+- **5.x → 6.x**: Several legacy connectors were removed; verify your active services are still supported.
+- **6.x → 7.x**: PHP minimum version bumped to 8.1; Composer 2 required; some deprecated API behaviors removed.
+
+## Pre-Upgrade Checklist
+
+Before starting any upgrade, complete these steps to ensure you can recover if something goes wrong:
+
+1. **Back up the `.env` file** — this file contains your `APP_KEY`, database credentials, and all environment-specific configuration. Without it, encrypted data is unrecoverable.
+
+   ```bash
+   cp /opt/dreamfactory/.env /opt/dreamfactory/.env.backup.$(date +%Y%m%d)
+   ```
+
+2. **Back up the system database** — the system database stores all your API configurations, roles, scripts, and user accounts. Use the [Step 2: Back Up the System Database](#step-2-back-up-the-system-database) instructions below for your database type.
+
+3. **Note your PHP version** — confirm the target DreamFactory version supports your current PHP installation:
+
+   ```bash
+   php --version
+   ```
+
+4. **Note custom scripts and connectors** — list any event scripts, scripted services, or custom connectors you've added so you can verify they still function after the upgrade.
+
+5. **Check scheduled jobs and cron tasks** — if you use DreamFactory's scheduler or have external cron jobs calling DreamFactory APIs, document them before upgrading.
+
+6. **Test in a staging environment first** — if possible, clone your instance to a staging server and run the upgrade there before applying it to production.
+
+## Rolling Back an Upgrade
+
+If an upgrade fails or causes unexpected behavior, restore your previous state using the backups created in the Pre-Upgrade Checklist:
+
+### Step 1: Restore the application files
+
+If you performed an in-place upgrade via `git pull`, revert to the previous commit:
+
+```bash
+cd /opt/dreamfactory
+git log --oneline -5   # identify the commit hash before the upgrade
+git checkout <previous-commit-hash>
+composer install --no-dev --ignore-platform-reqs
+```
+
+If you made a file-based backup (`cp -r dreamfactory dreamfactory.backup`), restore it:
+
+```bash
+cp -r /opt/dreamfactory.backup /opt/dreamfactory
+```
+
+### Step 2: Restore the system database
+
+Use your database-specific method to restore the `dump.sql` backup:
+
+```bash
+# MySQL example
+mysql -u root -p dreamfactory < /path/to/dump.sql
+
+# PostgreSQL example
+psql -U root -d dreamfactory < /path/to/dump.sql
+```
+
+### Step 3: Restore the .env file
+
+```bash
+cp /opt/dreamfactory/.env.backup.YYYYMMDD /opt/dreamfactory/.env
+```
+
+### Step 4: Clear caches and restart
+
+```bash
+php artisan cache:clear
+php artisan config:clear
+sudo systemctl restart nginx
+```
+
+After restoring, verify the admin panel loads correctly and your APIs respond as expected.
+
+---
+
 This guide covers two different scenarios for updating your DreamFactory installation:
 
 - **Minor Version Upgrades**: In-place updates for patch releases and minor versions (e.g., 7.0.0 → 7.1.0)

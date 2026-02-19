@@ -127,6 +127,30 @@ const faqSchemas: Record<
   string,
   { questions: { question: string; answer: string }[] }
 > = {
+  "/introduction/introducing-rest-dreamfactory": {
+    questions: [
+      {
+        question: "What is DreamFactory?",
+        answer:
+          "DreamFactory is a self-hosted API management platform that auto-generates REST and GraphQL APIs for any data source including databases, file storage, and IoT systems, with built-in RBAC, SSO, and audit logging.",
+      },
+      {
+        question: "What are DreamFactory's key features?",
+        answer:
+          "DreamFactory's key features include: governed API access with role-based access control (RBAC) per endpoint, HTTP method, and field; SSO and identity passthrough for LDAP, Active Directory, SAML 2.0, and OAuth 2.0; 20+ database connectors including MySQL, PostgreSQL, SQL Server, Oracle, and MongoDB; event scripting with PHP, Python, and Node.js; no-code API generation via schema introspection; self-hosted deployment on Linux, Windows Server, Docker, or Kubernetes; and auto-generated OpenAPI/Swagger documentation.",
+      },
+      {
+        question: "Is DreamFactory open source?",
+        answer:
+          "DreamFactory Community Edition is open source under the Apache 2.0 license. An Enterprise Edition with additional features including advanced SSO, commercial support, and additional database connectors is also available.",
+      },
+      {
+        question: "What databases does DreamFactory support?",
+        answer:
+          "DreamFactory supports 20+ databases including MySQL, PostgreSQL, Microsoft SQL Server, Oracle, MongoDB, SQLite, MariaDB, Cassandra, DynamoDB, IBM Db2, Snowflake, AlloyDB, and more. All databases are exposed through a unified REST API interface.",
+      },
+    ],
+  },
   "/Security/security-faq": {
     questions: [
       {

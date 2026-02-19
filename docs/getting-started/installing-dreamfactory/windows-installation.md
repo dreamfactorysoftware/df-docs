@@ -3,7 +3,7 @@ sidebar_position: 4
 title: Windows Installation
 id: windows-installation
 description: Step-by-step guide to installing DreamFactory on Windows Server 2019/2022 with IIS, PHP, and required dependencies.
-keywords: [DreamFactory Windows install, Windows Server IIS, DreamFactory installation, self-hosted API Windows]
+keywords: [DreamFactory Windows install, Windows Server IIS, DreamFactory installation, self-hosted API Windows, DreamFactory Windows Server, PHP IIS FastCGI, DreamFactory troubleshooting]
 ---
 
 
@@ -11,9 +11,25 @@ keywords: [DreamFactory Windows install, Windows Server IIS, DreamFactory instal
 
 This page contains installation instructions for Windows.
 
-## Prerequisites
+## Prerequisites Checklist
 
-These instructions apply only to a fresh 64-bit Windows 2019 or 2022 Server. The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You must be able to access the GUI of the server using something like RDP, have the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to run on the same IIS instance as DreamFactory, however this is not typically supported. 
+Before starting the installation, confirm all of the following are in place:
+
+- [ ] **Windows Server 2019 or 2022** (64-bit) — or Windows 10/11 for local development. This guide does not cover 32-bit environments.
+- [ ] **IIS 10+ with CGI feature enabled** — the CGI role is required for PHP FastCGI. Enable it with:
+  ```powershell
+  Enable-WindowsOptionalFeature -Online -FeatureName IIS-CGI
+  ```
+- [ ] **PHP 8.1 or 8.3** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/).
+- [ ] **Composer** — PHP dependency manager. Download the installer from [getcomposer.org](https://getcomposer.org/Composer-Setup.exe).
+- [ ] **Git for Windows** — required to clone the DreamFactory repository. Download from [git-scm.com](https://git-scm.com/download/win).
+- [ ] **Visual C++ 2015–2019 Redistributable** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/16/release/VC_redist.x64.exe).
+- [ ] **URL Rewrite Module for IIS** — required for Laravel's routing. Download from [Microsoft](https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi).
+- [ ] **Supported system database** — for the DreamFactory system database, use SQLite (default, easiest), MySQL 8.0+, PostgreSQL 13+, or SQL Server. SQLite requires no additional setup and is recommended for initial installation.
+- [ ] **Local Administrator account** — IIS needs elevated permissions for directory access and FastCGI configuration.
+- [ ] **DreamFactory license key** — required for Enterprise edition. Contact [DreamFactory support](https://www.dreamfactory.com/contact) if you do not have one.
+
+ The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You must be able to access the GUI of the server using something like RDP, have the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to run on the same IIS instance as DreamFactory, however this is not typically supported. 
 
 A local Administrator account is also required at minimum for testing permissions, and possibly in perpetuity for IIS permissions.  
 
@@ -433,3 +449,109 @@ After starting, you can verify the daemon is running by checking its health endp
 ```
 Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 ```
+
+## Troubleshooting Common Windows Installation Issues
+
+### 'Class not found' or autoload errors
+
+**Error**: `Fatal error: Class 'DreamFactory\...' not found`
+
+**Cause**: Composer dependencies have not been installed, or the autoloader is out of date.
+
+**Fix**: Run Composer install from the DreamFactory installation directory:
+```cmd
+cd C:\inetpub\wwwroot\dreamfactory
+composer install --no-dev --ignore-platform-reqs
+```
+If you have already run `composer install` and the error persists, try regenerating the autoloader:
+```cmd
+composer dump-autoload
+```
+
+### IIS 500.19 — Configuration error
+
+**Error**: `HTTP Error 500.19 - The requested page cannot be accessed because the related configuration data for the page is invalid.`
+
+**Cause**: IIS cannot read the `web.config` file, usually due to a missing URL Rewrite module or incorrect file permissions on `applicationHost.config`.
+
+**Fix**: Confirm the [URL Rewrite module](https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi) is installed (restart IIS after installation). If the module is installed, check that the `IIS_IUSRS` group has Read permissions on the `C:\inetpub\wwwroot\dreamfactory\public` directory.
+
+### PHP extension load failures — missing VC++ redistributable
+
+**Error**: `PHP Startup: Unable to load dynamic library 'curl'` or similar extension load error in PHP logs.
+
+**Cause**: PHP extensions on Windows depend on the Visual C++ runtime. If the correct VC++ redistributable version is not installed, extensions silently fail to load.
+
+**Fix**: Download and install the [Visual C++ 2015–2019 Redistributable (x64)](https://aka.ms/vs/16/release/VC_redist.x64.exe), then restart IIS:
+```powershell
+iisreset
+```
+Verify extensions load correctly by running:
+```cmd
+php -m
+```
+All extensions listed in `php.ini` should appear in the output. Missing extensions indicate a load failure — check the PHP error log at `C:\php\logs\php_errors.log`.
+
+### 'php_sodium.dll not found' or sodium extension error
+
+**Error**: `PHP Startup: Unable to load dynamic library 'sodium'`
+
+**Cause**: The `sodium` extension requires the **Non-Thread-Safe (NTS)** PHP build when used with IIS FastCGI. The Thread-Safe (TS) build includes a different sodium DLL that conflicts with IIS.
+
+**Fix**: Confirm you downloaded the NTS version of PHP from [windows.php.net](https://windows.php.net/download/). The filename should contain `nts` (e.g., `php-8.3.x-nts-Win32-vs16-x64.zip`). Replace your PHP installation with the NTS build if needed.
+
+### White screen or blank page after IIS setup
+
+**Error**: Browser shows a blank white page with no error when accessing DreamFactory through IIS.
+
+**Cause**: FastCGI Standard Error Mode is set to return the PHP error in the response body, which IIS then suppresses.
+
+**Fix**: In IIS Manager, go to the server view > **FastCGI Settings** > select the PHP handler > **Edit** > change **Standard Error Mode** to **IgnoreAndReturn200**.
+
+### php artisan commands fail with database errors during setup
+
+**Error**: `SQLSTATE[HY000] [2002] No connection could be made` or similar database error when running `php artisan df:env`.
+
+**Fix**: For initial setup, select **SQLite** (option 0) when prompted by `php artisan df:env`. SQLite requires no external database server and eliminates network connectivity as a variable during troubleshooting. You can migrate to MySQL or PostgreSQL after confirming the base installation works.
+
+## Verifying the Installation
+
+Once IIS is configured and DreamFactory is running, verify the installation is functional:
+
+**1. Check the system environment endpoint**
+
+From the Windows server (or from a client that can reach the server), run:
+```powershell
+Invoke-WebRequest -Uri http://localhost/api/v2/system/environment -UseBasicParsing
+```
+A successful response returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+
+**2. Access the admin UI**
+
+Navigate to `http://localhost` (or the server's IP/hostname) in a browser. You should see the DreamFactory login screen. Log in using the admin credentials created during `php artisan df:setup`.
+
+**3. Confirm no red banner**
+
+After logging in, verify there is **no red banner** at the top of the admin UI. A red banner indicates a configuration issue — common causes include a missing or invalid license key, or a failed database connection. If a banner appears, check the `.env` file in the DreamFactory installation directory and confirm `DF_LICENSE_KEY` is set correctly (no curly braces).
+
+**4. Create admin user via CLI (if setup was skipped)**
+
+If you need to create or reset the admin account via command line:
+```cmd
+cd C:\inetpub\wwwroot\dreamfactory
+php artisan df:create-admin-user
+```
+Follow the prompts to set the email and password for the administrator account.
+
+**5. Make a test API call**
+
+Once logged in, create a test database service (SQLite works with no external dependency). Then verify the generated API responds correctly:
+```powershell
+# Replace YOUR_API_KEY with a key generated in the admin UI
+Invoke-WebRequest -Uri "http://localhost/api/v2/YOUR_SERVICE_NAME/_table" `
+  -Headers @{"X-DreamFactory-Api-Key" = "YOUR_API_KEY"} `
+  -UseBasicParsing
+```
+A 200 response with a JSON `resource` array confirms the API is working end-to-end.
+
+For additional configuration options including SSL setup and DNS configuration, see the [DreamFactory configuration guide](/getting-started/dreamfactory-configuration/basic-configuration).

@@ -3,7 +3,7 @@ sidebar_position: 4
 title: Raspberry Pi Installation
 id: raspberrypi-install
 description: Install DreamFactory on Raspberry Pi 4 with Nginx, PHP, and MySQL. Full guide for the self-hosted API platform on ARM64.
-keywords: [DreamFactory Raspberry Pi, Raspberry Pi API server, self-hosted API ARM, DreamFactory IoT, Raspberry Pi Nginx PHP]
+keywords: [DreamFactory Raspberry Pi, Raspberry Pi API server, self-hosted API ARM, DreamFactory IoT, Raspberry Pi Nginx PHP, clear linux mariadb bundle, swupd mariadb, raspberry pi nginx install]
 ---
 
 # Raspberry Pi Installation
@@ -291,3 +291,200 @@ sudo systemctl restart nginx php8.3-fpm.service
 ## Access your new DreamFactory instance
 
 After the services are restarted your web server should be ready to access. Go ahead and in your preferred browser type in the ip address of your Raspberry Pi and you should see the login page of the DreamFactory Web UI. To find your ip address on Raspberry Pi easily type in the command line ```hostname -I```
+
+---
+
+## Raspberry Pi 4 vs Pi 5 Compatibility
+
+This guide was written and tested against the **Raspberry Pi 4 (4GB RAM)** running Raspberry Pi OS 64-bit (Bookworm, Debian 12). The Pi 4 uses a Cortex-A72 ARMv8 CPU; the Pi 5 uses a Cortex-A76 ARMv8 CPU — both are 64-bit ARM architectures and both run Raspberry Pi OS Bookworm 64-bit.
+
+**Raspberry Pi 5 compatibility**: The installation steps in this guide apply to the Pi 5 with no changes. The Pi 5 is faster (Cortex-A76 cores, ~2× Pi 4 single-thread performance) and handles DreamFactory's PHP-FPM workload more comfortably. If you have a Pi 5, follow this guide exactly as written.
+
+Key differences to be aware of:
+- The Pi 5 uses a different power connector (USB-C PD 5A) and requires a 27W power supply for full performance under load.
+- The Pi 5's default OS image is also Bookworm — the same PHP repository, package names, and Nginx config apply.
+- If you installed a 32-bit OS image by mistake, some PHP extensions (notably `php8.3-dev` build steps) may behave differently. Use the 64-bit OS image for DreamFactory.
+
+---
+
+## Installing MariaDB/MySQL on Clear Linux OS
+
+:::note
+The steps earlier in this guide use Raspberry Pi OS (Debian-based). The section below is for users running **Intel Clear Linux OS** on embedded or edge hardware and who found this guide via search queries about Clear Linux package names.
+:::
+
+Clear Linux OS uses a different package manager (`swupd`) and a different package naming convention from Debian/Ubuntu. There is no `apt` and no `devpkg-mariadb` bundle with that exact name. The correct Clear Linux bundle names for MariaDB are:
+
+```bash
+# Install the MariaDB server and client
+sudo swupd bundle-add mariadb
+
+# Install the database utilities bundle (includes MySQL-compatible CLI tools)
+sudo swupd bundle-add database-basic
+```
+
+On Clear Linux, development headers (the equivalent of `libmariadb-dev` on Debian) are **included in the main `mariadb` bundle** — you do not need a separate `devpkg-mariadb` bundle. The bundle naming convention `devpkg-*` exists for some libraries (e.g., `devpkg-openssl`) but not for MariaDB, which ships headers with its primary bundle.
+
+Verify the installation:
+
+```bash
+sudo systemctl enable --now mariadb
+mysql --version
+# Expected output: mysql  Ver 15.1 Distrib 10.x.x-MariaDB, ...
+```
+
+To secure MariaDB after installation:
+
+```bash
+sudo mysql_secure_installation
+```
+
+Then create the DreamFactory database and user:
+
+```sql
+CREATE DATABASE dreamfactory;
+CREATE USER 'dfadmin'@'localhost' IDENTIFIED BY 'dfadmin';
+GRANT ALL PRIVILEGES ON dreamfactory.* TO 'dfadmin'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+For PHP-to-MariaDB connectivity on Clear Linux, install the PHP bundle that includes the MySQL extension:
+
+```bash
+sudo swupd bundle-add php-basic
+```
+
+If you need a specific PHP version or additional extensions not in `php-basic`, check available bundles:
+
+```bash
+swupd bundle-list --all | grep php
+```
+
+---
+
+## Nginx Installation on Raspberry Pi
+
+This section provides step-by-step instructions for users installing Nginx for the first time (including those following German-language searches for "Raspberry Pi Nginx installieren").
+
+Nginx is already covered in the main install flow above, but here is a complete standalone reference:
+
+### Install Nginx
+
+```bash
+sudo apt update
+sudo apt install -y nginx
+```
+
+### Enable and Start Nginx
+
+```bash
+sudo systemctl enable nginx
+sudo systemctl start nginx
+```
+
+Verify it is running:
+
+```bash
+sudo systemctl status nginx
+# Should show: active (running)
+```
+
+Test from the Pi itself:
+
+```bash
+curl http://localhost
+# Should return the default Nginx welcome page HTML
+```
+
+### DreamFactory Nginx Virtual Host Configuration
+
+Once DreamFactory is installed at `/opt/dreamfactory`, replace the default Nginx site config at `/etc/nginx/sites-available/default` with the DreamFactory-specific config shown in the [Setting up Nginx Config](#setting-up-nginx-config) section above.
+
+The key settings for DreamFactory are:
+- `root /opt/dreamfactory/public;` — points to DreamFactory's public directory
+- `fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;` — connects Nginx to PHP-FPM
+- `try_files $uri $uri/ /index.php?$args;` — routes all requests through Laravel's front controller
+
+After saving the config, always test before reloading:
+
+```bash
+sudo nginx -t
+# Output: syntax is ok / test is successful
+sudo systemctl reload nginx
+```
+
+---
+
+## Performance Tuning for Raspberry Pi
+
+The Raspberry Pi has limited RAM and CPU compared to a server. These tuning recommendations help DreamFactory run reliably on 4GB Pi hardware.
+
+### PHP-FPM Worker Count
+
+The default PHP-FPM pool spawns workers dynamically, which can exhaust RAM on a 4GB Pi when handling multiple concurrent API requests. Edit the PHP-FPM pool config:
+
+```bash
+sudo nano /etc/php/8.3/fpm/pool.d/www.conf
+```
+
+Recommended settings for a 4GB Pi 4 (DreamFactory only, no other heavy services):
+
+```ini
+pm = static
+pm.max_children = 4
+pm.max_requests = 500
+```
+
+For a 4GB Pi running other services alongside DreamFactory, use 2 workers:
+
+```ini
+pm = static
+pm.max_children = 2
+```
+
+Each PHP-FPM worker uses approximately 40–60MB of RAM under DreamFactory load. With `pm.max_children = 4`, peak PHP memory usage will be ~240MB, leaving headroom for the OS, MySQL, and Nginx.
+
+### MariaDB / MySQL `innodb_buffer_pool_size`
+
+The InnoDB buffer pool caches database pages in RAM. The default value is 128MB, which is fine for a Pi but can be tuned. Add the following to `/etc/mysql/mariadb.conf.d/99-dreamfactory.cnf` (create the file if it does not exist):
+
+```ini
+[mysqld]
+innodb_buffer_pool_size = 256M
+innodb_log_file_size = 64M
+max_connections = 50
+query_cache_size = 0
+query_cache_type = 0
+```
+
+A 256MB buffer pool on a 4GB Pi leaves ~3.5GB for the OS, Nginx, and PHP-FPM. Do not set this higher than 512MB on a 4GB Pi.
+
+Apply changes by restarting MariaDB:
+
+```bash
+sudo systemctl restart mariadb
+```
+
+### Nginx `worker_processes`
+
+In `/etc/nginx/nginx.conf`, set:
+
+```nginx
+worker_processes auto;
+```
+
+`auto` detects the number of CPU cores (4 on Pi 4, 4 on Pi 5) and spawns one Nginx worker per core. This is optimal — Nginx workers are lightweight and the Pi benefits from using all cores for request handling.
+
+### Swap Space
+
+DreamFactory's Composer install step and initial migration can temporarily exceed 4GB RAM on a Pi 4. Ensure at least 2GB of swap is configured:
+
+```bash
+sudo dphys-swapfile swapconf
+sudo nano /etc/dphys-swapfile
+# Set: CONF_SWAPSIZE=2048
+sudo dphys-swapfile setup
+sudo dphys-swapfile swapon
+```
+
+After installation is complete you can reduce swap, but during the Composer dependency installation step having 2GB available prevents out-of-memory failures.

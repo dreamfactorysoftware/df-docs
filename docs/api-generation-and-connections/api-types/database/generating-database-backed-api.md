@@ -1,12 +1,12 @@
 ---
 sidebar_position: 1
-title: Generating a Database-backed API
+title: Generate a REST API for Any Database — No Code Required
 id: generating-a-database-backed-api
-description: Generate governed REST APIs from MySQL, PostgreSQL, SQL Server, Oracle, MongoDB and 15+ databases — with RBAC and audit logging built in.
-keywords: [database API, REST API, MySQL API, PostgreSQL API, SQL Server API, Oracle API, MongoDB API, auto-generated API, governed data access, enterprise API]
+description: DreamFactory auto-generates a fully documented REST API for MySQL, PostgreSQL, MSSQL, MongoDB, and 20+ databases. No backend code needed.
+keywords: [database REST API generator, auto-generate API from database, no-code API, MySQL REST API, PostgreSQL REST API, database API, REST API, SQL Server API, Oracle API, MongoDB API, auto-generated API, governed data access, enterprise API]
 ---
 
-# Generating a Database-backed API
+# Generate a REST API for Any Database — No Code Required
 
 ## Quick Reference
 
@@ -423,3 +423,11 @@ SET search_path TO "$user", public, postgis, topology;
 <img src="/img/database-backed-api/postgis_search_path.png" width="800" alt="Adding a search path to your postgres connection" />
 
 This allows DreamFactory to search through additional schemas to find the functions that the database requires when using any extensions.
+
+## Next Steps
+
+Now that your database API is generated and accessible, here's where to go next:
+
+- **Query your data**: Once your API is generated, learn to [Query and Filter Data](/api-generation-and-connections/api-types/database/querying-and-filtering/) using DreamFactory's filter syntax, pagination, and field selection — including row-level security via `{user.id}` placeholders.
+- **Advanced database operations**: For transactions, stored procedures, and virtual foreign keys, see [Advanced Database API Features](/api-generation-and-connections/advanced-database-api-features).
+- **Secure your API**: Configure [Role-Based Access Control](/Security/role-based-access) to restrict which endpoints, HTTP methods, and tables each API key can access. Then generate and assign [API Keys](/api-generation-and-connections/api-keys) to your applications.

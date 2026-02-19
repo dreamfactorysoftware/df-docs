@@ -4,8 +4,86 @@ title: SSO & API Authentication Setup
 id: authenticating-your-apis
 draft: false
 description: Configure SSO and API authentication with Active Directory, LDAP, OAuth, SAML 2.0, OpenID Connect, Okta, and Auth0 in DreamFactory.
-keywords: [DreamFactory SSO, API authentication, OAuth, SAML, LDAP, Active Directory, SSO API, OpenID Connect, Okta, Auth0, identity passthrough]
+keywords: [DreamFactory SSO, API authentication, OAuth, SAML, LDAP, Active Directory, SSO API, OpenID Connect, Okta, Auth0, identity passthrough, SAML 2.0, single sign-on]
 difficulty: intermediate
+---
+
+## Single Sign-On (SSO) with DreamFactory
+
+Single Sign-On in DreamFactory means more than just allowing users to authenticate via an external identity provider. DreamFactory implements **identity passthrough** — when a user authenticates through your IdP (Okta, ADFS, Azure AD, etc.), DreamFactory maps their identity to a DreamFactory role and then passes that authenticated identity through to the downstream data source connection. This means database audit logs show the actual user's identity rather than a generic service account, which is critical for compliance in regulated industries (SOX, HIPAA, PCI-DSS).
+
+The practical effect: if Alice authenticates via Okta SAML and queries your Oracle database through DreamFactory, Oracle's native audit log records Alice's username — not "dreamfactory_svc_account". This is a fundamental requirement for enterprise deployments where data governance audits must trace actions to individual users.
+
+### Supported SSO Protocols
+
+| Protocol | Provider Examples | DreamFactory Admin Path |
+|---|---|---|
+| SAML 2.0 | Okta, ADFS, Azure AD, Auth0, OneLogin | Admin > Security > Authentication > Add Service > SAML 2.0 |
+| OAuth 2.0 | Google, GitHub, Azure AD, Facebook, Twitter | Admin > Security > Authentication > Add Service > OAuth |
+| LDAP / Active Directory | On-premise AD, OpenLDAP | Admin > Security > Authentication > Add Service > LDAP or Active Directory |
+| OpenID Connect | Azure AD, Keycloak, Google, Ping Identity | Admin > Security > Authentication > Add Service > OpenID Connect |
+| JWT | Custom token issuers | Admin > Security > Authentication > Add Service > JWT |
+
+All protocols result in a DreamFactory-issued JWT session token that the client includes in subsequent API requests via the `X-DreamFactory-Session-Token` header.
+
+### Configuring SAML SSO: Step-by-Step
+
+1. **Navigate** to the DreamFactory admin panel and go to **Security > Authentication**.
+2. Click **Add Service** and select **SAML 2.0** (or Okta SAML / Auth0 SSO for provider-specific flows).
+3. Enter a **Namespace** — this becomes part of the callback URL (e.g., `mycompany_saml`). The Assertion Consumer Service (ACS) URL will be: `https://your-dreamfactory-host/api/v2/user/session?service=mycompany_saml`
+4. Enter the **IdP Entity ID** and **IdP SSO Service URL** from your identity provider's SAML configuration page.
+5. Paste the **IdP x509 Certificate** to allow DreamFactory to verify the SAML assertion signature.
+6. Map attribute assertions to DreamFactory user fields. Common mappings:
+   - `email` → DreamFactory email field (required)
+   - `firstName` / `lastName` → display name
+   - `groups` → can be used for dynamic role assignment
+7. Set a **Default Role** — all users authenticating via this provider receive this role unless overridden.
+8. Optionally set a **Relay State** URL for post-login redirect (e.g., `https://your-app.com?jwt=_token_`).
+9. Enable the **Active** toggle and click **Save**.
+10. Test the login flow by navigating to `https://your-dreamfactory-host/api/v2/user/session?service=mycompany_saml` in a browser.
+
+**Example SAML configuration fields:**
+
+```
+Namespace:              mycompany_saml
+IdP Entity ID:          https://your-idp.example.com/saml2/metadata
+IdP SSO Service URL:    https://your-idp.example.com/saml2/sso
+IdP x509 Certificate:   -----BEGIN CERTIFICATE-----
+                        MIIDpDCCAoygAwIBAgI...
+                        -----END CERTIFICATE-----
+Default Role:           Standard User
+Relay State:            https://your-app.com?jwt=_token_
+```
+
+### Identity Passthrough Explained
+
+DreamFactory's identity passthrough works as follows:
+
+```
+User → Identity Provider (Okta/ADFS/Azure AD)
+     → DreamFactory (validates SAML/OAuth token, maps to role)
+     → Data Source connection (SQL query runs as authenticated user's identity)
+     → Database audit log records: "Alice" not "svc_dreamfactory"
+```
+
+In practice, this requires that your database is configured to accept connections from DreamFactory with user-specific credentials rather than a single shared service account. DreamFactory forwards the session identity so the database layer records meaningful audit entries. For Active Directory-backed SQL Server configurations, see the [SQL Server Security guide](/Security/sql-server-configuration) for Kerberos/Windows Authentication passthrough setup.
+
+This capability matters for enterprise compliance scenarios: GDPR data access logs, SOX change-tracking requirements, and HIPAA audit trails all require that records show which person accessed which data — not merely which application.
+
+### Common SSO Issues
+
+**Assertion Consumer Service URL misconfiguration**
+The ACS URL registered in your IdP must exactly match the DreamFactory callback URL: `https://your-df-host/api/v2/user/session?service={namespace}`. A trailing slash mismatch or HTTP vs. HTTPS difference will cause SAML assertion validation to fail with a "Response destination" error.
+
+**Attribute mapping failures**
+If DreamFactory cannot find the `email` attribute in the SAML assertion, user creation will fail. Verify attribute names in your IdP's SAML assertion output — use a browser SAML debugger extension (e.g., SAML-tracer for Firefox) to inspect the raw assertion and confirm the exact attribute name your IdP sends.
+
+**Role assignment not applied**
+If authenticated users receive no role (and therefore no API access), confirm that the **Default Role** is set on the authentication service and that the role has at least one service-level permission defined. Roles with no permissions attached result in a successful login but 403 responses on all API calls.
+
+**URL canonicalization**
+DreamFactory's authentication endpoint is case-sensitive on some deployments. Ensure all links and IdP configurations use a consistent URL casing. Both `/Security/authenticating-your-apis` and `/security/authenticating-your-apis` resolve to this page — if you are linking from your IdP configuration or internal documentation, use the lowercase path for consistency.
+
 ---
 
 One of DreamFactory's most popular features is the wide-ranging authentication support. While API Key-based authentication will suffice for many DreamFactory-powered applications, developers often require a higher degree of security through user-specific authentication. In some cases Basic HTTP authentication will get the job done, however many enterprises require more sophisticated and flexible approaches largely because of the growing adoption of Single Sign On (SSO)-based solutions such as Active Directory and LDAP, and use of third-party identity providers and solutions such as [AWS Cognito](https://aws.amazon.com/cognito/), [Auth0](https://auth0.com/), and [Okta](https://www.okta.com/).
