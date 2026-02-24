@@ -1,6 +1,6 @@
 ---
 sidebar_position: 0
-title: API Discovery & Spec Endpoints
+title: "API Discovery & Spec Endpoints"
 id: api-discovery
 description: How to discover all available APIs and retrieve OpenAPI specs for any service in DreamFactory. Essential for LLMs and programmatic clients.
 keywords: [API discovery, OpenAPI spec, swagger, api_docs, _spec, service spec, LLM, programmatic]
