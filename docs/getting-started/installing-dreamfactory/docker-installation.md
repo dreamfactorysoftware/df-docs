@@ -2,7 +2,7 @@
 sidebar_position: 3
 title: Docker Installation
 id: docker-installation
-description: Install DreamFactory using Docker and docker-compose with MySQL, Redis, and a sample PostgreSQL database for testing.
+description: Install DreamFactory with Docker and docker-compose. Includes MySQL, Redis, and sample PostgreSQL database setup — get a full API platform running in minutes.
 keywords: [Docker, docker-compose, DreamFactory installation, container deployment, NGINX, PHP, MySQL, Redis]
 difficulty: beginner
 ---
