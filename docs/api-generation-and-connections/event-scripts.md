@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: API Event Scripts: Validate, Transform & Govern | DreamFactory
+title: "API Event Scripts: Validate, Transform & Govern | DreamFactory"
 id: event-scripts
 description: Execute custom scripts on API events to validate requests, transform responses, enforce governance rules, and add business logic.
 keywords: [event scripts, event scripting, dreamfactory events, pre-process, post-process, PHP scripting, Python scripting, Node.js scripting, API customization, business logic, request validation, API governance, script event]

@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: Role Based Access Control (RBAC)
 id: role-based-access
-description: Implement role-based access control in DreamFactory: assign per-service and per-endpoint permissions, create custom roles, and restrict HTTP verbs.
+description: "Implement role-based access control in DreamFactory: assign per-service and per-endpoint permissions, create custom roles, and restrict HTTP verbs."
 keywords: [RBAC, role-based access, API security, governed API access, permissions, access control, API keys, identity passthrough]
 difficulty: "beginner"
 ---
