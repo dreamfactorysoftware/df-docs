@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-title: Database Overview
+title: Supported Database Connectors Overview | DreamFactory
 id: database-overview
 description: "Supported databases in DreamFactory - complete list of SQL and NoSQL database connectors with licensing information"
 keywords: [database, SQL, NoSQL, connectors, supported databases, API generation]
