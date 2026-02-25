@@ -13,12 +13,14 @@ Our Docker container includes everything you need to run DreamFactory, including
 
 ## Prerequisites
 
-- Git
-  - See: https://www.github.com
-- Docker
+- **Docker Engine 20.x+**
   - See: https://docs.docker.com/installation
-- Docker Compose
+- **docker-compose 1.29+**
   - See: https://docs.docker.com/compose/install
+- **Minimum 2GB RAM** available for the DreamFactory container stack
+- **Ports 80 and 443** available on the host (or configure alternate ports in `docker-compose.yml`)
+- **Git** (for cloning the repository)
+  - See: https://www.github.com
 
 ## Overview
 

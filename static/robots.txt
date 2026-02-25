@@ -1,4 +1,13 @@
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claudebot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 User-agent: *
 Allow: /
 Sitemap: https://docs.dreamfactory.com/sitemap.xml
-Content-Signal: search=yes, ai-input=yes, ai-train=no
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
