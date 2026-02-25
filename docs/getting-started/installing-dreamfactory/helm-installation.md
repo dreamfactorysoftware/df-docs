@@ -159,7 +159,7 @@ Install or upgrade your DreamFactory deployment:
 
 ```bash
 # For new installation
-helm install dreamfactory . -f 
+helm install dreamfactory . -f values.yaml
 
 # For existing installation
 helm upgrade dreamfactory . -f values.yaml

@@ -10,4 +10,4 @@ Allow: /
 User-agent: *
 Allow: /
 Sitemap: https://docs.dreamfactory.com/sitemap.xml
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Content-Signal: search=yes, ai-input=yes, ai-train=no
