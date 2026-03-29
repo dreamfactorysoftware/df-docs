@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-title: "DreamFactory Helm Chart: Kubernetes Deployment"
+title: "DreamFactory Helm Chart: Kubernetes Deployment | Docs"
 id: helm-installation
 description: "Self-hosted DreamFactory on Kubernetes: Helm chart setup, TLS config, horizontal scaling, and production deployment guide."
 keywords: [DreamFactory Helm, Kubernetes DreamFactory, Helm chart, DreamFactory K8s, self-hosted API Kubernetes, container deployment, deploy dreamfactory kubernetes]
@@ -159,7 +159,7 @@ Install or upgrade your DreamFactory deployment:
 
 ```bash
 # For new installation
-helm install dreamfactory . -f 
+helm install dreamfactory . -f values.yaml
 
 # For existing installation
 helm upgrade dreamfactory . -f values.yaml

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-title: "Supported Database Connectors Overview | DreamFactory"
+title: "Supported Database Connectors | DreamFactory Docs"
 id: database-overview
 description: "Supported databases in DreamFactory - complete list of SQL and NoSQL database connectors with licensing information"
 keywords: [database, SQL, NoSQL, connectors, supported databases, API generation]
@@ -203,3 +203,23 @@ Layer DreamFactory's RBAC on top of database permissions:
 - **[AlloyDB](./alloydb)**: Connect Google AlloyDB
 
 For database-specific questions, consult the individual database guides or contact DreamFactory support.
+
+---
+
+## Database Connector Comparison
+
+Use the table below to quickly compare supported database connectors by type, licensing tier, and key capabilities:
+
+| Database | Type | License Tier | Notes |
+| -------- | ---- | ------------ | ----- |
+| **MySQL / MariaDB** | SQL | OSS | Full CRUD, stored procedures, views |
+| **PostgreSQL** | SQL | OSS | Full CRUD, stored procedures, JSON support |
+| **SQLite** | SQL | OSS | File-based; ideal for embedded/local apps |
+| **Microsoft SQL Server** | SQL | OSS | Full CRUD, stored procedures, Windows Auth |
+| **Google AlloyDB** | SQL | OSS | PostgreSQL-compatible, cloud-native |
+| **Oracle Database** | SQL | Commercial | Requires Oracle Instant Client |
+| **IBM DB2** | SQL | Commercial | Requires IBM Data Server Driver |
+| **IBM Informix** | SQL | Commercial | Requires Informix Client SDK |
+| **SAP SQL Anywhere** | SQL | Commercial | Requires SQL Anywhere client |
+| **Firebird** | SQL | Commercial | Requires Firebird client library |
+| **MongoDB** | NoSQL | Commercial | Document API with filter support |
