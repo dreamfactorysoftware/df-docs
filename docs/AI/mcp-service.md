@@ -146,7 +146,10 @@ Every MCP request requires only standard HTTP headers:
 | **Content-Type** | Yes          | Must be `application/json` for POST requests |
 | **MCP-Session-Id** | Yes*         | Session identifier returned during initialization (*required for subsequent requests to maintain session context) |
 
-DreamFactory automatically handles service configuration and API key management internally, so you don't need to include authentication headers in your requests.
+How a request is authenticated depends on how the MCP service is connected:
+
+- **AI clients** (VS Code, Claude, Cursor) authenticate the connection using **OAuth 2.0**. The OAuth handshake establishes the session, and tools are filtered to the services the connecting user's role grants access to. See [Creating an MCP Server Service](./mcp-service-creation.md) and [Deploying the MCP Server](./mcp-server-deployment.md) for OAuth setup.
+- **Direct API calls** like the examples above don't require an authentication header when the MCP service is bound to an application with a default role — DreamFactory applies that role's permissions internally. Otherwise, include an `X-DreamFactory-Session-Token` (or API key) header.
 
 ## Use Cases
 
