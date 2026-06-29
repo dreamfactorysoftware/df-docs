@@ -112,16 +112,24 @@ sudo env BUNDLE=/mnt/df-bundle \
    required or `mssql-tools18`'s PREIN scriptlet fails on `/dev/tty`.
 3. Untar the app (prebuilt `vendor/`); create the `dreamfactory` user **without
    `-m`** (`-m` clamps `/opt/dreamfactory` to 0700 and nginx can't traverse it);
-   `chmod 755 /opt/dreamfactory`; delete the builder's `.env` so fresh target DB
-   creds are written.
+   delete the builder's `.env` so fresh target DB creds are written.
 4. Drop the prebuilt `oci8.so` + Instant Client libs (`ldconfig`); copy the
    builder's working nginx + php-fpm configs.
 5. Create the MariaDB meta DB + user.
 6. `df:env` → `df:setup` (admin) → `migrate --seed` — all offline.
-7. **SELinux** (enforcing on OL9): label `storage/` and `bootstrap/cache` as
-   `httpd_sys_rw_content_t` + `restorecon`, and enable `httpd_can_network_connect_db`
-   and `httpd_can_network_connect` (one `setsebool -P` per boolean — multi-arg
-   silently no-ops). Without this the API 500s on a Monolog write / DB connect.
+7. Permissions + **SELinux** (enforcing on OL9):
+   - Make `/opt/dreamfactory` and `/opt/dreamfactory/public` traversable/readable
+     by nginx (`chmod 755` on both, `chmod -R a+rX public/`). Keep `.env`
+     private (`0640` is fine).
+   - Label `/opt/dreamfactory(/.*)?` as `httpd_sys_content_t`.
+   - Label `storage/` and `bootstrap/cache` as `httpd_sys_rw_content_t` +
+     `restorecon`.
+   - Enable `httpd_can_network_connect_db` and `httpd_can_network_connect` (one
+     `setsebool -P` per boolean — multi-arg silently no-ops).
+   Without the readable app-tree label and public-dir mode fix, nginx 500s with
+   `stat() "/opt/dreamfactory/public/index.php" failed (13: Permission denied)`.
+   Without the writable labels/booleans, the API 500s on a Monolog write or DB
+   connect.
 8. Start php-fpm + nginx; verify.
 
 > **Critical parity requirement:** the builder must be at the **same OS patch
@@ -153,9 +161,45 @@ Reproducible air-gap proof on `proxmox01`:
   up with `ifup vmbr9` only — does not touch `vmbr0`.
 - **Builder VM 280** (`df-airgap-builder`): OL9U7 cloud image, `vmbr0`
   (internet), cloud-init user `ol`. 2 cores / 4 GB.
-- **Target VM 281** (`df-airgap-target`): OL9, `vmbr9` (no internet). _TODO_
+- **Target VM 281** (`df-airgap-target`): OL9, `vmbr9` (no internet),
+  `10.9.9.2/24`; verified API 200 + admin login + `oci8`.
+- **Fresh re-test 2026-06-29**:
+  - Builder VM 282 (`df-airgap-builder-fresh`), `vmbr0`, DHCP
+    `192.168.76.121`.
+  - Target VM 283 (`df-airgap-target-fresh`), `vmbr9`, static `10.9.9.3/24`,
+    `df-airgap-bundle.iso` attached as virtual CD.
+  - Target route table had only `10.9.9.0/24`; `curl -m 5 https://1.1.1.1`
+    exited `7` (no internet path).
+  - Offline install completed package install, app bootstrap, migrations, seed,
+    `oci8`, and admin creation. Initial verify returned HTTP 500 until public
+    directory mode and SELinux app-tree labels were corrected in
+    `offline-install.sh`.
+  - Final checks: `/api/v2/system/environment` HTTP 200, admin session returns
+    `session_token`, `php -m | grep oci8` loaded, SELinux `Enforcing`, nginx /
+    php-fpm / MariaDB active.
+- **Patched script re-test 2026-06-29**:
+  - Rebuilt ISO as `df-airgap-bundle-patched-20260629.iso` with SHA256
+    `4a5d0a08e3d097507d072d71888be56230458a84ad51fc1a837d53a7530e2ddf`.
+  - Target VM 284 (`df-airgap-target-patched`), `vmbr9`, static `10.9.9.4/24`,
+    attached to the patched ISO.
+  - `offline-install.sh` completed without manual repair:
+    `/api/v2/system/environment` HTTP 200 and `OFFLINE INSTALL OK`.
+  - Independent final checks: route table contained only `10.9.9.0/24`,
+    `curl -m 5 https://1.1.1.1` exited `7`, admin session returned
+    `session_token`, `php -m | grep oci8` loaded, SELinux `Enforcing`,
+    `httpd_can_network_connect_db` and `httpd_can_network_connect` enabled,
+    nginx / php-fpm / MariaDB active.
 - **Transfer**: bundle burned to ISO (`genisoimage`), attached to target as
   virtual CD — sneakernet, read-only, realistic.
+
+### Gotcha: harmless-looking i686 dependency noise
+The 2026-06-29 bundle contained some `i686` RPMs from the builder's dependency
+closure. On the fresh target, `dnf install --setopt=strict=0 "$BUNDLE"/repo/*.rpm`
+printed missing 32-bit dependency messages and then skipped those `i686`
+packages while installing the required `x86_64` transaction. The DreamFactory
+install still verified cleanly. For customer-facing bundles, prefer filtering
+unneeded `i686` packages during bundle creation so the offline install output is
+less alarming.
 
 ### Gotcha: OL9/RHEL9 cloud image kernel-panics on default CPU type
 Default Proxmox `kvm64`/`qemu64` lacks the **x86-64-v2** baseline that OL9's UEK

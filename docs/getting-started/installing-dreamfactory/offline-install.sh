@@ -77,11 +77,20 @@ sudo -u dreamfactory php artisan cache:clear -q
 log "7/8 permissions + SELinux + services"
 chown -R dreamfactory:dreamfactory /opt/dreamfactory/storage /opt/dreamfactory/bootstrap/cache
 chmod -R 2775 /opt/dreamfactory/storage /opt/dreamfactory/bootstrap/cache
-# SELinux (enforcing on OL9): label writable dirs + allow php-fpm->mysql, or DF 500s.
+# The app tarball can preserve restrictive 2750 dirs from the builder. Keep .env
+# private, but make the nginx document root traversable/readable.
+chmod 755 /opt/dreamfactory /opt/dreamfactory/public
+chmod -R a+rX /opt/dreamfactory/public
+# SELinux (enforcing on OL9): label the readable app tree, label writable dirs,
+# and allow php-fpm->mysql, or DF 500s.
 if [ "$(getenforce 2>/dev/null)" != "Disabled" ]; then
-  semanage fcontext -a -t httpd_sys_rw_content_t "/opt/dreamfactory/storage(/.*)?" 2>/dev/null || true
-  semanage fcontext -a -t httpd_sys_rw_content_t "/opt/dreamfactory/bootstrap/cache(/.*)?" 2>/dev/null || true
-  restorecon -R /opt/dreamfactory/storage /opt/dreamfactory/bootstrap/cache 2>/dev/null || true
+  semanage fcontext -a -t httpd_sys_content_t "/opt/dreamfactory(/.*)?" 2>/dev/null || \
+    semanage fcontext -m -t httpd_sys_content_t "/opt/dreamfactory(/.*)?"
+  semanage fcontext -a -t httpd_sys_rw_content_t "/opt/dreamfactory/storage(/.*)?" 2>/dev/null || \
+    semanage fcontext -m -t httpd_sys_rw_content_t "/opt/dreamfactory/storage(/.*)?"
+  semanage fcontext -a -t httpd_sys_rw_content_t "/opt/dreamfactory/bootstrap/cache(/.*)?" 2>/dev/null || \
+    semanage fcontext -m -t httpd_sys_rw_content_t "/opt/dreamfactory/bootstrap/cache(/.*)?"
+  restorecon -R /opt/dreamfactory
   setsebool -P httpd_can_network_connect_db on   # one boolean per call; multi-arg silently no-ops
   setsebool -P httpd_can_network_connect on
 fi
