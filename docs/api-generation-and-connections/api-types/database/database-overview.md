@@ -26,7 +26,6 @@ These database connectors are included in DreamFactory OSS and all commercial ed
 | **PostgreSQL** | `pdo_pgsql` | 5432 | [PostgreSQL Guide](./postgresql) |
 | **MySQL / MariaDB** | `pdo_mysql` | 3306 | [MySQL Guide](./generating-database-backed-api) |
 | **SQLite** | `pdo_sqlite` | N/A (file) | [SQLite Guide](./sqlite) |
-| **Microsoft SQL Server** | `pdo_sqlsrv` | 1433 | [SQL Server Guide](./sql-server) |
 | **Google AlloyDB** | `pdo_pgsql` | 5432 | [AlloyDB Guide](./alloydb) |
 
 ### Commercial License Required
@@ -35,6 +34,7 @@ These database connectors require a DreamFactory commercial license (Gold or Pla
 
 | Database | Driver | Default Port | Notes |
 | -------- | ------ | ------------ | ----- |
+| **Microsoft SQL Server** | `pdo_sqlsrv` | 1433 | [SQL Server Guide](./sql-server) |
 | **Oracle Database** | `pdo_oci` | 1521 | Oracle Instant Client required |
 | **IBM DB2** | `pdo_ibm` | 50000 | IBM Data Server Driver required |
 | **IBM Informix** | `pdo_informix` | 9088 | Informix Client SDK required |
