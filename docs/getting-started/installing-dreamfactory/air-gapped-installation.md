@@ -95,8 +95,15 @@ bundle (the target never runs `pecl`).
 > current IC **23.x** the glob must be widened (tracked separately).
 
 ### 2. Bundle + transfer media
+
+Add the offline install script to the bundle root. It is published alongside
+this guide: [`offline-install.sh`](https://github.com/dreamfactorysoftware/df-docs/blob/main/docs/getting-started/installing-dreamfactory/offline-install.sh)
+```
+curl -fLo bundle/offline-install.sh https://raw.githubusercontent.com/dreamfactorysoftware/df-docs/main/docs/getting-started/installing-dreamfactory/offline-install.sh
+```
+
 The whole `bundle/` (local repo, app tarball, installer source, `oci8.so`,
-install script) is written to an ISO and carried across the gap:
+`offline-install.sh`) is written to an ISO and carried across the gap:
 ```
 genisoimage -o df-airgap-bundle.iso -R -J -V DF_AIRGAP bundle/
 ```
