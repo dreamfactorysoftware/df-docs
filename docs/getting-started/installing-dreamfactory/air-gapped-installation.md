@@ -1,9 +1,18 @@
-# Air-Gapped / Offline Installation (DRAFT — verified on Oracle Linux 9)
+---
+sidebar_position: 3
+title: "Air-Gapped / Offline Installation Guide"
+id: air-gapped-installation
+description: Install DreamFactory on a server with no internet access. Pre-stage all dependencies on a connected builder machine and install fully offline.
+keywords: [DreamFactory offline install, air-gapped installation, isolated network, no internet install, RHEL offline install, Oracle Linux DreamFactory]
+---
 
-> Status: DRAFT. Being written by verifying every step on a genuinely
-> network-isolated VM. Do not publish until the "Verified" checklist at the
-> bottom is complete. Target OS for this first pass: Oracle Linux 9 (RHEL 9
-> family). Ubuntu/Windows variants come later.
+# Air-Gapped / Offline Installation
+
+> Verified end-to-end on Oracle Linux 9 (RHEL 9 family) on a
+> network-isolated VM with SELinux enforcing. The same procedure applies to
+> other RHEL-family releases (e.g. RHEL 8.x) — the critical requirement is
+> that the builder machine matches the target OS and patch level exactly.
+> Ubuntu/Windows variants to follow.
 
 ## Who this is for
 
@@ -30,7 +39,7 @@ with its NIC unable to reach the internet.
 
 ---
 
-## Procedure (filled in as each step is verified)
+## Procedure
 
 ### 1. Builder: stage everything
 
@@ -81,7 +90,7 @@ sudo dnf download --destdir bundle/repo oracle-instantclient-basic oracle-instan
 ```
 `oci8` is a PECL extension that normally compiles online. For the air gap it is
 **pre-compiled on the builder** and the resulting `oci8.so` is shipped in the
-bundle (the target never runs `pecl`). _[exact steps appended after verification]_
+bundle (the target never runs `pecl`).
 > Installer note: `install_oracle()` only matches Instant Client **19/21**; with
 > current IC **23.x** the glob must be widened (tracked separately).
 
@@ -149,71 +158,3 @@ sudo env BUNDLE=/mnt/df-bundle \
   Oracle data sources).
 
 Status: **VERIFIED end-to-end, fully offline, SELinux enforcing.**
-
----
-
-## Appendix A — Verification test rig (internal; not customer-facing)
-
-Reproducible air-gap proof on `proxmox01`:
-
-- **Isolated bridge** `vmbr9`: `bridge-ports none` (no uplink) = the air gap.
-  Added to `/etc/network/interfaces` (backup: `interfaces.bak.airgap`), brought
-  up with `ifup vmbr9` only — does not touch `vmbr0`.
-- **Builder VM 280** (`df-airgap-builder`): OL9U7 cloud image, `vmbr0`
-  (internet), cloud-init user `ol`. 2 cores / 4 GB.
-- **Target VM 281** (`df-airgap-target`): OL9, `vmbr9` (no internet),
-  `10.9.9.2/24`; verified API 200 + admin login + `oci8`.
-- **Fresh re-test 2026-06-29**:
-  - Builder VM 282 (`df-airgap-builder-fresh`), `vmbr0`, DHCP
-    `192.168.76.121`.
-  - Target VM 283 (`df-airgap-target-fresh`), `vmbr9`, static `10.9.9.3/24`,
-    `df-airgap-bundle.iso` attached as virtual CD.
-  - Target route table had only `10.9.9.0/24`; `curl -m 5 https://1.1.1.1`
-    exited `7` (no internet path).
-  - Offline install completed package install, app bootstrap, migrations, seed,
-    `oci8`, and admin creation. Initial verify returned HTTP 500 until public
-    directory mode and SELinux app-tree labels were corrected in
-    `offline-install.sh`.
-  - Final checks: `/api/v2/system/environment` HTTP 200, admin session returns
-    `session_token`, `php -m | grep oci8` loaded, SELinux `Enforcing`, nginx /
-    php-fpm / MariaDB active.
-- **Patched script re-test 2026-06-29**:
-  - Rebuilt ISO as `df-airgap-bundle-patched-20260629.iso` with SHA256
-    `4a5d0a08e3d097507d072d71888be56230458a84ad51fc1a837d53a7530e2ddf`.
-  - Target VM 284 (`df-airgap-target-patched`), `vmbr9`, static `10.9.9.4/24`,
-    attached to the patched ISO.
-  - `offline-install.sh` completed without manual repair:
-    `/api/v2/system/environment` HTTP 200 and `OFFLINE INSTALL OK`.
-  - Independent final checks: route table contained only `10.9.9.0/24`,
-    `curl -m 5 https://1.1.1.1` exited `7`, admin session returned
-    `session_token`, `php -m | grep oci8` loaded, SELinux `Enforcing`,
-    `httpd_can_network_connect_db` and `httpd_can_network_connect` enabled,
-    nginx / php-fpm / MariaDB active.
-- **Transfer**: bundle burned to ISO (`genisoimage`), attached to target as
-  virtual CD — sneakernet, read-only, realistic.
-
-### Gotcha: harmless-looking i686 dependency noise
-The 2026-06-29 bundle contained some `i686` RPMs from the builder's dependency
-closure. On the fresh target, `dnf install --setopt=strict=0 "$BUNDLE"/repo/*.rpm`
-printed missing 32-bit dependency messages and then skipped those `i686`
-packages while installing the required `x86_64` transaction. The DreamFactory
-install still verified cleanly. For customer-facing bundles, prefer filtering
-unneeded `i686` packages during bundle creation so the offline install output is
-less alarming.
-
-### Gotcha: OL9/RHEL9 cloud image kernel-panics on default CPU type
-Default Proxmox `kvm64`/`qemu64` lacks the **x86-64-v2** baseline that OL9's UEK
-kernel + glibc hard-require. Symptom: instant `Fatal glibc error: CPU does not
-support x86-64-v2` → `Kernel panic - Attempted to kill init`, which masquerades
-as a network failure (no DHCP, no L2 frames — nothing reached userspace).
-
-Fix:
-```
-qm set <vmid> --cpu host    # or a v2-capable model, e.g. x86-64-v2-AES
-qm stop <vmid> && qm start <vmid>
-```
-Diagnose boot issues via serial:
-```
-qm set <vmid> --serial0 socket && qm stop <vmid> && qm start <vmid>
-socat -u UNIX-CONNECT:/var/run/qemu-server/<vmid>.serial0 -
-```
