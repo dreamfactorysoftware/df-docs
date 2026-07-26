@@ -2,14 +2,35 @@
 sidebar_position: 1
 title: Creating Scripted Services and Endpoints
 id: scripted-services-and-endpoints
-description: "Build custom API services in DreamFactory using PHP, Python, or Node.js. Add business logic, call external APIs, and create scripted endpoints without a backend framework."
+description: "Build custom API services in DreamFactory using PHP, Python, or Node.js. Add business logic and create composite scripted endpoints."
 keywords: [scripted services, PHP API, Python API, Node.js, custom endpoints, business logic, API scripting]
 difficulty: "intermediate"
 ---
 
 # Creating Scripted Services and Endpoints
 
-DreamFactory allows you to create custom scripted services and endpoints using various scripting languages. This feature enables you to add business logic to your APIs and extend their functionality beyond standard REST operations.
+DreamFactory allows you to create custom scripted services and endpoints using various scripting languages.
+
+## Prerequisites
+
+Before creating scripted services, ensure the following requirements are met:
+
+- **DreamFactory version**: 2.x or later (scripted services are supported in all current releases)
+- **Scripting language runtimes** installed on your DreamFactory host:
+  - **PHP 8.x** — available by default in DreamFactory Docker and most installation packages
+  - **Python 3.x** — must be installed and accessible in the system `PATH`
+  - **Node.js 16+** — must be installed and accessible in the system `PATH`
+- **Admin role access** — creating and managing scripted services requires DreamFactory administrator privileges
+- Scripting must be enabled on your DreamFactory instance (verify under **System Settings > Scripting**)
+
+## Common Use Cases
+
+Scripted services are well-suited for scenarios where standard auto-generated REST endpoints need additional logic:
+
+- **Validate incoming POST payloads before database write** — inspect and reject malformed or unauthorized request data before it reaches the underlying database
+- **Call a third-party REST API and merge results into a DreamFactory response** — aggregate data from external services (e.g., Stripe, Salesforce, or internal microservices) into a single unified API response
+- **Enforce field-level data masking on GET responses** — redact or transform sensitive fields (e.g., SSNs, credit card numbers) based on the requesting user's role
+- **Trigger business workflows on record changes** — send email notifications, publish to a message queue, or call a webhook whenever specific data conditions are met This feature enables you to add business logic to your APIs and extend their functionality beyond standard REST operations.
 
 ## Overview
 
