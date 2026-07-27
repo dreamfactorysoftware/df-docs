@@ -351,6 +351,8 @@ Budgets can be configured at multiple dimensions (global, per-service, per-user,
 
 Budget alerting webhooks fire once per threshold per period and include structured payloads with spend details and utilization ratios.
 
+For monitoring spend against these limits and building per-app chargeback reports, see [AI Usage Monitoring & Cost Allocation](/AI/ai-usage-monitoring-and-cost-allocation).
+
 ## Environment Variables
 
 | Variable | Default | Description |

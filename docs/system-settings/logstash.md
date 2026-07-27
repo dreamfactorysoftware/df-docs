@@ -23,7 +23,8 @@ This guide provides step-by-step instructions for installing and configuring Ela
    - [Grafana Configuration](#grafana-configuration)
 4. [DreamFactory Integration](#dreamfactory-integration)
 5. [Dashboard Setup](#dashboard-setup)
-6. [Troubleshooting](#troubleshooting)
+6. [Monitoring Data Consumption by App and API Key](#monitoring-data-consumption-by-app-and-api-key)
+7. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -544,6 +545,45 @@ The dashboard will appear under your configured folder. Set the default time ran
 
 ---
 
+## Monitoring Data Consumption by App and API Key
+
+Beyond operational health, the Logstash connector is DreamFactory's data-consumption feed: every API event it ships answers "which identity called which service and endpoint, when, and with what response." This makes the ELK stack a consumption-metering layer for all DreamFactory-governed APIs, not just an error log.
+
+### What Each Event Contains
+
+For each event key you enable on the Logstash service, you choose which context to ship:
+
+- **`_event`** — the serialized API request and response: method, URI, service name, resource path, headers, and response status/content (depending on log context). Credentials, session tokens, and API keys are redacted by DreamFactory before the event leaves the platform.
+- **`_platform`** — the session and user context for the call: which user and session were active when the request ran.
+
+Because DreamFactory requires every request to present an API key bound to an application and role, the shipped events carry the identity attribution needed for per-consumer reporting — the same identity fabric described in [API Keys](/api-generation-and-connections/api-keys) and [Role-Based Access Control](/Security/role-based-access).
+
+### Consumption Panels for Grafana
+
+Extending the four dashboard panels above, two more answer the consumption question directly:
+
+**5. Top Consumers by App / API Key**
+- Visualization: Table or bar chart
+- Query: `event.request.method:*`
+- Bucket aggregation: Terms on the app/API-key field available in your shipped event context (order by count desc)
+- This is the per-application counterpart to the per-user panel: one row per consuming application, ranked by request volume.
+
+**6. Request Volume per Service**
+- Visualization: Time series (stacked)
+- Query: `event.request.service:*`
+- Bucket aggregations: Date histogram on `@timestamp` → Terms on `event.request.service.keyword`
+- Shows which backend APIs (databases, files, custom services) each slice of traffic is consuming over time.
+
+Together with the existing `user.id` panels, these give you consumption broken down by user, application, service, and endpoint — the raw material for showback reports on data access.
+
+### Correlating with AI Usage and Cost
+
+GELF events tell you *who called what*; token counts and estimated AI cost live in DreamFactory's `ai_usage_log`, not in the GELF stream. To bring AI spend into the same ELK stack, pull the AI audit stream — `GET /_internal/ai/audit-stream` returns NDJSON events designed for Logstash's `http_poller` input (the example configuration lives in [AI Gateway Analytics](/AI/ai-gateway)).
+
+For per-app, per-user, per-role, and per-model token and cost attribution — and for chargeback reporting built on it — see [AI Usage Monitoring & Cost Allocation](/AI/ai-usage-monitoring-and-cost-allocation).
+
+---
+
 ## Troubleshooting ELK Integration
 
 ### Connection Refused to Elasticsearch
@@ -713,6 +753,8 @@ If you already have a read-only role with `system/user` GET access, you can use 
    - Event: db.* | Log Level: INFO | Default Database Activity (db is a local SQLite database typically included with all DreamFactory installations)
    - Event: files.* | Log Level: INFO| File Activity
    - To add your own Database or other service connection start typing the name of your service and select the service followed by * or your specfic criteria
+
+![Creating a Logstash service in the DreamFactory admin console](/img/system-settings/logstash/logstash-service-create.png)
 
 5. Save configuration
 
