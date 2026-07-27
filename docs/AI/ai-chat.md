@@ -200,7 +200,7 @@ Use **AI Chat** when you need persistent sessions, MCP integration, or fine-grai
 
 Every AI provider call from the orchestrator is logged to `ai_usage_log` with `resource=chat-session`, distinct from direct REST gateway calls (`resource=chat`). Both contribute to the same AI Connection's cost attribution and monthly budget calculations.
 
-Prompt logging and SIEM dispatch also apply to AI Chat sessions when configured on the underlying AI Connection. See [AI Gateway Analytics](ai-gateway.md) for details.
+Prompt logging and SIEM dispatch also apply to AI Chat sessions when configured on the underlying AI Connection. See [AI Gateway Analytics](ai-gateway.md) for details, and [AI Usage Monitoring & Cost Allocation](/AI/ai-usage-monitoring-and-cost-allocation) for the console analytics view and chargeback patterns.
 
 ## Configuration Limits
 

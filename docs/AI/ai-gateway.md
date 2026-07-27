@@ -45,6 +45,8 @@ Every AI provider call writes a row to the `ai_usage_log` table with:
 - **partial**: A streaming request where the client disconnected before completion. Tokens consumed up to the disconnect are still counted.
 - **error**: The provider returned an error or the connection failed. Cost is zero for error rows.
 
+For the admin console view of this data and chargeback patterns built on it, see [AI Usage Monitoring & Cost Allocation](/AI/ai-usage-monitoring-and-cost-allocation).
+
 ## Analytics Dashboard API
 
 **`GET /_internal/ai/usage`** (admin only)
@@ -242,7 +244,7 @@ Logged prompts are stored in `ai_prompt_log` with:
 
 ## SIEM Integration
 
-DreamFactory supports both push-based and pull-based SIEM integration for AI audit events.
+DreamFactory supports both push-based and pull-based SIEM integration for AI audit events. For a full ELK stack setup (Elasticsearch, Logstash, Grafana) covering all DreamFactory API traffic, see the [ELK Stack & Logstash Integration guide](/system-settings/logstash).
 
 ### Push: Webhook Dispatch
 

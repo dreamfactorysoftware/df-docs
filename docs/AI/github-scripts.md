@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 10
 title: GitHub-Linked Scripts
 id: github-scripts
 description: Link DreamFactory server scripts to GitHub repositories for version-controlled scripting with cache invalidation.
