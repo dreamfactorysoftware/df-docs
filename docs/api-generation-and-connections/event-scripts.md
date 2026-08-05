@@ -43,7 +43,7 @@ DreamFactory event scripts support the following languages:
 | Language | Notes |
 |---|---|
 | **PHP** | Available in both Community and Enterprise editions. Full access to the `$event` and `$platform` objects. |
-| **Python 3** | Available in Enterprise edition. Requires Python 3 installed on the DreamFactory server. Accesses event data via the `event` and `platform` dictionaries. |
+| **Python 3** | Available in Enterprise edition. Requires Python 3 and the `munch` package installed on the DreamFactory server (`pip3 install munch`, adding `--break-system-packages` on Debian 12 and later). Accesses event data via the `event` and `platform` dictionaries. |
 | **Node.js** | Available in Enterprise edition. Requires Node.js installed on the server. Uses `event` and `platform` as JavaScript objects. |
 
 Community Edition users can use PHP for all event scripting. Enterprise Edition unlocks Python and Node.js for teams that prefer those languages or need ecosystem-specific libraries (e.g., NumPy for data transformation, npm packages for webhook integration).
@@ -219,6 +219,54 @@ To create or update an event script, follow these steps:
 8. Mark the script as active, and if the script should modify the event (such as changing the payload or response), check the Allow Event Modification checkbox.
 9. Add your script content, and save when complete. 
 
+## Storing Scripts in Files or Source Control
+
+Rather than pasting a body into the editor, an event script can be linked to a file held in a file storage service, or to a file in a repository exposed through a source control service. DreamFactory reads the body from that location when the script is loaded, which lets you edit scripts in your own tooling and keep them under version control.
+
+In the script editor, tick **Add path to file** to reveal the linking fields:
+
+| Field | Purpose |
+|---|---|
+| **Service** | The file storage service holding the script. |
+| **Path** | Path to the script file within that service. |
+
+To link to a repository instead, use the **Github Import** button. The dialog that opens adds:
+
+| Field | Purpose |
+|---|---|
+| **Select Service** | The source control service to read from. |
+| **Repository** | The repository containing the script file. |
+| **Branch/Tag** | The branch or tag to read from. Leave empty to use the repository's default branch. |
+| **Path** | Path to the script file within the repository. |
+
+If you are configuring scripts through the API rather than the UI, these correspond to the `storage_service_id`, `storage_path`, `scm_repository`, and `scm_reference` fields on the script.
+
+### Linking is one-way
+
+DreamFactory reads from the linked location but never writes back to it. Editing the body in the admin editor while a script is linked does not commit anything to the repository or file service, so the linked file remains the source of truth. Make your changes where the file lives rather than in the editor.
+
+### Refreshing after a change
+
+Once loaded, a linked script's content is cached indefinitely, so edits to the underlying file do not take effect until that cache is cleared.
+
+From the admin console, go to **System Settings > Config > Cache** and use **Flush System-Wide Cache**. Note that the **Per-Service Caches** buttons on the same page will not do it — those flush a service's own cache, not stored script content.
+
+To clear a single event script instead of everything, call:
+
+```
+DELETE /api/v2/system/cache/_event/{event_name}
+```
+
+See the [System API reference](/api-reference/system-api) for the other cache endpoints.
+
+For scripts kept in GitHub, the linking dialog offers **Auto-refresh on GitHub push**, which produces a **Payload URL** to paste into your repository's Settings → Webhooks. Each push then clears the cached copy so the next call picks up the latest version.
+
+### Access requirements
+
+The fetch of the linked file runs under the permissions of the request that triggered the event, not as an administrator. The role that caller uses therefore needs GET access to the storage or source control service holding the script.
+
+Without that access the fetch fails, the failure is recorded in the log, and the script does not run — while the API request itself continues normally. A script that appears correctly configured but never seems to take effect is worth checking against this first.
+
 ## Scripting Examples
 
 Explore a variety of scripting examples in the [df-scriptingexamples](https://github.com/dreamfactorysoftware/example-scripts) repository. This repository contains numerous scripts demonstrating how to leverage DreamFactory's scripting capabilities to enhance your APIs.
@@ -310,12 +358,11 @@ php -l your_script.php
 
 **Symptom**: Pre-process or post-process scripts that call external services cause API requests to time out.
 
-**Cause**: The default script execution timeout is 5 seconds. External HTTP calls (webhooks, third-party APIs) may exceed this.
+**Cause**: Scripts run synchronously as part of the API request, so they are bound by the platform's normal request limits rather than a DreamFactory-specific setting. The relevant limits are PHP's `max_execution_time`, PHP-FPM's `request_terminate_timeout`, and your web server's proxy read timeout (`fastcgi_read_timeout` in nginx). Calls to webhooks or third-party APIs can exceed these.
 
-**Fix**: For long-running operations, switch the script to the **queued** event type — queued scripts run asynchronously and do not block the API response. For pre-process scripts that must complete before the response (e.g., validation), optimize the external call or increase the script timeout via the `DF_SCRIPT_TIMEOUT` environment variable in your `.env` file:
-```
-DF_SCRIPT_TIMEOUT=15
-```
+**Fix**: For long-running operations, switch the script to the **queued** event type — queued scripts run asynchronously and do not block the API response. For pre-process scripts that must complete before the response (e.g., validation), optimize the external call, or raise the limits above in your PHP and web server configuration.
+
+Note that Python and Node.js scripts authenticate their internal API calls with a script token that is valid for 300 seconds. A script still making `platform.api` calls more than five minutes after it began will find that token expired.
 
 ### Accessing platform resources from within scripts
 
@@ -329,7 +376,26 @@ $lookupData = $result['content']['resource'] ?? [];
 ?>
 ```
 
-Internal API calls made via `$platform['api']` bypass authentication (the script inherits the session context), so they execute at full platform permissions. Be careful about using internal API calls in pre-process scripts — they add latency to every matching request.
+How that call is carried out depends on the language. PHP scripts call the API in process, inheriting the session context without a separate authentication pass. Python and Node.js scripts make a real HTTP request back to the instance and re-authenticate using a short-lived script token, so those calls run under the role of the user whose request triggered the script.
+
+Be careful about using internal API calls in pre-process scripts — they add latency to every matching request.
+
+#### Relative and absolute URLs
+
+A path with no scheme, such as `my_other_service/_table/lookup_table`, is treated as an internal call and is authenticated for you.
+
+A path beginning with `http://` or `https://` is treated as an external call, even when it points back at the same instance — `http://localhost/api/v2/...` included. External calls do not receive credentials automatically, so you must supply them yourself:
+
+```python
+options = {}
+options['headers'] = {}
+options['headers']['X-DreamFactory-Api-Key'] = platform.session.api_key
+options['headers']['X-DreamFactory-Session-Token'] = platform.session.session_token
+
+result = platform.api.get('http://localhost/api/v2/db/_table/todo', options)
+```
+
+This distinction matters when DreamFactory runs behind a proxy or gateway that rewrites the `Host` header. Internal calls from Python and Node.js scripts resolve against the host of the incoming request, so on those deployments a relative path can route back out through the proxy instead of staying on the machine. An absolute `localhost` URL with explicit headers keeps the call local.
 
 ### General troubleshooting tips
 
