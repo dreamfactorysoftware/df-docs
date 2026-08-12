@@ -20,7 +20,7 @@ Before starting the installation, confirm all of the following are in place:
   ```powershell
   Enable-WindowsOptionalFeature -Online -FeatureName IIS-CGI
   ```
-- [ ] **PHP 8.1 or 8.3** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/).
+- [ ] **PHP 8.3 or newer** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/). PHP 8.1 and 8.2 are no longer supported.
 - [ ] **Composer** — PHP dependency manager. Download the installer from [getcomposer.org](https://getcomposer.org/Composer-Setup.exe).
 - [ ] **Git for Windows** — required to clone the DreamFactory repository. Download from [git-scm.com](https://git-scm.com/download/win).
 - [ ] **Visual C++ 2015–2019 Redistributable** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/16/release/VC_redist.x64.exe).
@@ -108,9 +108,9 @@ Simply run the installer to install.
 
 ### PHP
 
-PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.3). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
+PHP for Windows can be downloaded [here](https://windows.php.net/download/). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
 
-At the time of writing, the latest supported PHP version is 8.3.16. The 64-bit NTS version can be directly downloaded [here](https://windows.php.net/downloads/releases/php-8.3.16-nts-Win32-vs16-x64.zip).
+DreamFactory requires PHP 8.3 or newer (`"php": "^8.3"`), so 8.3, 8.4, and 8.5 all satisfy it. Our Linux installer provisions PHP 8.5, which is the version we build and test against. Check the `require` block of the `composer.json` shipped with your release for the authoritative constraint, and do not use `--ignore-platform-reqs` to get past a version complaint — that flag hides real incompatibilities rather than resolving them.
 
 Just get the .zip downloaded. It is installed later in the process. 
 
@@ -517,7 +517,7 @@ For details on adding SSL, DreamFactory recommends using [certbot](https://certb
 The process of installing Oracle drivers is a more manual process than with our Linux installers. To begin you will need to download 3 things:
 - The Oracle "Basic" Instant Client package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-basic-windows.x64-23.7.0.25.01.zip)
 - The Oracle "SDK" Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
-- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
+- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) Pick the x64 oci8 build that matches the PHP version you installed, not a fixed version number. If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
 
 ![Web Server Role selection](/img/windows-install/PeclDLLPage.png)
 - `Note you will want to click on the DLL button under downloads on the Pecl site for windows .dll files`
