@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+sidebar_label: "Event Scripts"
 title: "API Event Scripts: Validate, Transform & Govern | DreamFactory"
 id: event-scripts
 description: Execute custom scripts on API events to validate requests, transform responses, enforce governance rules, and add business logic.
