@@ -74,6 +74,16 @@ The by-app panels are the chargeback view: because each application is an API ke
 
 The most-expensive-calls table lists individual requests with their attribution, token counts, and estimated cost — the drill-down level for "what was that spike?" questions.
 
+### Estimating a task before you run it
+
+The **task cost estimator** answers the forward-looking question: *what would one agent task cost?* Rather than quoting a price, it calibrates against your own metered history and projects a range.
+
+It reads per-call average input and output tokens from a window of your real usage, then multiplies them by the observed number of provider calls one routed task fans out into — a plan step, one or more tool calls, and a final answer. That fan-out is a **range of 3 to 6 calls**, which is why the result is a range rather than a single number, and why token figures are rounded to the nearest hundred: the arithmetic does not support more precision than that.
+
+Calibration needs a minimum number of metered requests in the window before it will project anything. If the window is too thin, widen it or run more traffic first.
+
+Given an optional budget, the estimator also judges the projected range against it, and after a real run it classifies actual spend against what was projected — so the estimate can be checked rather than trusted.
+
 ![Top most expensive calls ledger](/img/ai/usage-monitoring/top-expensive-calls.png)
 
 ## Reading Usage via the API

@@ -20,7 +20,7 @@ Before starting the installation, confirm all of the following are in place:
   ```powershell
   Enable-WindowsOptionalFeature -Online -FeatureName IIS-CGI
   ```
-- [ ] **PHP 8.1 or 8.3** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/).
+- [ ] **PHP 8.3 or later** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/).
 - [ ] **Composer** — PHP dependency manager. Download the installer from [getcomposer.org](https://getcomposer.org/Composer-Setup.exe).
 - [ ] **Git for Windows** — required to clone the DreamFactory repository. Download from [git-scm.com](https://git-scm.com/download/win).
 - [ ] **Visual C++ 2015–2019 Redistributable** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/16/release/VC_redist.x64.exe).

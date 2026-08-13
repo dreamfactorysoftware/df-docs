@@ -16,6 +16,12 @@ This chapter covers two critical security aspects of your DreamFactory environme
 
 CORS (Cross-Origin Resource Sharing) is a mechanism that allows a client to interact with an API endpoint which hails from a different domain, subdomain, port, or protocol. DreamFactory is configured by default to disallow all outside requests, so before you can integrate a third-party client such as a web or mobile application, you'll need to enable CORS.
 
+:::note[With no CORS entry, no CORS headers are sent]
+"Disallow all outside requests" is literal: until you create an entry, DreamFactory returns no `Access-Control-*` headers at all and rejects preflight (`OPTIONS`) requests. A browser client will report a CORS failure rather than a permission error from the API.
+
+If cross-origin calls that used to work start failing after an upgrade, check that an entry exists for the path in question — earlier versions could emit a permissive `Access-Control-Allow-Origin: *` from framework defaults even with no entry configured.
+:::
+
 ### Configuring CORS in DreamFactory
 
 To modify your CORS settings, log in to your DreamFactory instance using an administrator account and select the System Settings tab. Next navigate to `Config > CORS`, and then click the purple plus button to establish a new connection:
