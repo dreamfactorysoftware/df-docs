@@ -181,6 +181,25 @@ The response includes a `messages` array where each message has:
 
 Deletes the session and all its messages. Non-admins can only delete their own sessions.
 
+## Suggested follow-ups
+
+When an assistant reply ends with a fenced block tagged `suggestions`, the chat UI turns each line of that block into a clickable follow-up chip and hides the block itself from the rendered message. Clicking a chip sends it as the next message.
+
+Only a **closed fence at the very end** of the message is treated this way — a `suggestions` block in the middle of a reply is rendered as ordinary code, so a model explaining the convention does not accidentally produce chips.
+
+Parsing is deliberately conservative: at most **four** chips are shown, a line longer than 120 characters is dropped rather than truncated, and a stray leading bullet or numbering (`-`, `*`, `•`, `1.`) is tolerated and stripped.
+
+To offer follow-ups, have your system prompt end replies with:
+
+````text
+```suggestions
+Show me last quarter instead
+Break this down by region
+```
+````
+
+The feature needs no configuration; it activates whenever a reply carries the fence.
+
 ## AI Chat vs. Data Chat
 
 DreamFactory provides two ways to chat with your data:

@@ -30,7 +30,7 @@ Use the table below to identify the appropriate upgrade method based on your cur
 |---|---|---|---|
 | 4.x | 5.x | In-place (`git pull`) | PHP 7.4+ required; run `php artisan migrate --seed` |
 | 5.x | 6.x | In-place (`git pull`) | Review `.env` for new required variables; check deprecated connectors |
-| 6.x | 7.x | In-place or fresh migration | PHP 8.1+ required; significant dependency updates — test in staging first |
+| 6.x | 7.x | In-place or fresh migration | PHP 8.3+ required; significant dependency updates — test in staging first |
 | Any | Cross-server | Full migration (see below) | Use the Major Version Migration process to copy `.env` and system database |
 
 **Breaking changes to watch for:**
@@ -413,7 +413,7 @@ scp <user>@<remote-server>:/opt/dreamfactory/dump.sql .
 If upgrading MySQL versions (e.g., 5.6 to 5.7+), you may need to disable strict mode by opening `config/database.php` and adding `'strict' => false` under the MySQL configuration section.
 
 #### General Configuration
-Ensure all system dependencies are up to date. DreamFactory supports PHP 8.1 or later.
+Ensure all system dependencies are up to date. DreamFactory 7.x requires PHP 8.3 or later.
 
 ### Step 5: Import the System Database
 
@@ -479,6 +479,23 @@ php artisan cache:clear
 ```bash
 php artisan config:clear
 ```
+
+## Configuration Notes for Laravel 13-Based Releases
+
+:::warning[`config/cache.php` must allow class unserialization]
+Laravel 13 added a `serializable_classes` key to `config/cache.php` and ships it as `false`, which prevents *any* PHP class from being restored from the cache. That default is unsafe for DreamFactory, which caches objects — database schema and event scripts among them.
+
+Under `false`, cached objects come back as `__PHP_Incomplete_Class` and fail at the first property access. The symptom is distinctive: an endpoint answers **200 on the first request after a cache clear, then 500 on every request after it**, because the first request populates the cache and the second reads it back.
+
+```php
+// config/cache.php
+'serializable_classes' => true,
+```
+
+This affects the `redis`, `file`, `database`, `array`, `dynamodb` and `storage` cache stores — all the ones that serialize through PHP. Switching stores is not a workaround.
+
+Installations that upgrade in place usually keep their existing `config/cache.php`, which has no such key and is therefore unaffected. The problem appears on **fresh installs**, and on any instance that adopts the new skeleton's configuration file.
+:::
 
 ## Migration Verification
 

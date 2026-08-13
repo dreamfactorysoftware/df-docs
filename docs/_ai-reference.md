@@ -21,7 +21,7 @@ This document provides structured, machine-readable information about DreamFacto
 | **Product Type** | REST API Platform / API Gateway |
 | **Primary Function** | Automatic API generation from data sources |
 | **License Types** | Open Source (OSS), Commercial (Gold, Silver) |
-| **Backend Technology** | PHP 8.1+, Laravel Framework |
+| **Backend Technology** | PHP 8.3+, Laravel Framework |
 | **Database Support** | MySQL, PostgreSQL, SQL Server, Oracle, MongoDB, Cassandra, CouchDB, and more |
 | **Authentication Support** | API Key, JWT, OAuth 2.0, SAML 2.0, LDAP, Active Directory, OpenID Connect |
 | **MCP Support** | Yes - Model Context Protocol for AI assistant integration |

@@ -63,7 +63,7 @@ You can now access the DreamFactory UI from a web browser by pointing to the ser
 
 ## Installing DreamFactory on Ubuntu 22.04/24.04
 
-Ubuntu is the most commonly used Linux distribution for DreamFactory deployments. The automated installer handles all dependency installation (PHP 8.1+, NGINX, MariaDB) automatically on Ubuntu 22.04 LTS and Ubuntu 24.04 LTS.
+Ubuntu is the most commonly used Linux distribution for DreamFactory deployments. The automated installer handles all dependency installation (PHP 8.3+, NGINX, MariaDB) automatically on Ubuntu 22.04 LTS and Ubuntu 24.04 LTS.
 
 ```bash
 # Download the installer
@@ -114,7 +114,7 @@ chmod +x dfsetup.run
 sudo ./dfsetup.run
 ```
 
-Debian 10/11 uses `apt` as its package manager. The installer automatically detects the Debian variant and selects the correct package repositories for PHP 8.1+ and NGINX.
+Debian 10/11 uses `apt` as its package manager. The installer automatically detects the Debian variant and selects the correct package repositories for PHP 8.3+ and NGINX.
 
 ## Installing DreamFactory on Fedora
 

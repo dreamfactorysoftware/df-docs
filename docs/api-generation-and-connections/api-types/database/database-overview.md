@@ -24,9 +24,10 @@ These database connectors are included in DreamFactory OSS and all commercial ed
 | Database | Driver | Default Port | Documentation |
 | -------- | ------ | ------------ | ------------- |
 | **PostgreSQL** | `pdo_pgsql` | 5432 | [PostgreSQL Guide](./postgresql) |
-| **MySQL / MariaDB** | `pdo_mysql` | 3306 | [MySQL Guide](./generating-database-backed-api) |
+| **MySQL / MariaDB** | `pdo_mysql` | 3306 | [MySQL Guide](./generating-a-database-backed-api) |
 | **SQLite** | `pdo_sqlite` | N/A (file) | [SQLite Guide](./sqlite) |
 | **Google AlloyDB** | `pdo_pgsql` | 5432 | [AlloyDB Guide](./alloydb) |
+| **Google BigQuery** | none (HTTP API) | N/A (cloud) | [BigQuery Guide](./bigquery) |
 
 ### Commercial License Required
 
@@ -195,11 +196,12 @@ Layer DreamFactory's RBAC on top of database permissions:
 
 ## Next Steps
 
-- **[Generating a Database-Backed API](./generating-database-backed-api)**: Step-by-step guide for your first database API
-- **[Querying & Filtering](./querying-filtering)**: Learn advanced query syntax
+- **[Generating a Database-Backed API](./generating-a-database-backed-api)**: Step-by-step guide for your first database API
+- **[Querying & Filtering](./querying-and-filtering)**: Learn advanced query syntax
 - **[PostgreSQL](./postgresql)**: Connect PostgreSQL databases
 - **[SQLite](./sqlite)**: Connect local SQLite databases
 - **[SQL Server](./sql-server)**: Connect Microsoft SQL Server
 - **[AlloyDB](./alloydb)**: Connect Google AlloyDB
+- **[BigQuery](./bigquery)**: Connect Google BigQuery datasets
 
 For database-specific questions, consult the individual database guides or contact DreamFactory support.

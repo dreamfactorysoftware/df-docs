@@ -9,7 +9,7 @@ difficulty: beginner
 
 # Docker installation
 
-Our Docker container includes everything you need to run DreamFactory, including Ubuntu 22.04, PHP 8.1, and the NGINX web server. It also includes all required PHP extensions and a sample Postgres Database. With these tools you can begin experimenting with the latest DreamFactory version as quickly as you can spin up the container!
+Our Docker container includes everything you need to run DreamFactory, including Ubuntu, PHP 8.3+, and the NGINX web server. It also includes all required PHP extensions and a sample Postgres Database. With these tools you can begin experimenting with the latest DreamFactory version as quickly as you can spin up the container!
 
 ## Prerequisites
 
