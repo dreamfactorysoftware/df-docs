@@ -14,7 +14,7 @@ DreamFactory is a secure, self-hosted enterprise data access platform that provi
 
 ## What is DreamFactory?
 
-DreamFactory is a self-hosted API generation platform that instantly creates secure, governed REST and GraphQL APIs for any data source — without writing backend code. Point DreamFactory at a MySQL, PostgreSQL, Oracle, MongoDB, or any of 20+ supported databases and it introspects the schema, generates a fully documented API, and enforces access control — all through a point-and-click admin interface. The same applies to file storage (S3, SFTP, Azure Blob), email providers, caching services (Redis, Memcached), and legacy SOAP services.
+DreamFactory is a self-hosted API generation platform that instantly creates secure, governed REST APIs for any data source — without writing backend code. Point DreamFactory at a MySQL, PostgreSQL, Oracle, MongoDB, or any of 20+ supported databases and it introspects the schema, generates a fully documented API, and enforces access control — all through a point-and-click admin interface. The same applies to file storage (S3, SFTP, Azure Blob), email providers, caching services (Redis, Memcached), and legacy SOAP services.
 
 DreamFactory is available in two editions. **DreamFactory Community Edition** is open source under the Apache 2.0 license — the full source code is available on [GitHub](https://github.com/dreamfactorysoftware/dreamfactory) and can be self-hosted at no cost. **DreamFactory Enterprise** adds SSO and identity passthrough (SAML, LDAP, Active Directory, OAuth), advanced RBAC with field-level permissions, commercial database connectors (Oracle, IBM Db2, SAP HANA), dedicated support SLAs, and Logstash/ELK audit logging. Both editions are fully self-hosted — no data leaves your infrastructure.
 

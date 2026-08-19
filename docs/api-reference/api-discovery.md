@@ -185,23 +185,6 @@ Both approaches return an OpenAPI 3.0 document you can feed directly to an LLM c
 
 ---
 
-## REST vs. GraphQL Introspection
-
-DreamFactory exposes a REST-based discovery mechanism (OpenAPI spec endpoints) and, for GraphQL services, the standard GraphQL introspection query. Here is how they compare:
-
-| Feature | DreamFactory OpenAPI (`/_spec`) | GraphQL Introspection (`__schema`) |
-|---|---|---|
-| **Format** | OpenAPI 3.0 JSON | GraphQL SDL / JSON |
-| **Endpoint** | `GET /api/v2/{service}/_spec` | `POST /api/v2/{service}` with `{"query": "{ __schema { types { name } } }"}` |
-| **Auth required** | Yes — API key + session token | Yes — same headers |
-| **Covers** | All REST paths, parameters, schemas | Types, fields, resolvers |
-| **LLM-friendly** | High — maps directly to HTTP calls | Moderate — requires GraphQL query construction |
-| **Use when** | Discovering database, file, or scripted REST services | Working with a DreamFactory GraphQL service |
-
-For most DreamFactory integrations, the OpenAPI `/_spec` endpoint is the preferred discovery mechanism. Use GraphQL introspection only when your DreamFactory service is explicitly of type `graphql` and your client speaks GraphQL natively.
-
----
-
 ## Troubleshooting
 
 ### Spec endpoint returns 403
