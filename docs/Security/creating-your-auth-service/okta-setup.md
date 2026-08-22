@@ -1,3 +1,7 @@
+---
+description: "Set up Okta SSO with DreamFactory using SAML 2.0: create the Okta app integration, configure SAML settings, and connect the DreamFactory SAML service."
+---
+
 # Okta SSO Setup Guide
 
 This guide will walk you through setting up Okta Single Sign-On (SSO) authentication with DreamFactory.

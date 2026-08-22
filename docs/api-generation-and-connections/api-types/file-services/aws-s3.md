@@ -371,4 +371,4 @@ S3 charges per request. Optimize by:
 
 - **[File Services Overview](./file-services-overview)**: Compare all file storage options
 - **[Local File Storage](./local-file-storage)**: Store files on the server
-- **[Role-Based Access Control](/api-security/rbac)**: Configure fine-grained permissions
+- **[Role-Based Access Control](/Security/role-based-access)**: Configure fine-grained permissions

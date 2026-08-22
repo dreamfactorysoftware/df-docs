@@ -1,3 +1,7 @@
+---
+description: "Configure Google OAuth in DreamFactory with automatic role assignment mapped from Google Workspace group membership, from Cloud Console setup to testing."
+---
+
 # Google OAuth Group-to-Role Mapping
 
 This guide walks through configuring Google OAuth authentication in DreamFactory with optional automatic role assignment based on Google Workspace group membership.

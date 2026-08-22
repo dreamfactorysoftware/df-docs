@@ -141,10 +141,10 @@ Implement enterprise-grade security for your APIs.
 Programmatically manage DreamFactory for automation and DevOps workflows.
 
 - **[System API Overview](/system-settings/the-system-api/using-the-system-apis)** - Introduction to the System API
-- **[User Management](/system-settings/the-system-api/02-user-management)** - Manage users programmatically
-- **[Service Management](/system-settings/the-system-api/03-service-management)** - Manage services via API
-- **[Role Management](/system-settings/the-system-api/04-role-management)** - Manage roles via API
-- **[API Key Management](/system-settings/the-system-api/05-api-key-management)** - Manage API keys via API
+- **[User Management](/system-settings/the-system-api/user-management)** - Manage users programmatically
+- **[Service Management](/system-settings/the-system-api/service-management)** - Manage services via API
+- **[Role Management](/system-settings/the-system-api/role-management)** - Manage roles via API
+- **[API Key Management](/system-settings/the-system-api/api-key-management)** - Manage API keys via API
 
 ---
 

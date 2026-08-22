@@ -2,6 +2,7 @@
 sidebar_position: 1
 title: Creating an SFTP REST API
 id: creating-an-sftp-rest-api
+description: "Generate a REST API for an SFTP server with DreamFactory's file connector, then create, list, retrieve, update, and delete files and folders over HTTP."
 ---
 
 # Creating an SFTP REST API

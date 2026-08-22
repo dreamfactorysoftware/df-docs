@@ -1,3 +1,7 @@
+---
+description: "Configure GitHub OAuth authentication for DreamFactory: register an OAuth app, set the callback URL, and create the OAuth service in the admin console."
+---
+
 # GitHub OAuth Setup Guide
 
 This guide will walk you through setting up GitHub OAuth authentication with DreamFactory.

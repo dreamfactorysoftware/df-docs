@@ -135,7 +135,7 @@ DreamFactory Cloud includes all drivers pre-installed. For self-managed installa
 | PostgreSQL | `pdo_pgsql` | `apt-get install php-pgsql` |
 | MySQL | `pdo_mysql` | `apt-get install php-mysql` |
 | SQLite | `pdo_sqlite` | `apt-get install php-sqlite3` |
-| SQL Server | `pdo_sqlsrv` | See [SQL Server driver docs](./sql-server#driver-setup-for-self-managed-installations) |
+| SQL Server | `pdo_sqlsrv` | See [SQL Server driver docs](./sql-server#prerequisites) |
 | Oracle | `pdo_oci` | Requires Oracle Instant Client |
 
 For complete installation instructions, see [Installing Additional Drivers](/getting-started/installing-dreamfactory/installing-additional-drivers).

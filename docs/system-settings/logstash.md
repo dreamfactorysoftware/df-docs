@@ -24,7 +24,6 @@ This guide provides step-by-step instructions for installing and configuring Ela
 4. [DreamFactory Integration](#dreamfactory-integration)
 5. [Dashboard Setup](#dashboard-setup)
 6. [Monitoring Data Consumption by App and API Key](#monitoring-data-consumption-by-app-and-api-key)
-7. [Troubleshooting](#troubleshooting)
 
 ---
 

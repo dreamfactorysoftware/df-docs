@@ -66,7 +66,7 @@ User → Identity Provider (Okta/ADFS/Azure AD)
      → Database audit log records: "Alice" not "svc_dreamfactory"
 ```
 
-In practice, this requires that your database is configured to accept connections from DreamFactory with user-specific credentials rather than a single shared service account. DreamFactory forwards the session identity so the database layer records meaningful audit entries. For Active Directory-backed SQL Server configurations, see the [SQL Server Security guide](/Security/sql-server-configuration) for Kerberos/Windows Authentication passthrough setup.
+In practice, this requires that your database is configured to accept connections from DreamFactory with user-specific credentials rather than a single shared service account. DreamFactory forwards the session identity so the database layer records meaningful audit entries. For Active Directory-backed SQL Server configurations, see the [SQL Server Security guide](/Security/sqlsrv-config) for Kerberos/Windows Authentication passthrough setup.
 
 This capability matters for enterprise compliance scenarios: GDPR data access logs, SOX change-tracking requirements, and HIPAA audit trails all require that records show which person accessed which data — not merely which application.
 
