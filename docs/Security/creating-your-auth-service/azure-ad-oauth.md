@@ -1,3 +1,7 @@
+---
+description: "Set up Azure Active Directory (Entra ID) OAuth authentication with DreamFactory, from app registration to service configuration and testing."
+---
+
 # Azure Active Directory OAuth Setup Guide
 
 This guide will walk you through setting up Azure Active Directory (Azure AD/Entra ID) OAuth authentication with DreamFactory.

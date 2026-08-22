@@ -315,5 +315,5 @@ Use these services to test without sending real emails:
 ## Next Steps
 
 - **[SMTP](./smtp)**: Configure SMTP email service
-- **[Role-Based Access Control](/api-security/rbac)**: Restrict email permissions
-- **[Rate Limiting](/api-security/rate-limiting)**: Prevent email abuse
+- **[Role-Based Access Control](/Security/role-based-access)**: Restrict email permissions
+- **[Rate Limiting](/Security/authenticating-your-apis)**: Prevent email abuse

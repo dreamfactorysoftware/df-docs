@@ -182,7 +182,7 @@ curl -X GET "https://your-dreamfactory-instance.com/api/v2/mssql/_table/orders" 
   -H "X-DreamFactory-Session-Token: USER_JWT_TOKEN"
 ```
 
-For detailed authentication setup, see the [Security & Authentication](/Security/security-authentication) documentation.
+For detailed authentication setup, see the [Security & Authentication](/Security/authenticating-your-apis) documentation.
 
 ---
 
@@ -315,7 +315,7 @@ Common issues and their solutions:
 - Verify supported operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `LIKE`, `IN`, `BETWEEN`
 - Use proper filter syntax: `?filter=column_name=value`
 - For complex filters, use the `filter` parameter with SQL-style conditions
-- Check the [Querying & Filtering](/api-generation-and-connections/api-types/database/querying-filtering) documentation for syntax examples
+- Check the [Querying & Filtering](/api-generation-and-connections/api-types/database/querying-and-filtering) documentation for syntax examples
 
 ### Stored Procedure Issues
 
@@ -354,7 +354,7 @@ For more information on DAB, see the [Microsoft Learn documentation](https://lea
 
 Now that your SQL Server API is connected and secured, explore these advanced features:
 
-- **[Querying & Filtering](/api-generation-and-connections/api-types/database/querying-filtering)**: Learn advanced query syntax and filtering options
+- **[Querying & Filtering](/api-generation-and-connections/api-types/database/querying-and-filtering)**: Learn advanced query syntax and filtering options
 - **[Event Scripts](/api-generation-and-connections/event-scripts)**: Add custom business logic to API events
 - **[Role-Based Access Control](/Security/role-based-access)**: Deep dive into advanced RBAC configurations
 

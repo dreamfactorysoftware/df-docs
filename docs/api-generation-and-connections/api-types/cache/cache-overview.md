@@ -214,4 +214,4 @@ Examples:
 
 - **[Redis](./redis)**: Configure Redis for production caching
 - **[Memcached](./memcached)**: Configure Memcached for simple caching
-- **[Performance Tuning](/administration/performance-tuning)**: Optimize DreamFactory performance
+- **[Performance Tuning](/getting-started/optimizing-dreamfactory/php-and-laravel)**: Optimize DreamFactory performance

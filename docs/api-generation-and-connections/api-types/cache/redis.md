@@ -412,4 +412,4 @@ For bulk operations, the API supports batch requests that are automatically pipe
 
 - **[Cache Overview](./cache-overview)**: Compare caching backends
 - **[Memcached](./memcached)**: Alternative caching option
-- **[Performance Tuning](/administration/performance-tuning)**: Optimize DreamFactory
+- **[Performance Tuning](/getting-started/optimizing-dreamfactory/php-and-laravel)**: Optimize DreamFactory

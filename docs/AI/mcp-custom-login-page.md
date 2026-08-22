@@ -2,6 +2,7 @@
 sidebar_position: 3
 title: Custom Login Page for MCP
 id: mcp-custom-login-page
+description: "How to build a branded, self-hosted login page for DreamFactory's MCP OAuth flow while keeping OAuth 2.0 and PKCE security intact."
 ---
 
 # Custom Login Page for MCP OAuth

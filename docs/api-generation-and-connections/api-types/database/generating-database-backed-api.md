@@ -396,7 +396,7 @@ if (config('df.db.query_log_enabled')) {
 
 ...
 ```
-See [this section](/security/rate-limiting) for more information about logging.
+See [this section](/Security/authenticating-your-apis) for more information about logging.
 
 ### Using extensions with your databases (PostgreSQL)
 

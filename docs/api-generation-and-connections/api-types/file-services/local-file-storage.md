@@ -318,4 +318,4 @@ Example: Allow uploads to `/uploads/` but not access to `/config/`:
 
 - **[AWS S3](./aws-s3)**: Migrate to cloud storage for production
 - **[File Services Overview](./file-services-overview)**: Compare all file storage options
-- **[Role-Based Access Control](/api-security/rbac)**: Configure fine-grained permissions
+- **[Role-Based Access Control](/Security/role-based-access)**: Configure fine-grained permissions
