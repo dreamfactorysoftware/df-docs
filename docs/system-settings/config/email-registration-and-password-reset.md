@@ -48,8 +48,12 @@ available as their own service types. See
 
 ## Step 2: Create the Email service
 
-In the admin console, open the Services list and create a service in the Email
-group. Note its ID; you need it in the next step.
+In the admin console, go to **API Generation & Connections > API Types >
+Utility**. Email service types are filed under Utility, alongside Cache,
+Notification, Log, Source Control and IoT. There is no separate Email entry in
+the API Types list, which is a common place to get stuck.
+
+Create the service and note its ID; you need it in the next step.
 
 ## Step 3: Select the service and template
 
