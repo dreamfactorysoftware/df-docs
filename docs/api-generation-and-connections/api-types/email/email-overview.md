@@ -315,5 +315,6 @@ Use these services to test without sending real emails:
 ## Next Steps
 
 - **[SMTP](./smtp)**: Configure SMTP email service
+- **[Email Registration and Password Reset](/system-settings/config/email-registration-and-password-reset)**: Wire an email service to user invites and password resets
 - **[Role-Based Access Control](/api-security/rbac)**: Restrict email permissions
 - **[Rate Limiting](/api-security/rate-limiting)**: Prevent email abuse
