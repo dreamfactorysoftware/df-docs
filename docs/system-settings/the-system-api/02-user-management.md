@@ -62,6 +62,8 @@ curl -X POST "https://<url>/api/v2/system/user" \
 
 ### With Email Invitation
 
+This requires an Invite Email Service and an Invite Email Template to be set on the `user` service first. Without both, the request returns HTTP 500. See [Email Registration and Password Reset](/system-settings/config/email-registration-and-password-reset).
+
 **Endpoint:** `POST https://{url}/api/v2/system/user?send_invite=true`
 
 **Request Body:**
