@@ -31,7 +31,8 @@ port, credentials, and encryption, so nothing goes in `.env`. See
 
 A **Local Email Service** is also available. When its `Local Command` field is
 empty and `MAIL_DRIVER` is `smtp`, it falls back to the Laravel mail settings in
-your `.env` file:
+your `.env` file. `MAIL_DRIVER` defaults to `sendmail`, so it must be set
+explicitly:
 
 ```bash
 MAIL_DRIVER=smtp
@@ -58,7 +59,7 @@ the account being invited or reset, and there is no global default.
 | Account type | Where the settings live | Fields |
 | --- | --- | --- |
 | Non-admin users | The `user` service, **Config** tab | `invite_email_service_id`, `invite_email_template_id`, `password_email_service_id`, `password_email_template_id` |
-| Admins | System-level config | The same four fields |
+| Admins | The `system` service, **Config** tab | The same four fields |
 
 The two are independent. Configuring user invites does not configure admin
 invites, and configuring invites does not configure password resets.
@@ -66,11 +67,11 @@ invites, and configuring invites does not configure password resets.
 In the admin console, open the `user` service and set these on its Config tab:
 
 - **Invite Email Service** and **Invite Email Template**
-- **Password Reset Email Service** and **Password Reset Email Template**
+- **Password Email Service** and **Password Email Template**
 - **Open Reg Email Service** and **Open Reg Email Template**, if you allow
   self-registration
 
-DreamFactory ships with three templates: `User Invite Default`,
+The installer seeds three templates: `User Invite Default`,
 `User Registration Default`, and `Password Reset Default`. They are not applied
 automatically. You must select one.
 
@@ -82,6 +83,10 @@ curl -X PATCH "https://<url>/api/v2/system/service/<user_service_id>" \
 -H "X-DreamFactory-Session-Token: <sessionToken>" \
 -d '{"config":{"invite_email_service_id":12,"invite_email_template_id":1,"password_email_service_id":12,"password_email_template_id":3}}'
 ```
+
+Admin accounts use the same request against the `system` service instead of the
+`user` service. Look up its ID with
+`GET /api/v2/system/service?filter=type='system'`.
 
 ## Sending an invitation
 
@@ -95,7 +100,8 @@ curl -X POST "https://<url>/api/v2/system/user?send_invite=true" \
 -d '{"resource":[{"name":"Jane Doe","first_name":"Jane","last_name":"Doe","email":"jane@example.com"}]}'
 ```
 
-In the admin console, check **Send email invite** when you create the account.
+In the admin console, the account form offers **Send Email Invite** or
+**Set Password** as a pair. Choose **Send Email Invite**.
 
 See [User Management](/system-settings/the-system-api/user-management) for the
 full request format.
@@ -111,8 +117,19 @@ curl -X POST "https://<url>/api/v2/user/password?reset=true" \
 -d '{"email":"jane@example.com"}'
 ```
 
-A configured instance returns `{"success": true}`. Admins use
-`/api/v2/system/password` and read the system-level settings instead.
+A configured instance returns `{"success": true}`.
+
+Admin accounts use a different endpoint, and unlike the user endpoint it
+requires a session token or API key:
+
+```bash
+curl -X POST "https://<url>/api/v2/system/admin/password?reset=true" \
+-H "Content-Type: application/json" \
+-H "X-DreamFactory-Session-Token: <sessionToken>" \
+-d '{"email":"admin@example.com"}'
+```
+
+That endpoint reads the `system` service settings, not the `user` service ones.
 
 ## Troubleshooting
 
@@ -123,16 +140,15 @@ message tells you which of the two settings is missing.
 | --- | --- |
 | `No email service configured for user invite.` | Invite Email Service is not set |
 | `No default email template for user invite.` | Invite Email Template is not set |
-| `No data found in default email template for user invite.` | The selected invite template no longer exists |
-| `No security question found or email confirmation available for this user. Please contact your administrator.` | Password Reset Email Service is not set, and the user has no security question |
-| `No data found in default email template for password reset.` | Password Reset Email Template is not set |
+| `No security question found or email confirmation available for this user. Please contact your administrator.` | Password Email Service is not set, and the user has no security question |
+| `No data found in default email template for password reset.` | Password Email Template is not set |
 
 If the settings look right but mail still does not arrive, the problem is the
-transport, not DreamFactory. Test the Email service on its own with
-`POST /api/v2/<email_service_name>` before looking further.
+transport, not DreamFactory. Send a message directly through the Email service
+itself to confirm it can reach your mail host before looking further.
 
 Fixing this for users and finding that admins still cannot reset is expected.
-Set the same four fields at the system level as well.
+Set the same four fields on the `system` service as well.
 
 ## Next Steps
 
