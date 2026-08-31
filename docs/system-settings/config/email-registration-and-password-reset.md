@@ -71,7 +71,7 @@ In the admin console, open the `user` service and set these on its Config tab:
 - **Open Reg Email Service** and **Open Reg Email Template**, if you allow
   self-registration
 
-DreamFactory ships with three templates: `User Invite Default`,
+The installer seeds three templates: `User Invite Default`,
 `User Registration Default`, and `Password Reset Default`. They are not applied
 automatically. You must select one.
 
@@ -100,7 +100,8 @@ curl -X POST "https://<url>/api/v2/system/user?send_invite=true" \
 -d '{"resource":[{"name":"Jane Doe","first_name":"Jane","last_name":"Doe","email":"jane@example.com"}]}'
 ```
 
-In the admin console, check **Send email invite** when you create the account.
+In the admin console, the account form offers **Send Email Invite** or
+**Set Password** as a pair. Choose **Send Email Invite**.
 
 See [User Management](/system-settings/the-system-api/user-management) for the
 full request format.
