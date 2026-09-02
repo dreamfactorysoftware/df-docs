@@ -59,3 +59,6 @@ website/i18n/**/*
 
 # Netlify
 .netlify
+
+# Local screenshot harvest (scripts/shots.mjs)
+.shots/

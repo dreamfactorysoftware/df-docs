@@ -396,7 +396,7 @@ if (config('df.db.query_log_enabled')) {
 
 ...
 ```
-See [this section](/security/rate-limiting) for more information about logging.
+See [ELK Stack & Logstash Integration](/system-settings/logstash) for more information about logging.
 
 ### Using extensions with your databases (PostgreSQL)
 

@@ -1,3 +1,7 @@
+---
+description: "Query parameters for DreamFactory API requests: filter expressions and operators, sorting, pagination, field selection, and related record retrieval."
+---
+
 # Query Parameters Reference
 
 Common query parameters for filtering, sorting, and paginating DreamFactory API responses.

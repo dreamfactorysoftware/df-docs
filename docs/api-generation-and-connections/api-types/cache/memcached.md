@@ -466,4 +466,4 @@ UDP mode is vulnerable to amplification attacks. Only use in secure networks.
 
 - **[Cache Overview](./cache-overview)**: Compare caching backends
 - **[Redis](./redis)**: Feature-rich alternative
-- **[Performance Tuning](/administration/performance-tuning)**: Optimize DreamFactory
+- **[Performance Tuning](/getting-started/optimizing-dreamfactory/php-and-laravel)**: Optimize DreamFactory

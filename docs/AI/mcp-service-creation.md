@@ -91,3 +91,51 @@ Show me tables in my database/list tables
 ![mcp-example-list](/img/api-generation-and-connections/api-types/utility/creating-mcp-server/mcp-example-list.png)
 
 The Agent will connect to the MCP server using the mcp_endpoint and return the available database tables, allowing you to interact with your data directly from ChatGPT.
+
+### Claude Desktop
+
+Claude Desktop connects to a remote DreamFactory MCP server through **Settings → Connectors**. DreamFactory supports Dynamic Client Registration (DCR), so you typically paste the MCP endpoint and let Claude register itself — you do not have to paste the OAuth client id and secret.
+
+**Requirements:**
+
+- Claude Pro, Max, Team, or Enterprise
+- Claude Desktop installed
+- Your DreamFactory MCP endpoint, which is `https://<host>/mcp/<service-name>` with **no trailing slash**. How to read that URL from API Docs is in the section above; deployment and redirect-URI notes are in [Deploying the MCP Server](./mcp-server-deployment.md).
+
+1. In Claude Desktop open **Settings** and click **Connectors**.
+
+   ![Claude Desktop Settings page showing the sidebar with General, Account, Privacy, Billing, Usage, Capabilities, Connectors, and Claude Code options](/img/ai/mcp-clients/claude-desktop-settings.png)
+
+2. Scroll past the built-in connectors and click **Add Connector**.
+
+   ![Claude Desktop Connectors page showing built-in connectors like Google Drive, Gmail, Google Calendar, and GitHub, along with custom MCP connectors at the bottom](/img/ai/mcp-clients/claude-desktop-connectors.png)
+
+3. Give the connector a name and paste the MCP endpoint into **Remote MCP server URL**.
+
+   ![Add custom connector dialog with Name and Remote MCP server URL fields](/img/ai/mcp-clients/claude-desktop-add-connector.png)
+
+   Advanced settings can hold an OAuth client id and secret. Leave them blank unless DCR is disabled on your instance.
+
+   ![Add custom connector dialog with Advanced settings expanded, showing optional OAuth Client ID and OAuth Client Secret fields](/img/ai/mcp-clients/claude-desktop-add-connector-advanced.png)
+
+4. Click **Add**. Claude discovers the OAuth endpoints, registers via DCR, and opens a browser for you to log in to DreamFactory.
+
+5. After login, the connector is active. Ask Claude to list tables or query a service the connecting user's role can reach.
+
+:::tip
+If you see `redirect_uri is not registered for this client`, the usual cause is a busy loopback port, not a missing Claude callback. Native clients (Claude Desktop, Cursor, VS Code) listen on `http://127.0.0.1:<port>/`. See [Deploying the MCP Server](./mcp-server-deployment.md#connecting-a-client).
+:::
+
+### Cursor and VS Code
+
+Point the client at `https://<host>/mcp/<service-name>` over HTTP. A VS Code `mcp.json` looks like this:
+
+```json
+{
+  "servers": {
+    "dreamfactory": { "type": "http", "url": "https://df.example.com/mcp/poc" }
+  }
+}
+```
+
+Cursor uses the same URL. Do not use `/api/v2/...` — that is the REST API and returns `400 No session token or API Key`. Full proxy, `APP_URL`, and OAuth troubleshooting is in [Deploying the MCP Server](./mcp-server-deployment.md).

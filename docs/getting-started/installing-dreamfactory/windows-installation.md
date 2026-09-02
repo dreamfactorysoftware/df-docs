@@ -46,7 +46,7 @@ To enable the Web Server Roles:
 5. Ensure the server you're working on is selected, click **Next**.
 6. On server roles, check the **Web Server (IIS)** box, install any admin tools if asked, and click **Next**.
 7. Your Web Server Role should look something like this (also outlined below): 
-![Web Server Role selection](/img/windows-install/select-server-roles.png)
+![Windows Server Manager showing IIS Web Server role selection dialog](/img/windows-install/select-server-roles.png)
 8. Click **Next** and then select **Install**. Let the installer run in the background, reup on coffee and start the download section below. 
 
 ### Web server roles
@@ -519,7 +519,7 @@ The process of installing Oracle drivers is a more manual process than with our 
 - The Oracle "SDK" Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
 - The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
 
-![Web Server Role selection](/img/windows-install/PeclDLLPage.png)
+![PECL website showing PHP oci8 extension DLL download options for Windows](/img/windows-install/PeclDLLPage.png)
 - `Note you will want to click on the DLL button under downloads on the Pecl site for windows .dll files`
 - `Unless you have good reason, choose the appropriate DLLs with the NTS tag`
 
@@ -529,11 +529,11 @@ The process of installing Oracle drivers is a more manual process than with our 
 
 - Next we will extract the "SDK" Instant Client to the same folder i.e. `C:\oracledrivers`. We want the SDK package to extract into the same subdirectory as in the previous step, not a new folder. Your driver folder should look like this:
 
-![Instant Client folder](/img/windows-install/instant-client-folder.png)
+![Oracle Instant Client driver folder showing extracted Basic and SDK package files](/img/windows-install/instant-client-folder.png)
 
 - and the subdirectory should look like:
 
-![Instant Client subdirectory](/img/windows-install/instant-client-subdirectory.png)
+![Oracle Instant Client subdirectory showing SDK folder and shared library files](/img/windows-install/instant-client-subdirectory.png)
 
 - Note that there is now an `SDK` folder inside.
 
@@ -541,8 +541,8 @@ Next, we need to add the full path of the Instant Client to the environment vari
 
 1. Under System Variables, create OCI_LIB64 if it does not already exist. Set the value of OCI_LIB64 to the full path of the location of Instant Client.
 
-![Environment variable path](/img/windows-install/env-variable-path.png)
-![OCI_LIB64 path](/img/windows-install/oci-env-path.png)
+![Windows Environment Variables dialog showing new OCI_LIB64 system variable being created](/img/windows-install/env-variable-path.png)
+![OCI_LIB64 environment variable configured with full path to Oracle Instant Client directory](/img/windows-install/oci-env-path.png)
 
 2.Under System Variables, edit PATH to include the same (C:\oracledrivers\instantclient_23_7)
 
@@ -552,7 +552,7 @@ Next, we need to add the full path of the Instant Client to the environment vari
 
 The fastCGI path is located in the IIS Manager > Your Server > fastCGI Settings > Full Path > Edit > 3 dots next to collections
 
-![FastCGI path](/img/windows-install/fastcgi-path.png)
+![IIS FastCGI Settings dialog showing PATH environment variable collection for Oracle driver configuration](/img/windows-install/fastcgi-path.png)
 
 Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (It will be named along the lines of php_oci8-3.2.1-8.3-nts-vc15-x64) and move the php_oci8.dll file to the ext directory where PHP is located on your system (e.g PHP\v8.3\ext). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
 

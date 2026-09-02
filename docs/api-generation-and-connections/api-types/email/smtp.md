@@ -415,5 +415,5 @@ MAIL_FROM_NAME=DreamFactory
 ## Next Steps
 
 - **[Email Overview](./email-overview)**: Compare email service options
-- **[Role-Based Access Control](/api-security/rbac)**: Restrict email permissions
-- **[Rate Limiting](/api-security/rate-limiting)**: Prevent email abuse
+- **[Role-Based Access Control](/Security/role-based-access)**: Restrict email permissions
+- **[Rate Limiting](/Security/rate-limiting)**: Prevent email abuse

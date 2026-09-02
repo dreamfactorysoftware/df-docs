@@ -584,7 +584,46 @@ For per-app, per-user, per-role, and per-model token and cost attribution — an
 
 ---
 
-## Troubleshooting ELK Integration
+## Troubleshooting
+
+### Connection refused from DreamFactory to Logstash
+
+If DreamFactory cannot reach Logstash, confirm the Logstash service is running and listening on UDP port 12201:
+
+```bash
+sudo systemctl status logstash
+sudo tail -f /var/log/logstash/logstash-plain.log
+```
+
+Check firewall rules allow inbound UDP traffic on port 12201. The DreamFactory log connector must use the same host and port as the GELF input plugin.
+
+### GELF port or protocol mismatch
+
+The GELF input in this guide listens on UDP port 12201. The connector settings must match:
+
+- **Host**: The IP or hostname where Logstash is running
+- **Port**: `12201`
+- **Protocol**: GELF over UDP
+
+A mismatch between the connector's port/protocol and the GELF input drops logs silently.
+
+### Elasticsearch 8 TLS rejection
+
+Elasticsearch 8.x enables security by default and expects HTTPS. The Logstash output in this guide uses:
+
+- `https://localhost:9200` as the Elasticsearch URL
+- `ssl_enabled => true`
+- the CA certificate extracted during installation (`ssl_certificate_authorities`)
+
+Without that TLS setup, Logstash fails to push indices to Elasticsearch.
+
+### Missing log entries from level filtering
+
+The Logstash filter grok pattern in this guide recognizes `DEBUG`, `INFO`, `WARNING`, and `ERROR`. If expected entries are missing:
+
+1. Confirm the log level is one of those four values
+2. Check DreamFactory's log context and minimum level in the Admin UI — events below that level are never emitted
+3. Compare the incoming payload against the complete Logstash configuration reference on this page
 
 ### Connection Refused to Elasticsearch
 
