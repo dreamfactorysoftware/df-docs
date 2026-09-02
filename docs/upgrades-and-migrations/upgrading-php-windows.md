@@ -2,6 +2,7 @@
 sidebar_position: 3
 title: Upgrading PHP On Windows
 id: upgrading-php-on-windows
+description: "Steps to upgrade the PHP version on a Windows server running DreamFactory, covering backups, the NTS build, installation, and troubleshooting."
 ---
 
 # Upgrading PHP on Windows
@@ -86,7 +87,7 @@ Always use the Non-Thread-Safe (NTS) version of PHP with DreamFactory on Windows
 
 2. Test DreamFactory:
    - Access your DreamFactory instance
-   - Check the [System Information](/system-settings/config/system-info) page
+   - Check the [System Information](/getting-started/dreamfactory-configuration/basic-configuration) page
    - Verify all services are functioning
 
 ## Troubleshooting

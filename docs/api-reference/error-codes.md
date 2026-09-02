@@ -1,3 +1,7 @@
+---
+description: "HTTP status codes and exception classes returned by DreamFactory APIs, with the standard error response format and handling guidance for each code."
+---
+
 # Error Codes Reference
 
 HTTP status codes and exception classes returned by DreamFactory APIs.

@@ -2,6 +2,7 @@
 sidebar_position: 1
 title: Basic Configuration
 id: basic-configuration
+description: "Basic DreamFactory configuration through the .env file: enabling debugging, changing the system database, caching, and a reference for each parameter."
 ---
 
 # Basic Configuration

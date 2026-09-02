@@ -110,6 +110,13 @@ DreamFactory supports the following service categories and types:
 | `github` | GitHub Service | GitHub API client |
 | `gitlab` | GitLab Service | GitLab API client |
 
+### AI Services
+
+| Service Type | Label | Description |
+|-------------|-------|-------------|
+| `ai_connection` | AI Connection | Connect to AI/LLM providers (Anthropic, OpenAI, xAI, Ollama, OpenAI-compatible). Gateway with rate limiting, cost tracking, prompt logging, SIEM audit, and fallback chains. |
+| `ai_chat` | AI Chat | Chat with DreamFactory-governed data using AI and MCP tools. Persistent sessions with an agentic tool-calling loop. |
+
 ### Other Services
 
 | Service Type | Label | Description |

@@ -182,7 +182,7 @@ curl -X GET "https://your-dreamfactory-instance.com/api/v2/mssql/_table/orders" 
   -H "X-DreamFactory-Session-Token: USER_JWT_TOKEN"
 ```
 
-For detailed authentication setup, see the [Security & Authentication](/Security/security-authentication) documentation.
+For detailed authentication setup, see the [Security & Authentication](/Security/authenticating-your-apis) documentation.
 
 ---
 
@@ -231,15 +231,13 @@ For service-to-service communication, create dedicated roles with:
 
 ### Configuring Rate Limits
 
-DreamFactory allows you to set rate limits per user, role, service, or endpoint. To configure rate limits through the admin interface:
+DreamFactory allows you to set rate limits per instance, user, role, service, or endpoint. See [Rate Limiting](/Security/rate-limiting) for the full type list and API.
+
+To configure a limit in the admin interface:
 
 1. In the left sidebar under **Security**, select **Rate Limiting**
 2. Click the circular **+** button to create a new limit
-3. Configure:
-   - **Type**: User, Role, Service, or Endpoint
-   - **Rate**: Number of requests per time period
-   - **Period**: Time window (minute, hour, day)
-   - **Limit by**: API key, user, or IP address
+3. Set the type, rate, and period (`minute`, `hour`, `day`, `7-day`, or `30-day`)
 4. Click **Save** to apply the limit
 
 Alternatively, configure limits via the System API:
@@ -315,7 +313,7 @@ Common issues and their solutions:
 - Verify supported operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `LIKE`, `IN`, `BETWEEN`
 - Use proper filter syntax: `?filter=column_name=value`
 - For complex filters, use the `filter` parameter with SQL-style conditions
-- Check the [Querying & Filtering](/api-generation-and-connections/api-types/database/querying-filtering) documentation for syntax examples
+- Check the [Querying & Filtering](/api-generation-and-connections/api-types/database/querying-and-filtering) documentation for syntax examples
 
 ### Stored Procedure Issues
 
@@ -354,7 +352,7 @@ For more information on DAB, see the [Microsoft Learn documentation](https://lea
 
 Now that your SQL Server API is connected and secured, explore these advanced features:
 
-- **[Querying & Filtering](/api-generation-and-connections/api-types/database/querying-filtering)**: Learn advanced query syntax and filtering options
+- **[Querying & Filtering](/api-generation-and-connections/api-types/database/querying-and-filtering)**: Learn advanced query syntax and filtering options
 - **[Event Scripts](/api-generation-and-connections/event-scripts)**: Add custom business logic to API events
 - **[Role-Based Access Control](/Security/role-based-access)**: Deep dive into advanced RBAC configurations
 

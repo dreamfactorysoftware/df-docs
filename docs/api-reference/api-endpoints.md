@@ -1,3 +1,7 @@
+---
+description: "Reference for DreamFactory REST API endpoints covering table, schema, stored procedure, system, and user operations, with authentication headers."
+---
+
 # API Endpoints Reference
 
 Complete reference for all DreamFactory REST API endpoints.

@@ -2,6 +2,7 @@
 sidebar_position: 6
 title: Installing Additional Drivers
 id: installing-additional-drivers
+description: "How to enable the Oracle (oci8) and Simba Trino ODBC database drivers during DreamFactory installation, including license files and Docker steps."
 ---
 
 # Installing Additional Drivers
