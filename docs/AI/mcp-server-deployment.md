@@ -145,18 +145,24 @@ sudo systemctl restart php8.5-fpm   # use your PHP version; also clears OPcache
 
 ## Running behind a reverse proxy
 
-When a proxy (AWS ALB, nginx, Cloudflare) terminates TLS and forwards traffic to DreamFactory, the one thing you must do is set `APP_URL` to the external HTTPS URL (see [Configuration](#configuration)). That is sufficient for most deployments.
+When a proxy (AWS ALB, nginx, Cloudflare) terminates TLS and forwards traffic to DreamFactory over HTTP, MCP OAuth and the rest of DreamFactory take different paths.
 
-After applying the change, confirm OAuth discovery advertises **https** URLs:
+MCP OAuth discovery reads `APP_URL` directly. Set it to the external HTTPS URL (see [Configuration](#configuration)). That is what makes discovery advertise `https://` URLs.
+
+:::caution
+`APP_URL` is sufficient for MCP OAuth discovery. It is **not** sufficient for redirects. Laravel builds the root-route redirect (`/` → the admin UI) from the incoming request, so behind a TLS-terminating proxy the `Location` header comes back as `http://` unless you set `FORCE_HTTPS` or pass `HTTPS` through to PHP. See [Redirects still going to HTTP](#redirects-still-going-to-http) and [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls).
+:::
+
+After applying `APP_URL`, confirm OAuth discovery advertises **https** URLs:
 
 ```bash
 curl -s https://df.example.com/.well-known/oauth-authorization-server/mcp/<service> \
   | jq -r '.issuer, .authorization_endpoint'
 ```
 
-If those URLs come back as `https://…`, no further proxy configuration is needed.
+If those URLs come back as `https://…`, no further proxy configuration is needed for MCP OAuth.
 
-### Only if discovery still shows `http://`
+### If discovery still shows `http://`
 
 This means the proxy's scheme isn't reaching PHP. Pass it through in your nginx site:
 
@@ -172,14 +178,20 @@ fastcgi_param HTTPS $fcgi_https;
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-For correct behavior across the rest of DreamFactory behind a proxy (redirects, secure cookies, client IPs in logs), also trust the proxy in `app/Http/Middleware/TrustProxies.php`:
+### Redirects still going to HTTP
 
-```php
-protected $proxies = '*';   // or your load balancer / subnet CIDRs
-protected $headers =
-    Request::HEADER_X_FORWARDED_FOR  | Request::HEADER_X_FORWARDED_HOST |
-    Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
+Laravel builds redirects from the incoming request. Behind a TLS-terminating proxy the app only sees the HTTP leg, so `Location` headers come back as `http://…` even when `APP_URL` is correct. The supported application-level switch is:
+
+```bash
+# in .env
+FORCE_HTTPS=true
 ```
+
+Then `config:clear` and restart PHP-FPM as in [Applying configuration changes](#applying-configuration-changes). The nginx `HTTPS` FastCGI parameter above is the other supported path: it tells PHP the original request was HTTPS. Use both when TLS terminates in front of DreamFactory.
+
+DreamFactory does not ship `app/Http/Middleware/TrustProxies.php`. Do not add one.
+
+Full reverse-proxy notes are on [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls).
 
 ## Connecting a client
 
@@ -216,7 +228,8 @@ sudo tail -f /var/log/nginx/access.log | grep -E "oauth-callback|user/session"
 | Symptom | Fix |
 |---|---|
 | Login page loops or flickers | Set `APP_URL` to the external HTTPS URL, `config:clear`, restart PHP-FPM |
-| Discovery advertises `http://` URLs | Set `APP_URL` + TrustProxies + nginx `HTTPS` param |
+| Discovery advertises `http://` URLs | Set `APP_URL`; if it still shows `http://`, add the nginx `HTTPS` FastCGI param |
+| Root URL (or other redirects) go to `http://` | Set `FORCE_HTTPS=true`, `config:clear`, restart PHP-FPM. See [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls) |
 | `400 No session token or API Key` | Client URL points at `/api/v2/...` — use `/mcp/{service}` |
 | `.well-known` returns 404 | Use the service-scoped path `/.well-known/oauth-authorization-server/mcp/{service}` |
 | `redirect_uri is not registered` | Rotating loopback port — free/reuse the client's fixed port and reconnect |
@@ -228,3 +241,4 @@ sudo tail -f /var/log/nginx/access.log | grep -E "oauth-callback|user/session"
 - [MCP Server](./mcp-service.md) — protocol overview, tools, and request format
 - [Creating an MCP Server Service](./mcp-service-creation.md)
 - [Custom Login Page for MCP](./mcp-custom-login-page.md)
+- [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls) — reverse-proxy scheme, `FORCE_HTTPS`, and redirects
