@@ -149,7 +149,7 @@ Set this in `.env`:
 FORCE_HTTPS=true
 ```
 
-Then run `php artisan config:clear` and restart PHP-FPM. This is the application-level switch: it calls `URL::forceScheme('https')` and is what actually changes generated redirects.
+Then run `php artisan config:clear` and restart PHP-FPM. This is the application-level switch: it calls `URL::forceScheme('https')` and is what actually changes generated redirects. Do **not** run `config:cache` after setting it — `FORCE_HTTPS` is read from the environment at boot, not from cached config, so caching config ignores the setting and redirects go back to `http://`.
 
 `APP_URL` is the external URL of the install. OAuth discovery and similar config-driven URLs read it. It does **not** change request-built redirects.
 

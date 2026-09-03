@@ -187,7 +187,9 @@ Laravel builds redirects from the incoming request. Behind a TLS-terminating pro
 FORCE_HTTPS=true
 ```
 
-Then `config:clear` and restart PHP-FPM as in [Applying configuration changes](#applying-configuration-changes). The nginx `HTTPS` FastCGI parameter above is the other supported path: it tells PHP the original request was HTTPS. Use both when TLS terminates in front of DreamFactory.
+Then run `php artisan config:clear` and restart PHP-FPM. Do **not** follow that with `config:cache` — `FORCE_HTTPS` is read from the environment at boot, not from cached config, so caching config makes the setting a no-op and redirects go back to `http://`.
+
+The nginx `HTTPS` FastCGI parameter above is the other supported path: it tells PHP the original request was HTTPS. Use both when TLS terminates in front of DreamFactory.
 
 DreamFactory does not ship `app/Http/Middleware/TrustProxies.php`. Do not add one.
 
@@ -229,7 +231,7 @@ sudo tail -f /var/log/nginx/access.log | grep -E "oauth-callback|user/session"
 |---|---|
 | Login page loops or flickers | Set `APP_URL` to the external HTTPS URL, `config:clear`, restart PHP-FPM |
 | Discovery advertises `http://` URLs | Set `APP_URL`; if it still shows `http://`, add the nginx `HTTPS` FastCGI param |
-| Root URL (or other redirects) go to `http://` | Set `FORCE_HTTPS=true`, `config:clear`, restart PHP-FPM. See [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls) |
+| Root URL (or other redirects) go to `http://` | Set `FORCE_HTTPS=true`, `config:clear` (not `config:cache`), restart PHP-FPM. See [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls) |
 | `400 No session token or API Key` | Client URL points at `/api/v2/...` — use `/mcp/{service}` |
 | `.well-known` returns 404 | Use the service-scoped path `/.well-known/oauth-authorization-server/mcp/{service}` |
 | `redirect_uri is not registered` | Rotating loopback port — free/reuse the client's fixed port and reconnect |
