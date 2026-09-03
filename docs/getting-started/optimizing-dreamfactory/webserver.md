@@ -117,12 +117,49 @@ Then turn it back off, or rotate it aggressively. An API that never sleeps fills
 
 ## TLS
 
-Terminate TLS at NGINX or at a load balancer in front of it. When something else terminates TLS and forwards over plain HTTP, DreamFactory needs to be told, or it will build URLs with the wrong scheme in redirects and in generated API documentation. The shipped virtual host passes an `HTTPS` FastCGI parameter for exactly this reason.
+Terminate TLS at NGINX or at a load balancer in front of it. Certificate setup is covered in [CORS and SSL](../../system-settings/config/cors-ssl.md).
 
-Certificate setup is covered in [CORS and SSL](../../system-settings/config/cors-ssl.md).
+When something else terminates TLS and forwards over plain HTTP, DreamFactory only sees the HTTP leg. Laravel then builds redirects — including the root-route redirect to the admin UI — with an `http://` `Location` header, and generated API documentation uses the wrong scheme.
+
+Two mechanisms exist. Use both when a proxy terminates TLS.
+
+### Pass the original scheme through to PHP
+
+In your NGINX site:
+
+```nginx
+# in the http { } block
+map $http_x_forwarded_proto $fcgi_https { default off; https on; }
+
+# in server { } -> location ~ \.php$ { }
+fastcgi_param HTTPS $fcgi_https;
+```
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+When NGINX itself terminates TLS, `fastcgi_param HTTPS on;` is enough. When a load balancer in front of NGINX terminates TLS, map `X-Forwarded-Proto` as above so PHP sees the external scheme.
+
+### Force HTTPS in the application
+
+Set this in `.env`:
+
+```bash
+FORCE_HTTPS=true
+```
+
+Then run `php artisan config:clear` and restart PHP-FPM. This is the application-level switch: it calls `URL::forceScheme('https')` and is what actually changes generated redirects. Do **not** run `config:cache` after setting it — `FORCE_HTTPS` is read from the environment at boot, not from cached config, so caching config ignores the setting and redirects go back to `http://`.
+
+`APP_URL` is the external URL of the install. OAuth discovery and similar config-driven URLs read it. It does **not** change request-built redirects.
+
+DreamFactory does not ship `app/Http/Middleware/TrustProxies.php`. Do not add one.
+
+MCP OAuth discovery is a special case that reads `APP_URL` directly; see [Deploying the MCP Server](../../AI/mcp-server-deployment.md#running-behind-a-reverse-proxy).
 
 ## Related Reading
 
 - [PHP and Laravel](php-laravel.md)
 - [Optimizing Database APIs](database.md)
 - [CORS and SSL](../../system-settings/config/cors-ssl.md)
+- [Deploying the MCP Server](../../AI/mcp-server-deployment.md#running-behind-a-reverse-proxy) — MCP OAuth discovery and `APP_URL`

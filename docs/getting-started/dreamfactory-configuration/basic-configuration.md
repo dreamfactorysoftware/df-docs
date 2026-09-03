@@ -67,7 +67,8 @@ Below, the .env in its entirety is outlined and every parameter described. These
 - `APP_LOG_LEVEL`: Log level setting.
 - `APP_LOG_MAX_FILES`: Max log files for 'daily' logging.
 - `APP_TIMEZONE`: Timezone setting for PHP functions.
-- `APP_URL`: External URL for the installation.
+- `APP_URL`: External URL for the installation. Used by OAuth discovery and similar config-driven URLs. Does not change Laravel-generated redirects; use `FORCE_HTTPS` for those.
+- `FORCE_HTTPS`: Force the HTTPS scheme on generated URLs (redirects, email links). Set to `true` when TLS terminates in front of DreamFactory. Default `false`. Read from `.env` at boot; `config:cache` ignores it.
 - `DF_LANDING_PAGE`: Default landing page URL.
 
 ### Database settings
