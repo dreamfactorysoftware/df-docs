@@ -128,6 +128,10 @@ const config: Config = {
           trackingID: 'G-J8Y3DGXB4D',
           anonymizeIP: true,
         },
+        // lastmod comes from each page's git commit date; the deploy needs a full clone (not shallow).
+        sitemap: {
+          lastmod: "date",
+        },
       } satisfies Preset.Options,
     ],
   ],
