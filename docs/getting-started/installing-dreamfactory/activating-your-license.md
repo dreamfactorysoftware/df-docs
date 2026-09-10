@@ -14,7 +14,7 @@ If you already have DreamFactory running and have received a license from the Dr
 
 The DreamFactory team provides two things:
 
-- **Three package files**: `composer.json`, `composer.json-dist`, and `composer.lock`. These tell Composer which DreamFactory packages to install for your license.
+- **Three composer files**: `composer.json`, `composer.json-dist`, and `composer.lock`. These tell Composer which DreamFactory packages to install for your license. The DreamFactory team will typically give you credentials to download these from the DreamFactory SFTP server, where they are organized by version.
 - **A license key**: a string you set as `DF_LICENSE_KEY` in the environment.
 
 Both must match the DreamFactory version you are running. If you are unsure which version that is, check **Admin > About DreamFactory** in the admin panel before you start.
@@ -33,7 +33,7 @@ These steps assume you started DreamFactory from the [df-docker](https://github.
    docker compose stop
    ```
 
-2. Copy the three package files into the `df-docker` directory, overwriting the existing ones.
+2. Copy the three composer files into the `df-docker` directory, overwriting the existing ones.
 
 3. Add the license key to the `web` service in `docker-compose.yml`:
 
@@ -58,7 +58,7 @@ These steps assume DreamFactory lives in `/opt/dreamfactory`. Adjust the path if
 
 1. Back up the installation directory and system database.
 
-2. Copy the three package files into the installation directory, overwriting the existing ones.
+2. Copy the three composer files into the installation directory, overwriting the existing ones.
 
 3. Install the packages:
 
