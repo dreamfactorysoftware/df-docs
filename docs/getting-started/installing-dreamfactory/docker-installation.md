@@ -111,13 +111,7 @@ Use the settings above to add a new Database API Connection. This generates a fu
 
 ## Adding a commercial license
 
-If you are a commercial customer and have a license key for DreamFactory, you should:
-  
-  1. Add the license files to the `df-docker` directory
-  2. Uncomment lines 25 and 36 of the `Dockerfile`
-  3. Add the license key to line 36 of `Dockerfile` the following image shows what we are wanting to uncomment to add commercial files and licensing
-  ![lines to uncomment in Dockerfile](/img/docker-install/dockerfile-uncomment-commercial.png)
-  4. continue with steps 2-5 above
+If you have received a license key and package files from DreamFactory, see [Activating Your License](activating-your-license.md) to apply them to your Docker instance.
 
 ## Installing Oracle Drivers
 
