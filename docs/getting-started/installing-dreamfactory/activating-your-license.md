@@ -2,7 +2,7 @@
 sidebar_position: 7
 title: Activating Your License
 id: activating-your-license
-description: Apply your DreamFactory license key and package files to an existing installation to unlock all connectors and features. Docker and Linux steps, no reinstall required.
+description: Apply your DreamFactory license key and composer files to an existing installation to unlock all connectors and features. Docker and Linux steps, no reinstall required.
 keywords: [DreamFactory license key, activate license, unlock connectors, composer files, DF_LICENSE_KEY]
 ---
 
