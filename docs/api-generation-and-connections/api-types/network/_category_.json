@@ -1,4 +1,9 @@
 {
-    "label": "Network",
-    "position": 3
+  "label": "Network",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "Network APIs",
+    "description": "Put existing HTTP and SOAP services behind DreamFactory's API keys, roles, rate limits, and generated documentation."
   }
+}

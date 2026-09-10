@@ -62,6 +62,8 @@ Wrap an existing HTTP or SOAP endpoint so it sits behind the same authentication
 
 `rws` (remote web service) · `soap`
 
+See [HTTP Service](api-types/network/http-service.md) and [SOAP to REST](api-types/network/soap.md).
+
 ### Scripted
 
 When a source does not fit any connector, write the endpoint yourself. Scripts run server-side in your choice of runtime.
