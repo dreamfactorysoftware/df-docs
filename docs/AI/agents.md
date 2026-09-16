@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 14
 title: Agents
 id: agents
 description: "Register AI agents in DreamFactory with their own identity, role-scoped API key, and skills, and route tasks to the right agent with a deterministic capability router"

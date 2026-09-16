@@ -16,8 +16,8 @@ The MCP (Model Context Protocol) server is a powerful feature in DreamFactory th
 The Model Context Protocol (MCP) is a standardized way for tools and services to communicate with AI assistants and development environments. DreamFactory's MCP server implements the Streamable HTTP transport, which allows for efficient bidirectional communication between clients and your services.
 
 **Key Features:**
-- **Automatic Service Discovery**: Automatically discovers and exposes all database and file storage services configured in your DreamFactory instance
-- **Multiple API Support**: A single MCP server provides tools for all your connected services — no need to create separate MCP services per database or file API
+- **Scoped Service Catalog**: Exposes the database and file storage services you select per endpoint via [Exposed Services](./mcp-exposed-services.md)
+- **Multiple API Support**: A single MCP server provides tools for all its exposed services — no need to create separate MCP services per database or file API
 - **Session Management**: Each MCP connection maintains its own session with stored credentials and tool context
 - **Tool Registration**: Automatically exposes DreamFactory operations as MCP tools, prefixed per API for clarity
 - **Streaming Support**: Supports Server-Sent Events (SSE) for real-time data streaming
@@ -25,7 +25,7 @@ The Model Context Protocol (MCP) is a standardized way for tools and services to
 
 ## Available Tools
 
-The MCP server automatically discovers all database and file storage services in your DreamFactory instance and registers tools for each one. All tools are **prefixed with the API name** to distinguish between services. For example, if you have a database service named `mysql` and a file service named `s3`, the tools would be `mysql_get_tables`, `s3_list_files`, etc.
+The MCP server registers tools for every database and file storage service the connected MCP service exposes (see [Scoping Tools with Exposed Services](./mcp-exposed-services.md)). All tools are **prefixed with the API name** to distinguish between services. For example, if you have a database service named `mysql` and a file service named `s3`, the tools would be `mysql_get_tables`, `s3_list_files`, etc.
 
 ### Discovery & Overview Tools
 
@@ -149,6 +149,7 @@ Every MCP request requires only standard HTTP headers:
 How a request is authenticated depends on how the MCP service is connected:
 
 - **AI clients** (VS Code, Claude, Cursor) authenticate the connection using **OAuth 2.0**. The OAuth handshake establishes the session, and tools are filtered to the services the connecting user's role grants access to. See [Creating an MCP Server Service](./mcp-service-creation.md) and [Deploying the MCP Server](./mcp-server-deployment.md) for OAuth setup.
+- **Headless clients** can authenticate with a DreamFactory app API key in the `X-DreamFactory-API-Key` header when the MCP service has opted in — see [API Key Authentication for MCP](./mcp-api-key-auth.md).
 - **Direct API calls** like the examples above don't require an authentication header when the MCP service is bound to an application with a default role — DreamFactory applies that role's permissions internally. Otherwise, include an `X-DreamFactory-Session-Token` (or API key) header.
 
 ## Use Cases

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 12
 title: AI Usage Monitoring & Cost Allocation
 id: ai-usage-monitoring-and-cost-allocation
 description: "Meter every AI request with token counts and estimated cost, attribute spend to apps, users, roles, and models, and build chargeback and showback reports from the AI Usage Analytics console or API."

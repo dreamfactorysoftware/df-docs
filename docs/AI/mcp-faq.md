@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 7
 title: MCP FAQ
 id: mcp-faq
 description: Frequently asked questions about DreamFactory's Model Context Protocol (MCP) server — what it is, what tools it provides, and how to use it.
@@ -16,17 +16,17 @@ In DreamFactory, MCP means you can connect an AI assistant directly to all your 
 
 ## What is DreamFactory's MCP Server service?
 
-DreamFactory's MCP Server service is a built-in feature that exposes your DreamFactory APIs as MCP-compatible tools. When an AI client connects, it automatically discovers all database and file storage services in your DreamFactory instance and can interact with them using the MCP protocol over Streamable HTTP (JSON-RPC).
+DreamFactory's MCP Server service is a built-in feature that exposes your DreamFactory APIs as MCP-compatible tools. When an AI client connects, it can interact with the database and file storage services that MCP service [exposes](mcp-exposed-services.md) using the MCP protocol over Streamable HTTP (JSON-RPC).
 
 Key facts:
-- **One MCP service covers all your APIs** — no need to create one per database
-- **Authentication** uses OAuth 2.0 with auto-generated Client ID and Client Secret
+- **One MCP service can cover all your APIs** — you select which databases and file services it exposes; no need to create one per database
+- **Authentication** uses OAuth 2.0 with auto-generated Client ID and Client Secret (with an optional per-service [API key mode](mcp-api-key-auth.md))
 - **Transport** is Streamable HTTP with Server-Sent Events (SSE) for streaming
 - **Created in the admin UI** under the AI tab
 
 ## What tools does the MCP server provide?
 
-Tools are automatically generated for every connected database and file service. All tool names are prefixed with the API name (e.g., `mysql_get_tables`, `s3_list_files`).
+Tools are automatically generated for every database and file service the MCP service [exposes](mcp-exposed-services.md). All tool names are prefixed with the API name (e.g., `mysql_get_tables`, `s3_list_files`).
 
 ### Discovery tools
 - `list_apis` — list all available APIs accessible through this MCP server
@@ -92,3 +92,11 @@ Any MCP-compatible client: **ChatGPT**, **Claude Desktop**, **Cursor**, or any c
 ## Can I use a custom login page for MCP OAuth?
 
 Yes. Set the **Custom Login URL** field in the MCP service's Advanced Options. See [Custom Login Page for MCP](mcp-custom-login-page.md).
+
+## Why doesn't my MCP server show any database or file tools?
+
+From DreamFactory 7.7.1, each MCP service only advertises the backends selected under **Exposed Services** in its Advanced Options — and an empty selection deliberately means none. New MCP services (and services imported from a pre-7.7.1 export) start with nothing selected. Open the service, check the databases and file services it should expose, save, and reconnect your client (the tool list is fixed for the life of a session). See [Scoping Tools with Exposed Services](mcp-exposed-services.md).
+
+## Can a client authenticate with an API key instead of OAuth?
+
+Yes, from DreamFactory 7.7.1 — as a per-service opt-in. Enable **Allow API Key Authentication** in the MCP service's Advanced Options, then send a DreamFactory app API key in the `X-DreamFactory-API-Key` header. The key's app must be active and have a role assigned; that role scopes every tool call. OAuth Bearer tokens always take precedence when both are sent. See [API Key Authentication for MCP](mcp-api-key-auth.md).

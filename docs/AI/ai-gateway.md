@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 11
 title: AI Gateway Analytics
 id: ai-gateway
 description: Monitor AI spend, track per-app attribution, view latency percentiles, configure budgets, enable prompt logging, and export audit events to your SIEM.

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 10
 title: AI Chat
 id: ai-chat
 description: Chat with your DreamFactory-governed data using AI and MCP tools. The AI queries databases, calls stored procedures, and accesses MCP services on your behalf.
