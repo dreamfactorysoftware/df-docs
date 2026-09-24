@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 8
 title: Deploying the MCP Server
 id: mcp-server-deployment
 description: Install, daemonize, and configure the DreamFactory MCP server, including running behind a reverse proxy or load balancer.
@@ -118,6 +118,8 @@ Set these in your DreamFactory `.env`:
 | `APP_URL` | `https://df.example.com` | The external URL clients use. Not `http://localhost`. |
 | `DF_FRONTEND_URL` | *(optional)* | Override only if the admin SPA is on a different host. |
 | `LOG_LEVEL` | `warning` | Set to `debug` while troubleshooting OAuth, then revert. |
+| `MCP_INTERNAL_BASE_URL` | *(optional)* | URL the daemon calls DreamFactory back on. **Required when the external port differs from the internal one** (typical Docker port mapping) — see [below](#daemon-callback-url-mcp_internal_base_url). |
+| `MCP_SCOPE_TOOLS` | *(optional)* | Default `true`. Set to `false` to restore the pre-7.7.1 instance-wide tool catalog for services with no [Exposed Services](./mcp-exposed-services.md) selection. |
 
 :::warning
 `APP_URL` must be the **external HTTPS URL** clients reach. It drives the OAuth discovery and callback URLs as well as server-side session validation. If it is left as `http://localhost` (or any value clients can't reach), MCP authentication fails — typically as a login page that loops.
@@ -128,6 +130,19 @@ Verify the value actually in use:
 ```bash
 php artisan tinker --execute="echo config('app.url');"
 ```
+
+### Daemon callback URL (`MCP_INTERNAL_BASE_URL`)
+
+The daemon executes every tool by calling DreamFactory's REST API back. By default it calls the same origin the client's request arrived on. When that origin is not reachable from where the daemon runs, set `MCP_INTERNAL_BASE_URL` to an address that is.
+
+The classic case is Docker port mapping: with `-p 8084:80`, clients reach DreamFactory at `http://host:8084`, but inside the container it listens on port 80 — so the daemon's callback to `:8084` fails. The symptom is distinctive: **connecting and `tools/list` succeed, but every tool call fails**, because only tool execution needs the callback.
+
+```bash
+# in .env — an address that reaches DreamFactory from where the daemon runs
+MCP_INTERNAL_BASE_URL=http://127.0.0.1
+```
+
+In a compose stack with a separate daemon container, use the web service's internal address instead (e.g. `http://web`). Then run `php artisan config:clear` and restart PHP-FPM.
 
 ## Applying configuration changes
 
@@ -237,10 +252,26 @@ sudo tail -f /var/log/nginx/access.log | grep -E "oauth-callback|user/session"
 | `redirect_uri is not registered` | Rotating loopback port — free/reuse the client's fixed port and reconnect |
 | 404 on all `/mcp/*` | Confirm the package is installed, then `php artisan route:clear` |
 | Config change has no effect | Run `config:clear` (not just a PHP-FPM restart); ensure cache files aren't root-owned |
+| Connecting and `tools/list` work, but every tool call fails | The daemon can't reach DreamFactory on the request's origin (external port ≠ internal port). Set [`MCP_INTERNAL_BASE_URL`](#daemon-callback-url-mcp_internal_base_url) |
+| Client sees no database/file tools | No [Exposed Services](./mcp-exposed-services.md) selected on the MCP service (new services and pre-7.7.1 imports start empty) — select services, save, reconnect the client |
+
+## Upgrading to 7.7.1
+
+DreamFactory 7.7.1 adds [Exposed Services scoping](./mcp-exposed-services.md) and [API key authentication](./mcp-api-key-auth.md) to MCP services. The package migrations run as part of the normal upgrade (`php artisan migrate`) and are designed so nothing shrinks:
+
+- Every existing MCP service is backfilled with the database and file services that exist at migrate time, so its `tools/list` is unchanged. Services created **after** the upgrade start with an empty Exposed Services selection.
+- **Allow API Key Authentication** defaults to off everywhere — OAuth behavior is unchanged until an admin opts a service in.
+- After changing a service's Exposed Services, **reconnect its MCP clients** — the tool list is fixed for the life of a session.
+
+:::caution Service export/import across versions
+The new fields travel with MCP service exports. Importing a scoped 7.7.1 service into a **pre-7.7.1** instance silently drops `exposed_services`, `scope_tools`, and `allow_api_key_auth` — the older instance doesn't know those fields. In the other direction, importing a **pre-7.7.1** export into 7.7.1 creates an MCP service with **no exposure** (the export carries no `exposed_services`, and empty means none) — open the service and select its Exposed Services after the import.
+:::
 
 ## See also
 
 - [MCP Server](./mcp-service.md) — protocol overview, tools, and request format
 - [Creating an MCP Server Service](./mcp-service-creation.md)
+- [Scoping Tools with Exposed Services](./mcp-exposed-services.md)
+- [API Key Authentication for MCP](./mcp-api-key-auth.md)
 - [Custom Login Page for MCP](./mcp-custom-login-page.md)
 - [Web Server — TLS](../getting-started/optimizing-dreamfactory/webserver.md#tls) — reverse-proxy scheme, `FORCE_HTTPS`, and redirects

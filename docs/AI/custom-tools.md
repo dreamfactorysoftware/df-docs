@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 title: Custom MCP Tools
 id: custom-mcp-tools
 description: Create custom tools for your MCP server to extend AI assistant capabilities with API calls and JavaScript functions.

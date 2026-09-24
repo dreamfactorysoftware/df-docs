@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 9
 title: AI Connection
 id: ai-connection
 description: Connect DreamFactory to AI/LLM providers (Anthropic, OpenAI, xAI, Ollama, OpenAI-compatible) with built-in rate limiting, cost tracking, prompt logging, and fallback chains.
