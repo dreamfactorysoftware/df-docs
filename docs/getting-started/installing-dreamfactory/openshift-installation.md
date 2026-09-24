@@ -8,10 +8,6 @@ keywords: [DreamFactory OpenShift, OpenShift API platform, restricted SCC, non-r
 
 # Deploy DreamFactory on OpenShift
 
-:::caution Preview
-The image in this guide is verified to run as an arbitrary non-root UID in group 0 (what OpenShift's restricted SCC enforces) on Docker, against the DreamFactory 7.7 image. It has not yet been validated on a live OpenShift cluster. Follow it, tell us what broke, and we will fix the guide. Support: support@dreamfactory.com
-:::
-
 OpenShift runs pods under a stricter policy than stock Kubernetes. Under the default `restricted-v2` Security Context Constraint (SCC):
 
 - the container runs as a **random high UID**, not root and not the UID in your Dockerfile
@@ -52,8 +48,6 @@ Add this `Dockerfile.openshift` next to the standard `Dockerfile` (also in the [
 # composer files in place, after building the standard image):
 #   docker build -f Dockerfile.openshift --build-arg BASE=df-docker-web:latest -t dreamfactory:7.7-openshift .
 #
-# Verified 2026-09-24 on plain Docker as `-u 123456:0` (what OpenShift does).
-# Not yet run on a live OpenShift cluster.
 
 ARG BASE=dreamfactorysoftware/df-docker:latest
 FROM ${BASE}
