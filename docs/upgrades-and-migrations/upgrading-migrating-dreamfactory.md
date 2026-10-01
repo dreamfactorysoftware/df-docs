@@ -126,6 +126,12 @@ Choose the appropriate section based on your needs. Most users will use the mino
 
 For minor version upgrades and patch releases, you can perform an in-place upgrade of your existing DreamFactory installation. This process uses Git, Composer, and Laravel's Artisan commands to update your current environment.
 
+:::warning[Commercial licenses (Silver, Gold): restore your licensed composer files]
+On a commercial install, `composer.json`, `composer.json-dist` and `composer.lock` come from DreamFactory, not from Git. `git stash` in Step 2 sets them aside, and `git pull` in Step 3 puts back the open-source versions. If you run `composer install` with those, Composer removes every commercial package: SQL Server, Oracle, Snowflake, rate limiting, logging and more. Your services stay in the system database, but they disappear from the admin UI and the license shows Open Source.
+
+Get the composer files for your **target** version from DreamFactory (your SFTP folder or support@dreamfactory.com) before you start, and follow [Step 3a](#step-3a-commercial-licenses-restore-your-licensed-composer-files).
+:::
+
 ## Prerequisites
 
 - **Backup Required**: Always perform complete backups before upgrading
@@ -173,6 +179,25 @@ Pull the latest version:
 ```bash
 git pull origin master
 ```
+
+### Step 3a: Commercial Licenses: Restore Your Licensed Composer Files
+
+Skip this step on an open-source install.
+
+Check out the release that matches your licensed composer files, for example `7.7.1`:
+
+```bash
+git fetch origin --tags
+git checkout -f 7.7.1
+```
+
+Copy the three licensed files for that version (`composer.json`, `composer.json-dist`, `composer.lock`) into `/opt/dreamfactory`, overwriting the open-source versions. Then confirm your commercial connectors are listed before you continue:
+
+```bash
+grep sqlsrv composer.json
+```
+
+Replace `sqlsrv` with any commercial connector you use (`oracle`, `snowflake`, `limits`, `logger`). An empty result means the open-source files are still in place. Do not run Step 4 until it returns a match.
 
 ### Step 4: Update Dependencies and Permissions
 
@@ -222,6 +247,24 @@ sudo systemctl restart apache2
 ```
 
 ## Troubleshooting
+
+### Database Services Missing After Upgrade
+
+If the upgrade finishes but your database services no longer appear in the admin UI, and the license shows Open Source, Composer installed the open-source package set. Browsing the service returns `Unsupported service type`. Your service configuration is still in the system database.
+
+Restore your licensed composer files and reinstall, as in [Step 3a](#step-3a-commercial-licenses-restore-your-licensed-composer-files):
+
+```bash
+cd /opt/dreamfactory
+# copy composer.json, composer.json-dist and composer.lock for your version into this directory
+composer install --no-dev --ignore-platform-reqs
+php artisan migrate --seed --force
+php artisan cache:clear
+php artisan config:clear
+sudo systemctl restart nginx php8.3-fpm
+```
+
+If `php artisan` fails with `Class "...\ServiceProvider" not found`, delete `bootstrap/cache/packages.php` and `bootstrap/cache/services.php`, then run `composer install` again.
 
 ### Composer Install Errors
 
