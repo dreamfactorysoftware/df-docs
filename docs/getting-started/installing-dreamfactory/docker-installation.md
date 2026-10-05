@@ -9,7 +9,7 @@ difficulty: beginner
 
 # Docker installation
 
-Our Docker container includes everything you need to run DreamFactory, including Ubuntu, PHP 8.3+, and the NGINX web server. It also includes all required PHP extensions and a sample Postgres Database. With these tools you can begin experimenting with the latest DreamFactory version as quickly as you can spin up the container!
+Our Docker container includes everything you need to run DreamFactory, including Ubuntu, PHP 8.5, and the NGINX web server. It also includes all required PHP extensions and a sample Postgres Database. With these tools you can begin experimenting with the latest DreamFactory version as quickly as you can spin up the container!
 
 ## Prerequisites
 
@@ -48,7 +48,7 @@ The DreamFactory docker application is set up to use docker-compose. To build an
     ```
     df-docker-web
       - The DreamFactory application and web portal.
-    mysql:8.0
+    mysql:5.7
       - A MySQL container for the system database.
     redis
       - A Redis instance used for caching.
@@ -119,6 +119,10 @@ To enable Oracle database connectivity in your DreamFactory Docker container, se
 
 ## Upgrading your Docker instance
 
+:::tip Upgrading from 7.6 to 7.7.x
+See [Upgrading a Docker Deployment to 7.7.x](/upgrades-and-migrations/upgrading-docker-to-7-7) for what changed in the stack, the settings to check in your existing `docker-compose.yml`, and a tested procedure.
+:::
+
 As new features and enhancements are added to DreamFactory, you may want to upgrade to a newer version. To install a newer version of DreamFactory, you should:
 
   1. Backup your existing environment
@@ -138,7 +142,12 @@ As new features and enhancements are added to DreamFactory, you may want to upgr
   
   6. Modify any other settings in docker-compose as needed for your environment (compare the old docker-compose file with the new one as needed).
 
-  7. Save your changes and rebuild the container with `docker-compose up -d --build`.
+  7. Save your changes, then rebuild and start the container. Pass the DreamFactory version as a build argument — the `Dockerfile` clones DreamFactory from `master` unless told otherwise, so checking out a df-docker tag on its own does not pin the version:
+
+    ```
+    docker-compose build --build-arg BRANCH={version} web
+    docker-compose up -d
+    ```
 
   8. Double-check that all services are running as expected with `docker-compose ps`.
 

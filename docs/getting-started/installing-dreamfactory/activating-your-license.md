@@ -17,7 +17,7 @@ The DreamFactory team provides two things:
 - **Three composer files**: `composer.json`, `composer.json-dist`, and `composer.lock`. These tell Composer which DreamFactory packages to install for your license. The DreamFactory team will typically give you credentials to download these from the DreamFactory SFTP server, where they are organized by version.
 - **A license key**: a string you set as `DF_LICENSE_KEY` in the environment.
 
-Both must match the DreamFactory version you are running. If you are unsure which version that is, check **Admin > About DreamFactory** in the admin panel before you start.
+Both must match the DreamFactory version you are running. If you are unsure which version that is, check **System > Config > System Info** in the admin panel before you start.
 
 :::tip
 The Oracle connector is shipped separately due to Oracle's licensing terms. If your license includes Oracle, see [Installing Additional Drivers](installing-additional-drivers.md).
@@ -33,7 +33,13 @@ These steps assume you started DreamFactory from the [df-docker](https://github.
    docker compose stop
    ```
 
-2. Copy the three composer files into the `df-docker` directory, overwriting the existing ones.
+2. Copy the three composer files into the `df-docker` directory, overwriting the existing ones, and uncomment this line in the `Dockerfile` so the build uses them:
+
+   ```dockerfile
+   COPY composer.* /opt/dreamfactory/
+   ```
+
+   Without it the files are ignored and the image is built with the open source packages.
 
 3. Add the license key to the `web` service in `docker-compose.yml`:
 
@@ -89,7 +95,7 @@ These steps assume DreamFactory lives in `/opt/dreamfactory`. Adjust the path if
 
 ## Verify
 
-Log in to the admin panel and open the **API Generation & Connections** tab. Connectors that were previously greyed out, such as SQL Server, SOAP, and Salesforce, are now selectable. **Admin > About DreamFactory** also shows your license key.
+Log in to the admin panel and open the **API Generation & Connections** tab. Connectors that were previously greyed out, such as SQL Server, SOAP, and Salesforce, are now selectable. **System > Config > System Info** also shows your license level and key.
 
 ## Troubleshooting
 
