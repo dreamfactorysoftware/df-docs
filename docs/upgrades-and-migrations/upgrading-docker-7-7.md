@@ -24,12 +24,25 @@ For the non-Docker (Linux/VM) procedure and the general 7.7 release notes, see [
 | `ADMIN_PASSWORD` | Not checked by the entrypoint | Container exits on start if it is set and shorter than 16 characters | Use a 16+ character value, or remove the `ADMIN_*` variables once the admin exists. |
 | `DF_LICENSE_KEY` environment variable | Written to `.env` only if a placeholder existed | Always written to `.env` | None — the variable now works as documented. |
 | System API MCP daemon | Not present | New `ENABLE_SYSTEM_MCP_DAEMON` variable; dependencies installed at build time | Add `ENABLE_SYSTEM_MCP_DAEMON: "true"` if you want the `system_mcp` service type. |
-| `HTTPS_HEADER` | Existing variable, undocumented | Documented in `docker-compose.yml` | Set `HTTPS_HEADER: "on"` (quoted) if TLS terminates at a proxy or load balancer in front of the container. |
+| `HTTPS_HEADER` | Existing variable, undocumented | Documented in `docker-compose.yml` | Set `HTTPS_HEADER: "on"` if TLS terminates at a proxy or load balancer in front of the container. See [Running behind HTTPS](#running-behind-https-or-on-a-non-standard-port). |
+| MCP daemon callback address | Request origin | Request origin | Set `MCP_INTERNAL_BASE_URL` in `.env` behind a proxy or on a non-80 port mapping, or MCP tool calls fail with `fetch failed`. See [Running behind HTTPS](#running-behind-https-or-on-a-non-standard-port). |
 | `mysql:5.7` service | No platform set | `platform: linux/amd64` | Only matters on ARM hosts (Apple Silicon, Graviton). |
 
 :::note[df-docker tags]
 In the df-docker repository the `7.6.0` and `7.7.0` tags point at the same commit, and the `Dockerfile` clones DreamFactory from `master` unless you pass a `BRANCH` build argument. **Checking out a df-docker tag does not pin the DreamFactory version** — building any df-docker tag today installs the latest DreamFactory release. Always pass `--build-arg BRANCH=<version>` (see [Step 5](#step-5-build-the-new-image)).
 :::
+
+## Environment variables reach PHP only through `.env`
+
+PHP-FPM inside the `web` container does not inherit the container environment (`clear_env` is left at its default), so web requests read their settings **only from `/opt/dreamfactory/.env`**. A variable in the `environment:` block of `docker-compose.yml` affects DreamFactory only if `docker-entrypoint.sh` copies it into `.env` on start. In 7.7.1 the entrypoint copies `DB_DRIVER` and the `DB_*` connection settings, `APP_KEY`, `DF_LICENSE_KEY`, `DF_REGISTER_CONTACT`, `CACHE_HOST`, `CACHE_PORT`, `CACHE_DATABASE`, `CACHE_USERNAME`, `CACHE_PASSWORD`, `CACHE_WEIGHT`, `CACHE_PERSISTENT_ID`, `SESSION_DRIVER`, `REDIS_HOST`, `REDIS_PORT`, `JWT_TTL`, `JWT_REFRESH_TTL`, `ALLOW_FOREVER_SESSIONS`, `APP_LOG_LEVEL`, `EXTERNAL_IP`, the `LOGSDB_*` settings and `SENDMAIL_DEFAULT_COMMAND`. `SERVERNAME` and `HTTPS_HEADER` are applied to the nginx configuration instead, and `SSMTP_*` to the mail configuration.
+
+Anything else — for example `CACHE_STORE`, `APP_URL` or `MCP_INTERNAL_BASE_URL` — is silently ignored by web requests when set in `docker-compose.yml`, even though `docker compose exec web php artisan ...` sees it (the CLI does inherit the container environment), which makes it look correct when you check.
+
+`.env` lives in the image, not in a volume, so editing it inside a running container is lost the next time the container is recreated. To set such a variable durably, write it into `.env` at build time with a line in the `Dockerfile`, placed before `COPY docker-entrypoint.sh`:
+
+```dockerfile
+RUN echo "MCP_INTERNAL_BASE_URL=http://127.0.0.1" >> /opt/dreamfactory/.env
+```
 
 ## Check your 7.6 configuration first
 
@@ -71,7 +84,7 @@ When you move to 7.7.1, replace all three files with the **7.7.1** set from Drea
 Warning: ENABLE_SYSTEM_MCP_DAEMON is set but df-system-mcp-server package not found
 ```
 
-If you set the license key with the `sed` line in the `Dockerfile` (`#DF_REGISTER_CONTACT=` → `DF_LICENSE_KEY=...`), it still works in 7.7.1. Setting `DF_LICENSE_KEY` on the `web` service in `docker-compose.yml` also works and keeps the key out of the image.
+If you set the license key with the `sed` line in the `Dockerfile` (`#DF_REGISTER_CONTACT=` → `DF_LICENSE_KEY=...`), it still works in 7.7.1, but the key ends up in the image layers and in the build output. Setting `DF_LICENSE_KEY` on the `web` service in `docker-compose.yml` is the better option in 7.7.1: the entrypoint writes it into `.env` on every start, and the key stays out of the image.
 
 ### `ADMIN_PASSWORD` must be at least 16 characters
 
@@ -87,18 +100,53 @@ The container exits with code 1, and the stock `docker-compose.yml` has no resta
 
 The stock `docker-compose.yml` sets `CACHE_DRIVER: redis`, but Laravel 11 and later read `CACHE_STORE`, and the entrypoint's `CACHE_DRIVER` handling no longer matches anything in `.env`. As a result, the stock 7.6 stack uses the **file** cache, not Redis.
 
-This keeps working in 7.7.1, because `.env` in the image has `CACHE_STORE=file`. To actually use Redis, set `CACHE_STORE` on the `web` service. Container environment variables take precedence over `.env`:
+This keeps working in 7.7.1, because `.env` in the image has `CACHE_STORE=file`. Setting `CACHE_STORE: redis` in `docker-compose.yml` does **not** switch web requests to Redis (see [Environment variables reach PHP only through `.env`](#environment-variables-reach-php-only-through-env)). To use Redis, keep the `CACHE_HOST`, `CACHE_PORT` and `CACHE_DATABASE` settings in `docker-compose.yml` (the entrypoint copies those into `.env`) and set the store in the `Dockerfile`, before `COPY docker-entrypoint.sh`:
+
+```dockerfile
+RUN sed -i "s/^CACHE_STORE=.*/CACHE_STORE=redis/" /opt/dreamfactory/.env
+```
+
+You can confirm it is in use: `docker compose exec redis redis-cli -n 0 dbsize` grows as you use DreamFactory, and `storage/framework/cache/data` in the `web` container stays empty.
+
+Do not leave the cache store unset in a custom `.env`: from 7.7.0 Laravel falls back to the `database` store, and the DreamFactory system database has no `cache` table, so every request fails with `Table 'dreamfactory.cache' doesn't exist`.
+
+## Running behind HTTPS or on a non-standard port
+
+The container serves plain HTTP on port 80. If TLS is terminated in front of it — a reverse proxy, load balancer, ingress or CDN — or if you publish it on a port other than 80, three settings decide whether URLs and the MCP server work. These apply to 7.6 as well; check them while you are upgrading.
+
+### `HTTPS_HEADER: "on"` behind TLS
+
+Without it, DreamFactory sees every request as `http://` and generates `http://` absolute URLs. In testing behind a TLS proxy, the MCP OAuth metadata (`issuer`, `authorization_endpoint`, `token_endpoint`) and the OAuth `authorize` redirect to the login page all came out as `http://`, which breaks MCP client sign-in. With `HTTPS_HEADER: "on"` they are `https://`.
 
 ```yaml
 web:
   environment:
-    CACHE_STORE: redis
-    CACHE_HOST: redis
-    CACHE_PORT: 6379
-    CACHE_DATABASE: 0
+    HTTPS_HEADER: "on"
 ```
 
-Do not leave the cache store unset in a custom `.env`: from 7.7.0 Laravel falls back to the `database` store, and the DreamFactory system database has no `cache` table, so every request fails with `Table 'dreamfactory.cache' doesn't exist`.
+Keep the quotes, as the stock `docker-compose.yml` does — some YAML parsers read a bare `on` as a boolean.
+
+### `MCP_INTERNAL_BASE_URL=http://127.0.0.1` in `.env`
+
+The MCP daemons run inside the `web` container and call DreamFactory's API back for every tool call. Unless `MCP_INTERNAL_BASE_URL` is set, they call it at the **origin of the incoming request**: the public `https://` host name behind a proxy, or `http://host:8080` when port 8080 is mapped to the container's port 80. From inside the container that address usually does not resolve, is not listening, or has a certificate the daemon does not trust, and every MCP tool call fails with:
+
+```
+Error during <tool>: fetch failed
+```
+
+`initialize` and `tools/list` still succeed, so MCP clients connect and list tools normally — only tool calls fail. Point the daemons at the container itself. This must be in `.env` (setting it in `docker-compose.yml` has no effect), so add it in the `Dockerfile` before `COPY docker-entrypoint.sh`:
+
+```dockerfile
+RUN echo "MCP_INTERNAL_BASE_URL=http://127.0.0.1" >> /opt/dreamfactory/.env
+```
+
+The stock setup — no proxy, published as `80:80` and browsed at `http://localhost` — works without it.
+
+### `APP_URL`
+
+Leave `APP_URL` unset unless you need it. MCP OAuth uses `APP_URL` in preference to the request when it is set, so an `http://` value on an `https://` site breaks the OAuth redirects even with `HTTPS_HEADER: "on"`. If you do set it, use the full public `https://` URL, and set it in `.env` via the `Dockerfile` — like `MCP_INTERNAL_BASE_URL`, setting it in `docker-compose.yml` has no effect on web requests.
+
+Publish TLS on port 443. DreamFactory builds URLs from the host name only, so a public port such as `https://dreamfactory.example.com:8443` is dropped from generated URLs.
 
 ## Upgrade procedure
 
@@ -137,9 +185,10 @@ Compare your saved `docker-compose.yml` and `Dockerfile` with the 7.7.1 versions
 
 - `APP_KEY` is set to your existing key.
 - `ADMIN_PASSWORD`, if set, is at least 16 characters.
-- `CACHE_STORE` is set if you want Redis (see [above](#use-cache_store-not-cache_driver)).
+- The `Dockerfile` sets `CACHE_STORE=redis` in `.env` if you want Redis (see [above](#use-cache_store-not-cache_driver)).
 - `ENABLE_SYSTEM_MCP_DAEMON: "true"` is added if you want the System API MCP service type.
-- `HTTPS_HEADER: "on"` is set if TLS terminates in front of the container.
+- `HTTPS_HEADER: "on"` is set if TLS terminates in front of the container, and `MCP_INTERNAL_BASE_URL` is written into `.env` by the `Dockerfile` if you run behind a proxy or on a port other than 80 (see [Running behind HTTPS](#running-behind-https-or-on-a-non-standard-port)).
+- `DF_LICENSE_KEY` is set on the `web` service (commercial images).
 
 ### Step 4: Commercial images — install the 7.7.1 composer files
 
@@ -216,6 +265,22 @@ Check `docker compose logs web`. If it ends with `ERROR: ADMIN_PASSWORD must be 
 ### `system_mcp` services return 503
 
 The System API MCP daemon is not running. Add `ENABLE_SYSTEM_MCP_DAEMON: "true"` to the `web` service and recreate the container. The log should show `[df-system-mcp] listening on http://127.0.0.1:3700`.
+
+### MCP tool calls fail with `fetch failed`
+
+The MCP daemon cannot reach DreamFactory at the request's origin. Write `MCP_INTERNAL_BASE_URL=http://127.0.0.1` into `.env` from the `Dockerfile`, rebuild and recreate the container (see [Running behind HTTPS](#mcp_internal_base_urlhttp127001-in-env)).
+
+### MCP clients cannot sign in, or OAuth URLs start with `http://`
+
+Set `HTTPS_HEADER: "on"` when TLS terminates in front of the container, and make sure `APP_URL` is either unset or the public `https://` URL (see [Running behind HTTPS](#running-behind-https-or-on-a-non-standard-port)). You can check what DreamFactory advertises with:
+
+```bash
+curl -s https://<your-host>/.well-known/oauth-authorization-server/mcp/<mcp-service-name>
+```
+
+### A setting in `docker-compose.yml` has no effect
+
+PHP-FPM only reads `.env`. See [Environment variables reach PHP only through `.env`](#environment-variables-reach-php-only-through-env).
 
 ## Rolling back
 

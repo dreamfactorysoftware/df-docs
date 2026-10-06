@@ -36,6 +36,10 @@ The DreamFactory docker application is set up to use docker-compose. To build an
 
     The docker-compose yaml file has default settings for installing DreamFactory, but you may wish to edit the persistent or sample database details, usernames and passwords, or ports to access the application. You must edit the docker-compose file prior to building and running DreamFactory for these changes to take effect.
 
+    :::tip Running behind HTTPS or on another port
+    If TLS is terminated in front of the container (reverse proxy, load balancer, CDN) or you map a port other than 80, see [Running behind HTTPS or on a non-standard port](/upgrades-and-migrations/upgrading-docker-to-7-7#running-behind-https-or-on-a-non-standard-port). Without `HTTPS_HEADER` and `MCP_INTERNAL_BASE_URL`, OAuth URLs come out as `http://` and MCP tool calls fail.
+    :::
+
   3. Build images with `docker-compose build`
 
     :::caution Backup your APP_KEY
