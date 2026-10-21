@@ -138,7 +138,7 @@ As new features and enhancements are added to DreamFactory, you may want to upgr
   
   6. Modify any other settings in docker-compose as needed for your environment (compare the old docker-compose file with the new one as needed).
 
-  7. Save your changes and rebuild the container with `docker-compose up -d --build`.
+  7. Save your changes and rebuild the container with `docker-compose build --pull web` followed by `docker-compose up -d`. The `--pull` flag fetches the latest DreamFactory base image, which carries PHP security updates. Without it, Docker reuses the cached base image.
 
   8. Double-check that all services are running as expected with `docker-compose ps`.
 
