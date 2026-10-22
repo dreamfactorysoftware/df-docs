@@ -10,7 +10,7 @@ description: "Steps to upgrade the PHP version on a Windows server running Dream
 This guide walks through the process of updating the PHP version on a Windows server running DreamFactory. Follow these steps carefully to ensure a smooth upgrade process.
 
 :::danger[Check your DreamFactory version first]
-DreamFactory 4.x runs only on PHP 7.2 to 7.4. DreamFactory 5.0.0 to 7.0.0 declare PHP 8.1. DreamFactory 7.0.1 and later need PHP 8.3 or later. If the new PHP version is outside the range for your DreamFactory version, DreamFactory stops working. Read [Step 2 of the PHP security advisory](/Security/php-cve-2026-109618-109619#step-2-find-your-upgrade-path) before you start.
+DreamFactory 4.x runs only on PHP 7.2 to 7.4. DreamFactory 5.0.0 to 7.0.0 declare PHP 8.1. DreamFactory 7.0.1 and later need PHP 8.3 or later. If the new PHP version is outside the range for your DreamFactory version, DreamFactory stops working. Read [Find your upgrade path](/Security/php-cve-2026-109618-109619#find-your-upgrade-path) in the PHP security advisory before you start.
 :::
 
 ## Prerequisites

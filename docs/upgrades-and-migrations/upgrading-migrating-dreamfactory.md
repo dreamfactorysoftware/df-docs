@@ -501,6 +501,8 @@ scp <user>@<remote-server>:/opt/dreamfactory/dump.sql .
 
 1. Set up a new server with a clean operating system installation
 2. Follow the [DreamFactory installation guide](/getting-started/installing-dreamfactory/) for your platform
+   - Install the PHP extensions your services use, such as SQL Server, Oracle or MongoDB drivers, built for the new PHP version
+   - Commercial installs: install the composer files for the new DreamFactory version. Request them from DreamFactory support before you start. Without them, the new instance installs the open source edition
 3. Complete the initial setup by creating an administrator account (this will be replaced with migrated data)
 
 ### Step 4: Additional Configuration
