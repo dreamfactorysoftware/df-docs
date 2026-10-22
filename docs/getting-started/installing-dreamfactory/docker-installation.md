@@ -127,9 +127,10 @@ Two rules apply to every PHP rebuild:
 
 - Set `APP_KEY` in `docker-compose.yml` before you rebuild. A new container without it generates a new key, and stored service passwords stop working.
 - Build with `docker compose build --pull --no-cache web`. Without these flags, Docker reuses cached layers and you keep the old PHP.
+- Pass your current DreamFactory version, for example `--build-arg BRANCH=7.5.0`. The `Dockerfile` clones DreamFactory from `master` unless you name a version, so a `--no-cache` rebuild without it upgrades DreamFactory to the latest release.
 
 :::warning[Keep the base image and the df-docker version together]
-The entrypoint in each df-docker release starts a specific PHP-FPM version. df-docker 7.0 to 7.5 use PHP 8.3 (`df-base-img:v7`). df-docker 7.6.0 and later use PHP 8.5 (`df-base-img:7.6` or `:7.7`). Changing the `FROM` line between images with the same PHP version is safe. Changing it to an image with a different PHP version stops the container from starting.
+The entrypoint in each df-docker release starts a specific PHP-FPM version. df-docker 7.4.0 and 7.5.0 use PHP 8.3 (`df-base-img:v7`). df-docker 7.6.0 and later use PHP 8.5 (`df-base-img:7.6` or `:7.7`). Changing the `FROM` line between images with the same PHP version is safe. Changing it to an image with a different PHP version stops the container from starting.
 :::
 
 ### Upgrading DreamFactory
@@ -145,6 +146,8 @@ As new features and enhancements are added to DreamFactory, you may want to upgr
   3. Stop the DreamFactory container without deleting it with `docker-compose stop` (this brings the instance offline until the upgrade is complete).
 
   4. Check out the newer tagged version with `git checkout tags/{version}`.
+
+    The df-docker version does not choose the DreamFactory version. The `Dockerfile` clones DreamFactory from `master` unless you pass a version, so add `--build-arg BRANCH={version}` to the build command in step 7 to install a specific release.
 
   5. Add the `APP_KEY` to the docker-compose file (see above for instructions).
 
