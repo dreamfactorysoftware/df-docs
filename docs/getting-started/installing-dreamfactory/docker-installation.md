@@ -121,38 +121,16 @@ To enable Oracle database connectivity in your DreamFactory Docker container, se
 
 ### Updating PHP only
 
-The DreamFactory image gets PHP from the DreamFactory base image. To pick up a PHP security fix without changing your DreamFactory version, rebuild the container on the latest base image. You do not need a new df-docker release. Work from your current df-docker directory.
+The DreamFactory image gets PHP from the DreamFactory base image. To pick up a PHP security fix without changing your DreamFactory version, rebuild the container. The change you make to the `Dockerfile` first depends on the base image your df-docker version uses. For the October 2026 PHP fixes, follow [Docker: we rebuilt the base image](/Security/php-cve-2026-109618-109619#docker-we-rebuilt-the-base-image) in the PHP security advisory.
 
-1. **Pin your `APP_KEY` first.** The rebuild creates a new container. If `APP_KEY` is not set in `docker-compose.yml`, the new container generates a new key, and every service credential stored in DreamFactory stops decrypting ("The MAC is invalid"). Read the current key:
+Two rules apply to every PHP rebuild:
 
-   ```bash
-   docker compose exec web grep '^APP_KEY=' .env
-   ```
-
-   If `docker-compose.yml` does not already set it, add it under the `web` service's `environment`, in single quotes:
-
-   ```yaml
-   APP_KEY: 'base64:...'
-   ```
-
-2. **Rebuild on the latest base image.** Use `--pull` and `--no-cache`. Without them, Docker reuses the cached base image and you keep the old PHP:
-
-   ```bash
-   docker compose build --pull --no-cache web
-   docker compose up -d
-   ```
-
-3. Log in and test one service that uses stored credentials.
+- Set `APP_KEY` in `docker-compose.yml` before you rebuild. A new container without it generates a new key, and stored service passwords stop working.
+- Build with `docker compose build --pull --no-cache web`. Without these flags, Docker reuses cached layers and you keep the old PHP.
 
 :::warning[Keep the base image and the df-docker version together]
-The `Dockerfile` and `docker-entrypoint.sh` in each df-docker release name a specific PHP version in their paths and service names, for example `/etc/php/8.5/fpm/pool.d/www.conf` and `php8.5-fpm`. df-docker 7.0 through 7.5 use PHP 8.3. df-docker 7.6 and later use PHP 8.5.
-
-Do not change only the `FROM` line to a newer base image. If the base image moves from PHP 8.3 to PHP 8.5 while your entrypoint still starts `php8.3-fpm`, the container does not start. Rebuild with the base image your df-docker release already names, or check out a newer df-docker release so the `Dockerfile`, entrypoint and base image match.
-
-If you added your own PHP settings to the `Dockerfile` or entrypoint, check that their paths match the PHP version in the new image.
+The entrypoint in each df-docker release starts a specific PHP-FPM version. df-docker 7.0 to 7.5 use PHP 8.3 (`df-base-img:v7`). df-docker 7.6.0 and later use PHP 8.5 (`df-base-img:7.6` or `:7.7`). Changing the `FROM` line between images with the same PHP version is safe. Changing it to an image with a different PHP version stops the container from starting.
 :::
-
-**Helm and other prebuilt image deployments.** These pull a prebuilt `df-docker` image. A prebuilt image carries the PHP it was built with. Until a rebuilt tag is published, build the image from df-docker as above, push it to your own registry, and point your deployment at it. Keep the same `APP_KEY` in your deployment's environment. See [Helm installation](/getting-started/installing-dreamfactory/helm-installation).
 
 ### Upgrading DreamFactory
 
