@@ -7,6 +7,10 @@ description: "Migration guide for moving DreamFactory from PHP 7.x to PHP 8.1 on
 
 # Upgrading to PHP 8.1
 
+:::danger[PHP 8.1 is end of life]
+PHP 8.1 gets no security fixes, including the fix for [CVE-2026-109618 and CVE-2026-109619](/Security/php-cve-2026-109618-109619). Do not move a production instance to PHP 8.1. Upgrade DreamFactory to 7.7.1 on PHP 8.3 or later instead. Use this guide only as a reference for the connector changes between PHP 7 and PHP 8.
+:::
+
 :::info 
 Estimated Upgrade Time: 1.5 Hours
 :::

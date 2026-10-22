@@ -166,7 +166,8 @@ Programmatically manage DreamFactory for automation and DevOps workflows.
 Keep your DreamFactory instance up to date.
 
 - **[Upgrading & Migrating DreamFactory](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory)** - Move between environments
-- **[Upgrading to PHP 8.1](/upgrades-and-migrations/upgrading-to-php-8.1)** - PHP 8.1 migration guide
+- **[PHP Security Advisory (October 2026)](/Security/php-cve-2026-109618-109619)** - CVE-2026-109618 and CVE-2026-109619: who is affected and how to fix it
+- **[Upgrading to PHP 8.1](/upgrades-and-migrations/upgrading-to-php-8.1)** - PHP 8.1 migration guide (reference only; PHP 8.1 is end of life)
 - **[Upgrading PHP on Windows](/upgrades-and-migrations/upgrading-php-on-windows)** - Windows-specific PHP upgrades
 
 ---

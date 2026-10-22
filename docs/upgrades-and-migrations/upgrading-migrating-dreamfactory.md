@@ -26,11 +26,15 @@ The **System Info** page also shows your license level (for example `GOLD` or `O
 
 ## Upgrade Path by Version
 
+:::warning[October 2026 PHP vulnerabilities]
+If you are upgrading because of CVE-2026-109618 and CVE-2026-109619, start with the [PHP security advisory](/Security/php-cve-2026-109618-109619). Many instances only need a PHP patch update, not a DreamFactory upgrade.
+:::
+
 Use the table below to identify the appropriate upgrade method based on your current and target versions:
 
 | From Version | To Version | Method | Notes |
 |---|---|---|---|
-| 4.x | 5.x | In-place (`git pull`) | PHP 7.4+ required; run `php artisan migrate --seed` |
+| 4.x | 5.x | In-place (`git pull`) | PHP 8.1 required (4.x runs on PHP 7.2–7.4); run `php artisan migrate --seed` |
 | 5.x | 6.x | In-place (`git pull`) | Review `.env` for new required variables; check deprecated connectors |
 | 6.x | 7.x | In-place or fresh migration | PHP 8.3+ required; significant dependency updates — test in staging first |
 | 7.0–7.6 | 7.7.x | In-place (check out the release tag) | Laravel 11 → 13; PHP 8.3+; commercial installs need the 7.7.x composer files. See [Upgrading to 7.7.x](#upgrading-to-77x) |
@@ -39,7 +43,8 @@ Use the table below to identify the appropriate upgrade method based on your cur
 **Breaking changes to watch for:**
 - **3.x → 4.x**: System database schema changed significantly — a fresh migration is required; data can be re-imported via the 4.x import tools.
 - **5.x → 6.x**: Several legacy connectors were removed; verify your active services are still supported.
-- **6.x → 7.x**: PHP minimum version bumped to 8.1 (8.3 from 7.0.1 onward); Composer 2 required; some deprecated API behaviors removed.
+- **4.x → 5.x**: PHP moves from 7.x to 8.1. Reinstall any PHP extensions you added by hand for the new PHP version.
+- **6.x → 7.x**: PHP 8.3 required from 7.0.1 onward (7.0.0 still declares PHP 8.1); Composer 2 required; some deprecated API behaviors removed.
 - **7.6.x → 7.7.x**: The framework moves from Laravel 11 to Laravel 13, which changes the default cache store and several configuration files. `CACHE_STORE` must be set in `.env` — see [Upgrading to 7.7.x](#upgrading-to-77x).
 
 ## Upgrading to 7.7.x

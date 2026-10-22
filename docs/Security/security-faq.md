@@ -18,6 +18,10 @@ DreamFactory is an on-premise platform for instantly creating and managing APIs,
 
 ## Common Questions
 
+### Is DreamFactory affected by the October 2026 PHP vulnerabilities?
+
+Yes. CVE-2026-109618 and CVE-2026-109619 are flaws in PHP, and every DreamFactory instance runs on PHP. DreamFactory code does not change. The fix is a patched PHP version. See the [PHP security advisory](/Security/php-cve-2026-109618-109619) for your upgrade path.
+
 ### What is the DreamFactory Platform?
 
 * DreamFactory is an on-premise platform for instantly creating and managing APIs, currently used across the healthcare, finance, telecommunications, banking, government, & manufacturing industries.

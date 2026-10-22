@@ -110,7 +110,7 @@ Simply run the installer to install.
 
 PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.3). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
 
-At the time of writing, the latest supported PHP version is 8.3.16. The 64-bit NTS version can be directly downloaded [here](https://windows.php.net/downloads/releases/php-8.3.16-nts-Win32-vs16-x64.zip).
+Use PHP 8.3.36 or a later 8.3 release. Earlier builds have the critical vulnerabilities described in the [PHP security advisory](/Security/php-cve-2026-109618-109619). Download the file named like `php-8.3.36-nts-Win32-vs16-x64.zip`.
 
 Just get the .zip downloaded. It is installed later in the process. 
 
