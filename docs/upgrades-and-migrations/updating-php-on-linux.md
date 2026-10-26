@@ -69,6 +69,29 @@ If `dnf` times out or offers no PHP update, wait a few minutes and run it again.
 
 If your PHP comes from the Red Hat AppStream modules instead of Remi, check with your distribution for the patch date.
 
+#### Servers without internet access
+
+Download the new PHP packages on a connected machine with the same OS major version and the same Remi PHP module enabled, then install them offline. To find where your PHP comes from, run `rpm -qi php-cli | grep -E 'Version|Release|Vendor'` on the target. A release ending in `.remi` is Remi.
+
+On the connected machine, download every PHP package of the new version, not only the ones it has installed. Replace `8.3.36` with the fixed version:
+
+```bash
+mkdir php-8.3.36 && cd php-8.3.36
+sudo dnf download --arch x86_64,noarch $(dnf -q list available 'php*' | awk '/8\.3\.36/ {print $1}' | grep -v '^php83-' | sed 's/\.x86_64$//')
+sha256sum *.rpm > SHA256SUMS
+```
+
+Copy the folder to the target, then:
+
+```bash
+cd php-8.3.36
+sha256sum -c SHA256SUMS
+sudo dnf --disablerepo='*' upgrade ./*.rpm
+sudo systemctl restart php-fpm
+```
+
+`dnf upgrade` only replaces the PHP packages that are already installed, so a folder with every package works on any target. Extensions you built yourself with `pecl` or `phpize`, such as `sqlsrv`, `pdo_sqlsrv` and `oci8`, keep working after a patch release on the same branch (8.3.x to 8.3.y). Check that they still load with `php -m`. A move to another branch, such as 8.3 to 8.4, needs them rebuilt.
+
 :::warning[Restart, do not reload]
 For PHP-FPM, a reload can leave running workers on the old code and settings. Use `restart`, then confirm the new version.
 :::
