@@ -109,9 +109,6 @@ The platform resource provides access to the instance's REST API, configuration 
 
 #### Platform API
 
-#### Event request
-
-
 The **api** resource contains methods for instance API access: `get`, `post`, `put`, `patch`, `delete`, and `call`. The arguments differ by scripting engine, so use the signature for your engine. `path` is `"service[/resource_path]"`, for example `db/_table/todo`.
 
 | **Function** | **Node.js** | **Python / Python3** | **PHP** |
@@ -120,8 +117,8 @@ The **api** resource contains methods for instance API access: `get`, `post`, `p
 | **post**, **put**, **patch**, **delete** | `post(path, payload, options, callback)` | `post(path, payload='', options='')` | `post(path, payload=null, curlOptions=[])` |
 | **call**     | `call(verb, path, payload, options, callback)` | `call(verb, path, payload='', options={})` | `call(method, path, payload=null, curlOptions=[])` |
 
-- **Node.js** calls are asynchronous. The callback is always the last argument and receives `(body, response)`. `body` is the raw response string, so use `JSON.parse(body)`. The payload is an object or a string.
-- **Python** calls are synchronous and return an `http.client.HTTPResponse`. Read it with `json.loads(result.read())`. The payload must be a string, so use `json.dumps(...)` for objects. There is no callback.
+- **Node.js** calls are asynchronous. The callback is always the last argument and receives `(body, response)`. `body` is the raw response string, so use `JSON.parse(body)`. The payload is an object or a string. Because calls are async, set the result inside the callback with `event.setResponse(content, statusCode, contentType)`. A plain assignment to `event.response` inside a callback is ignored.
+- **Python** calls are synchronous and return an `http.client.HTTPResponse` (`httplib.HTTPResponse` on the Python 2 engine). Read it with `json.loads(result.read())`. The payload must be a string, so use `json.dumps(...)` for objects. There is no callback.
 - **PHP** calls run in process and return the response array (`content`, `status_code`, and so on). The members of `$platform['api']` are closures, so assign one to a variable before calling it: `$get = $platform['api']->get; $get('db/_table/todo');`.
 - For Node.js and Python, `options` can be `{headers: {...}}`, `{parameters: {...}}`, or both. Node.js also accepts a bare headers object.
 
@@ -135,17 +132,17 @@ platform.api.get('db/_table/todo', options, function (body, response) {
     var payload = { resource: [{ name: 'New todo' }] };
 
     platform.api.post('db/_table/todo', payload, {}, function (body, response) {
-        event.response = { status_code: 200, content: JSON.parse(body) };
+        event.setResponse(JSON.parse(body), 200, 'application/json');
     });
 });
 ```
 
 :::note
-A Node.js `delete` with a non-empty payload is sent as a `POST` with the header `X-HTTP-Method: DELETE`. To delete without a body, pass `null` for the payload: `platform.api.delete(path, null, options, callback)`.
+A Node.js `delete` with a truthy payload (any object, including `{}`) is sent as a `POST` with the header `X-HTTP-Method: DELETE`. To delete without a body, pass `null` for the payload: `platform.api.delete(path, null, options, callback)`.
 :::
 
 :::caution
-In Node.js the callback must be the last argument. Passing it in the `options` position, as in `get(path, function () {...})`, means it never fires.
+In Node.js the callback must be the last argument. Passing it in the `options` position, as in `get(path, function () {...})`, throws `callback is not a function` and the script returns a 500.
 :::
 
 ##### Python
