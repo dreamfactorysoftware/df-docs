@@ -112,21 +112,70 @@ The platform resource provides access to the instance's REST API, configuration 
 #### Event request
 
 
-The **api** resource contains methods for instance API access. This object contains a method for each type of REST verb.
+The **api** resource contains methods for instance API access: `get`, `post`, `put`, `patch`, `delete`, and `call`. The arguments differ by scripting engine, so use the signature for your engine. `path` is `"service[/resource_path]"`, for example `db/_table/todo`.
 
-| **Function** | **Description**       |
-| ------------ | --------------------- |
-| **get**      | GET a resource        |
-| **post**     | POST a resource       |
-| **put**      | PUT a resource        |
-| **patch**    | PATCH a resource      |
-| **delete**   | DELETE a resource     |
+| **Function** | **Node.js** | **Python / Python3** | **PHP** |
+| ------------ | ----------- | -------------------- | ------- |
+| **get**      | `get(path, options, callback)` | `get(path, options='')` | `get(path, payload=null, curlOptions=[])` |
+| **post**, **put**, **patch**, **delete** | `post(path, payload, options, callback)` | `post(path, payload='', options='')` | `post(path, payload=null, curlOptions=[])` |
+| **call**     | `call(verb, path, payload, options, callback)` | `call(verb, path, payload='', options={})` | `call(method, path, payload=null, curlOptions=[])` |
 
-They all accept the same arguments:
+- **Node.js** calls are asynchronous. The callback is always the last argument and receives `(body, response)`. `body` is the raw response string, so use `JSON.parse(body)`. The payload is an object or a string.
+- **Python** calls are synchronous and return an `http.client.HTTPResponse`. Read it with `json.loads(result.read())`. There is no callback.
+- **PHP** calls run in process and return the response array (`content`, `status_code`, and so on). The members of `$platform['api']` are closures, so assign one to a variable before calling it: `$get = $platform['api']->get; $get('db/_table/todo');`.
+- For Node.js and Python, `options` can be `{headers: {...}}`, `{parameters: {...}}`, or both. Node.js also accepts a bare headers object.
 
+##### Node.js
+
+```javascript
+var options = { parameters: { limit: 5 } };
+
+platform.api.get('db/_table/todo', options, function (body, response) {
+    var todos = JSON.parse(body).resource;
+    var payload = { resource: [{ name: 'New todo' }] };
+
+    platform.api.post('db/_table/todo', payload, {}, function (body, response) {
+        event.response = { status_code: 200, content: JSON.parse(body) };
+    });
+});
 ```
-method( "service[/resource_path]"[, payload[, options]] );
+
+:::note
+A Node.js `delete` with a non-empty payload is sent as a `POST` with the header `X-HTTP-Method: DELETE`. To delete without a body, pass `null` for the payload: `platform.api.delete(path, null, options, callback)`.
+:::
+
+:::caution
+In Node.js the callback must be the last argument. Passing it in the `options` position, as in `get(path, function () {...})`, means it never fires.
+:::
+
+##### Python
+
+```python
+import json
+
+result = platform.api.get('db/_table/todo', {'parameters': {'limit': 5}})
+todos = json.loads(result.read())['resource']
+
+result = platform.api.post('db/_table/todo', {'resource': [{'name': 'New todo'}]})
+created = json.loads(result.read())
 ```
+
+##### PHP
+
+```php
+<?php
+$get = $platform['api']->get;
+$result = $get('db/_table/todo', null, [CURLOPT_TIMEOUT => 10]);
+$todos = $result['content']['resource'];
+
+$post = $platform['api']->post;
+$result = $post('db/_table/todo', ['resource' => [['name' => 'New todo']]]);
+?>
+```
+
+#### Script output and logging
+
+Script output (`console.log`, `print`, `echo`) is written to `storage/logs/dreamfactory.log` at `INFO` level, once per run, as `Script '<name>' output: ...`. If `APP_LOG_LEVEL` is stricter than `info` (for example `warning`, the recommended production value), the line is dropped. Set `APP_LOG_LEVEL=info` to see script output.
 
 ## Helpful Links and Sample Scripts
 

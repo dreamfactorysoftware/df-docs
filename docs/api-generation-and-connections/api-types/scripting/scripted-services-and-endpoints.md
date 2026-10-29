@@ -69,7 +69,7 @@ $event['response']['content'] = [
 1. **Check script syntax**: Ensure your script has correct syntax for the chosen language.
 2. **Enable error logging**: Use DreamFactory's logging features to capture script errors.
 3. **Test incrementally**: Start with simple scripts and gradually add complexity.
-4. **Use platform.api for debugging**: Make API calls within your script to test functionality.
+4. **Use [platform.api](/api-generation-and-connections/api-types/scripting/scripting-resources#platform-api) for debugging**: Make API calls within your script to test functionality.
 5. **Monitor performance**: Be mindful of script execution time, especially for complex scripts.
 
 By leveraging scripted services, you can enhance the capabilities of your DreamFactory APIs and tailor them to meet specific business requirements.
