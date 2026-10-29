@@ -23,7 +23,7 @@ Any time configurations are changed in the .env file, at a minimum, the confgura
 
 Two parameters are used for this process:
 
-- `APP_LOG_LEVEL` : Set to `debug` for debug mode. Other levels are described in the parameter listing below. 
+- `APP_LOG_LEVEL` : The default log level, for example `debug` for debug mode. Other levels are described in the parameter listing below. A system administrator can override it at runtime without editing `.env`. See [Server Settings](../../system-settings/server-settings.md).
 - `APP_DEBUG` : Set to `true` to turn on application debug messages. This triggers DreamFactory to return a payload with a trace for error(s).
 
 ### Changing the system database
@@ -64,7 +64,7 @@ Below, the .env in its entirety is outlined and every parameter described. These
 - `APP_KEY`: Application encryption key.
 - `APP_LOCALE`: Default application locale.
 - `LOG_CHANNEL`: Configuration for log channels.
-- `APP_LOG_LEVEL`: Log level setting.
+- `APP_LOG_LEVEL`: Default log level. Can be overridden at runtime; see [Server Settings](../../system-settings/server-settings.md).
 - `APP_LOG_MAX_FILES`: Max log files for 'daily' logging.
 - `APP_TIMEZONE`: Timezone setting for PHP functions.
 - `APP_URL`: External URL for the installation. Used by OAuth discovery and similar config-driven URLs. Does not change Laravel-generated redirects; use `FORCE_HTTPS` for those.
