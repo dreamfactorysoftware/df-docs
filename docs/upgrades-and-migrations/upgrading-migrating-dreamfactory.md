@@ -377,6 +377,10 @@ After completing the upgrade:
 
 # Major Version Migration
 
+:::note
+A database dump only restores into the same engine. A SQLite dump cannot be loaded into MySQL, for example. To move to a different system database engine, see [Choosing and Changing the System Database](/getting-started/dreamfactory-configuration/system-database).
+:::
+
 For major version changes or when migrating to a new server/environment, you'll need to migrate your DreamFactory instance completely. This process focuses on transferring two critical components: the `.env` file and the DreamFactory system database.
 
 ## Why These Components Matter
