@@ -23,7 +23,7 @@ Any time configurations are changed in the .env file, at a minimum, the confgura
 
 Two parameters are used for this process:
 
-- `APP_LOG_LEVEL` : Set to `debug` for debug mode. Other levels are described in the parameter listing below. This is the default; a system administrator can override it at runtime without editing `.env`. See [Server Settings](../../system-settings/server-settings.md).
+- `APP_LOG_LEVEL` : The default log level, for example `debug` for debug mode. Other levels are described in the parameter listing below. A system administrator can override it at runtime without editing `.env`. See [Server Settings](../../system-settings/server-settings.md).
 - `APP_DEBUG` : Set to `true` to turn on application debug messages. This triggers DreamFactory to return a payload with a trace for error(s).
 
 ### Changing the system database

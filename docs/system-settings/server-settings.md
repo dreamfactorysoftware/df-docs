@@ -114,10 +114,10 @@ The Server Settings page shows each setting with a badge for where the value com
 
 ## Audit log
 
-Each change writes a `notice` entry to the DreamFactory log before the new value applies. It records the setting, the old and new values, and the user id:
+Each successful change or reset writes a `notice` entry to `storage/logs/dreamfactory.log`. The entry is written to its own log channel at a fixed level, so it is recorded whatever log level is in effect, including the stock `warning`. It records the setting, the old and new values, and the user id:
 
 ```
 [2026-10-28 12:00:00] production.NOTICE: Server setting changed {"setting":"log_level","from":"warning","to":"debug","user_id":1}
 ```
 
-The setting's row also keeps who changed it last and when. The entry is only written while the log level is `notice` or lower, so a level of `error` or higher drops it. Values are never secrets, because only allow-listed settings can be changed.
+The setting's row also keeps who changed it last and when. Requests that are rejected, such as an invalid value, are not logged. Values are never secrets, because only allow-listed settings can be changed.
