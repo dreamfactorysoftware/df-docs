@@ -37,6 +37,8 @@ This requires updating the connection to your database type (mysql, sqlsrv, pgsq
 - `DB_USERNAME`: Database username.
 - `DB_PASSWORD`: Database password.
 
+For per-engine values, creating the database, and moving an existing install off SQLite, see [Choosing and Changing the System Database](/getting-started/dreamfactory-configuration/system-database).
+
 ### Caching settings
 
 To update the default cache (file) to an external cache (Memcache or Redis), or to a local alternative (apc, array, database, file) you can update the following values.
