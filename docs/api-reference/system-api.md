@@ -244,7 +244,7 @@ Roles control what services and operations a user or app can access (RBAC).
 | `/api/v2/system/event` | GET | List system events |
 | `/api/v2/system/cache` | DELETE | Clear all cache |
 | `/api/v2/system/cache/{service}` | DELETE | Clear cache for one service |
-| `/api/v2/system/server_setting` | GET/PATCH/DELETE | View and override runtime server settings such as log level (sys admin only). See [Server Settings](../system-settings/server-settings.md) |
+| `/api/v2/system/server_setting` | GET/PATCH/DELETE | View and override runtime server settings such as log level (role-based: needs `server_setting/*` access). See [Server Settings](../system-settings/server-settings.md) |
 | `/api/v2/system/lookup` | GET/POST/PATCH/DELETE | Manage lookup keys (global variables) |
 | `/api/v2/system/constant` | GET | Read-only system constants |
 | `/api/v2/system/package` | GET/POST | Export/import configuration packages |
