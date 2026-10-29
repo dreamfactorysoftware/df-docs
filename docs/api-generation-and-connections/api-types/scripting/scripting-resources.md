@@ -121,7 +121,7 @@ The **api** resource contains methods for instance API access: `get`, `post`, `p
 | **call**     | `call(verb, path, payload, options, callback)` | `call(verb, path, payload='', options={})` | `call(method, path, payload=null, curlOptions=[])` |
 
 - **Node.js** calls are asynchronous. The callback is always the last argument and receives `(body, response)`. `body` is the raw response string, so use `JSON.parse(body)`. The payload is an object or a string.
-- **Python** calls are synchronous and return an `http.client.HTTPResponse`. Read it with `json.loads(result.read())`. There is no callback.
+- **Python** calls are synchronous and return an `http.client.HTTPResponse`. Read it with `json.loads(result.read())`. The payload must be a string, so use `json.dumps(...)` for objects. There is no callback.
 - **PHP** calls run in process and return the response array (`content`, `status_code`, and so on). The members of `$platform['api']` are closures, so assign one to a variable before calling it: `$get = $platform['api']->get; $get('db/_table/todo');`.
 - For Node.js and Python, `options` can be `{headers: {...}}`, `{parameters: {...}}`, or both. Node.js also accepts a bare headers object.
 
@@ -156,7 +156,7 @@ import json
 result = platform.api.get('db/_table/todo', {'parameters': {'limit': 5}})
 todos = json.loads(result.read())['resource']
 
-result = platform.api.post('db/_table/todo', {'resource': [{'name': 'New todo'}]})
+result = platform.api.post('db/_table/todo', json.dumps({'resource': [{'name': 'New todo'}]}))
 created = json.loads(result.read())
 ```
 
