@@ -46,7 +46,7 @@ Queue and scheduler workers are long-running processes and pick up a change when
 Access is role-based, like any other system resource:
 
 - Full administrators have access.
-- Restricted administrators have access through the **Config** tab. Any other role needs `server_setting/*` on the `system` service. Restricted administrators created before this setting existed keep their Config tab but do not have `server_setting/*` until a root administrator opens the admin and selects **Save**, which grants it.
+- Restricted administrators have access through the **Config** tab. Any other role needs `server_setting/*` on the `system` service. Restricted administrators created before this setting existed keep their Config tab but do not have `server_setting/*` until a root administrator opens the admin, changes any field (for example, clears and re-ticks one access tab) and selects **Save**, which grants it. Saving without changing anything sends nothing.
 - Every other caller gets `403`. A missing, expired or invalid session token is rejected before the role is checked.
 
 List settings:
