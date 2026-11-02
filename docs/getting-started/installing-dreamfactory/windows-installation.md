@@ -2,8 +2,8 @@
 sidebar_position: 4
 title: Windows Installation
 id: windows-installation
-description: Step-by-step guide to installing DreamFactory on Windows Server 2019/2022 with IIS, PHP, and required dependencies.
-keywords: [DreamFactory Windows install, Windows Server IIS, DreamFactory installation, self-hosted API Windows, DreamFactory Windows Server, PHP IIS FastCGI, DreamFactory troubleshooting]
+description: Step-by-step guide to installing DreamFactory on Windows Server 2019, 2022, or 2025 with IIS, PHP, and required dependencies.
+keywords: [DreamFactory Windows install, Windows Server 2025, Windows Server IIS, DreamFactory installation, self-hosted API Windows, DreamFactory Windows Server, PHP IIS FastCGI, DreamFactory troubleshooting]
 ---
 
 
@@ -15,7 +15,7 @@ This page contains installation instructions for Windows.
 
 Before starting the installation, confirm all of the following are in place:
 
-- [ ] **Windows Server 2019 or 2022** (64-bit) — or Windows 10/11 for local development. This guide does not cover 32-bit environments.
+- [ ] **Windows Server 2019, 2022, or 2025** (64-bit) — or Windows 10/11 for local development. This guide does not cover 32-bit environments. See [Windows Server 2025 notes](#windows-server-2025-notes) for what differs on 2025.
 - [ ] **IIS 10+ with CGI feature enabled** — the CGI role is required for PHP FastCGI. Enable it with:
   ```powershell
   Enable-WindowsOptionalFeature -Online -FeatureName IIS-CGI
@@ -23,7 +23,7 @@ Before starting the installation, confirm all of the following are in place:
 - [ ] **PHP 8.3 or later** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/).
 - [ ] **Composer** — PHP dependency manager. Download the installer from [getcomposer.org](https://getcomposer.org/Composer-Setup.exe).
 - [ ] **Git for Windows** — required to clone the DreamFactory repository. Download from [git-scm.com](https://git-scm.com/download/win).
-- [ ] **Visual C++ 2015–2019 Redistributable** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/16/release/VC_redist.x64.exe).
+- [ ] **Visual C++ 2015–2022 Redistributable (x64)** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/17/release/vc_redist.x64.exe). PHP 8.3 builds are compiled with Visual Studio 2019 (`vs16`) and PHP 8.4 with Visual Studio 2022 (`vs17`); both need this same 2015–2022 runtime.
 - [ ] **URL Rewrite Module for IIS** — required for Laravel's routing. Download from [Microsoft](https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi).
 - [ ] **Supported system database** — for the DreamFactory system database, use SQLite (default, easiest), MySQL 8.0+, PostgreSQL 13+, or SQL Server. SQLite requires no additional setup and is recommended for initial installation.
 - [ ] **Local Administrator account** — IIS needs elevated permissions for directory access and FastCGI configuration.
@@ -32,6 +32,16 @@ Before starting the installation, confirm all of the following are in place:
  The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You must be able to access the GUI of the server using something like RDP, have the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to run on the same IIS instance as DreamFactory, however this is not typically supported. 
 
 A local Administrator account is also required at minimum for testing permissions, and possibly in perpetuity for IIS permissions.  
+
+### Windows Server 2025 notes
+
+The procedure on this page was verified on Windows Server 2025 (build 26100) with DreamFactory 7.7.1 and PHP 8.3.36 in November 2026. The steps are the same as for 2022; the differences are in the environment around them:
+
+- **Internet Explorer is gone, but IE Enhanced Security Configuration is still there.** The Server Manager toggle (and the registry keys under `HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components`) still exist and still block downloads in Edge until turned off.
+- **`winget` is preinstalled**, so Git, the VC++ runtime, and other tools can be installed from an elevated prompt without a browser. Note that `winget` does not work when run as `SYSTEM` (for example from a cloud-provider run-command agent); use the direct installer links in this guide for unattended installs.
+- **OpenSSH Server is built in** (service `sshd`, off by default). It is a convenient alternative to RDP for copying the composer files and running the command-line steps.
+- **Cloud images:** on AWS the `Windows_Server-2025-*-Full-Base` AMIs ship the SSM Agent, so every step below can be run through Systems Manager Run Command with no inbound ports. Early 2025 agent builds needed `wmic.exe`, which is now a Feature on Demand; current AMIs include a fixed agent.
+- **Resource sizing:** `composer install` for a commercial composer set took about 15 minutes on a 2 vCPU / 2 GB instance. Give the server at least 4 GB and 10 GB of free disk for a comfortable install.
 
 ## Server role setup
 
@@ -94,11 +104,11 @@ Git can be downloaded from [here](https://git-scm.com/download/win). Select the 
 
 To install git, simply run the installer you downloaded and click **yes**/**next** on all default options. 
 
-### Visual C++ 2015-2019
+### Visual C++ 2015-2022
 
-Download [here](https://aka.ms/vs/16/release/VC_redist.x64.exe)
+Download [here](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
-Simply run the installer to install.
+Simply run the installer to install. If it reports that a newer version is already present, that is fine.
 
 ### URL rewrite module
 
@@ -110,7 +120,7 @@ Simply run the installer to install.
 
 PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.3). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
 
-Use PHP 8.3.36 or a later 8.3 release. Earlier builds have the critical vulnerabilities described in the [PHP security advisory](/Security/php-cve-2026-109618-109619). Download the file named like `php-8.3.36-nts-Win32-vs16-x64.zip`.
+Use PHP 8.3.36 or a later 8.3 release. Earlier builds have the critical vulnerabilities described in the [PHP security advisory](/Security/php-cve-2026-109618-109619). Download the file named like `php-8.3.36-1-nts-Win32-vs16-x64.zip` (the `-1` is a rebuild number that newer Windows builds carry). Older releases are listed at [downloads.php.net/~windows/releases](https://downloads.php.net/~windows/releases/).
 
 Just get the .zip downloaded. It is installed later in the process. 
 
@@ -187,6 +197,7 @@ extension=sodium
 extension=sqlite3
 extension=tidy
 extension=xsl
+extension=zip
 extension=php_pdo_sqlsrv.dll
 extension=php_sqlsrv.dll
 
@@ -290,6 +301,16 @@ Once the df:env command finishes, run:
 `php artisan df:setup`
 This command prompts you to create your first admin user. This email and password are used to log in to the UI later. The root admin account details can be changed later.
 
+:::warning[Scripted installs must pass the admin phone number]
+`df:setup` accepts all of the admin details as options, which is how unattended installs run it:
+
+```cmd
+php artisan df:setup --admin_first_name=First --admin_last_name=Last --admin_email=admin@example.com --admin_password=AtLeast16Characters --admin_phone=000-000-0000 --no-interaction
+```
+
+The phone number is required. If `--admin_phone` is left out, the command prints `The phone field is required.` but still exits with code 0 and no admin user is created, so a script cannot tell that it failed. Check the output, or confirm the `user` table has a row, before moving on.
+:::
+
 Finally, add your license key to the end of the .env file located in the dreamfactory installation directory. You can add it to the bottom of the file like:
 `DF_LICENSE_KEY={YOUR LICENSE KEY}`
 
@@ -342,12 +363,21 @@ Next, right click on the **sites** folder and select **Add Website**. Then fill 
 
 - Site name: typically set to "dreamfactory" but can be whatever you'd like
 - Physical Path: `{dreamfactory install dir}/public` if you've been following along this should be: `C:\inetpub\wwwroot\dreamfactory\public\`
+- Application pool: use a dedicated pool with **.NET CLR version** set to **No Managed Code**
 - Connect as...
   - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the **Specific User** option. Other options such as domain users can be used, however you might run into permission issues that will need to be solved. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non-local admin account permissions. 
   - Use the "Test Settings" button, and ensure you have two green check marks. 
 
 :::note
 Due to the vast diversity in Windows environments, initial testing of DreamFactory necessitates the use of the local Administrator account. If DreamFactory is accessible with the local Administrator account but encounters issues with domain or non-admin user accounts, the problem often stems from permissions issues. We strongly recommend and support the use of the local Administrator account. Troubleshooting permission issues is often required for non-admin accounts to resolve access discrepancies.
+:::
+
+:::info[Alternative: run the site as the application pool identity]
+If you cannot store an Administrator password in IIS (unattended installs, hardened servers), the site can run under its application pool identity instead. This was verified on Windows Server 2025:
+
+1. Leave **Connect as** on **Application user (pass-through authentication)**.
+2. In the site's **Authentication** feature, edit **Anonymous Authentication** and choose **Application pool identity**. By default IIS uses the `IUSR` account for anonymous requests, and `IUSR` is **not** a member of `IIS_IUSRS`, so PHP fails with `file_put_contents(...storage\framework/cache/...)` errors until this is changed.
+3. Grant `IIS_IUSRS` Full control on the folders listed under [Directory permissions](#directory-permissions), including `database`.
 :::
 
 ### Handler mappings
@@ -413,6 +443,10 @@ Make the following changes:
 
 Click **OK** to save, then recycle the app pool.
 
+### Default document
+
+Select the DreamFactory site, open **Default Document**, click **Add...**, enter `index.php`, and move it to the top of the list. Without this, requesting the site root (`http://localhost/`) returns **HTTP 403.14** because the `web.config` that ships with DreamFactory contains the rewrite rules but does not declare a default document.
+
 ### Request filtering
 
 From the server view, select the **Request Filtering** icon. Then Navigate to the **HTTP Verbs** tab. On the right side, click **Allow Verb** and add the following verbs one at a time:
@@ -424,7 +458,17 @@ From the server view, select the **Request Filtering** icon. Then Navigate to th
 - PUT
 - PATCH
 
+This step is required: the `web.config` in the DreamFactory `public` folder does not allow these verbs itself. If PUT, PATCH, or DELETE calls return **HTTP 405**, this is the step that was missed. The same change from an elevated command prompt:
+
+```cmd
+%windir%\System32\inetsrv\appcmd.exe set config /section:requestFiltering /+verbs.[verb='PUT',allowed='true']
+%windir%\System32\inetsrv\appcmd.exe set config /section:requestFiltering /+verbs.[verb='PATCH',allowed='true']
+%windir%\System32\inetsrv\appcmd.exe set config /section:requestFiltering /+verbs.[verb='DELETE',allowed='true']
+```
+
 ### URL rewrite rules
+
+The DreamFactory repository ships a `public\web.config` that already contains the rewrite rules, so on a fresh clone there is usually nothing to import: once the URL Rewrite module is installed, `http://localhost/` should answer with a 302 redirect to `/dreamfactory/dist/index.html`. Import the rules manually only if `web.config` is missing or has been replaced.
 
 On the left side of the IIS management window, open the DreamFactory site, and select the **URL Rewrite** module. To import the URL rewrite rules:
 
@@ -441,19 +485,22 @@ IIS needs control over certian folders within the DreamFactory installation dire
 - `storage`
 - `bootstrap/cache`
 - `public`
+- `database` — only when the system database is SQLite. DreamFactory 7 stores it as `database\database.sqlite`, and SQLite also needs to create journal files next to it. Without write access on this folder the UI loads but logging in fails with HTTP 500.
 
 :::note
-Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results by running these two commands from the DreamFactory install directory:
+Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results by running these commands from the DreamFactory install directory:
 
-`icacls "bootstrap\cache" /grant "IIS_IUSRS:(OI)(CI)F"`
+`icacls "bootstrap\cache" /grant "IIS_IUSRS:(OI)(CI)F" /T`
 
-`icacls "storage" /grant "IIS_IUSRS:(OI)(CI)F"`
+`icacls "storage" /grant "IIS_IUSRS:(OI)(CI)F" /T`
+
+`icacls "database" /grant "IIS_IUSRS:(OI)(CI)F" /T`
 
 :::
 
 ### Accessing DreamFactory
 
-After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are some of the many additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, consult Microsoft's documentation as needed.
+After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. On a cloud instance, also open TCP port 80 in the provider's security group or firewall; the Windows Firewall rule for HTTP is enabled automatically when the IIS role is installed. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are some of the many additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, consult Microsoft's documentation as needed.
 
 ## Post-Installation Configuration
 
@@ -579,7 +626,49 @@ After starting, you can verify the daemon is running by checking its health endp
 Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 ```
 
+## Unattended installation
+
+Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, [`install-dreamfactory-win.ps1`](/scripts/install-dreamfactory-win.ps1), performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
+
+Run it from an elevated PowerShell prompt, or through a cloud run-command agent (it works as `SYSTEM`):
+
+```powershell
+.\install-dreamfactory-win.ps1 -AdminEmail admin@example.com -AdminPassword 'AtLeast16Characters' -AdminPhone 000-000-0000 `
+  -DfRef 7.7.1 -ComposerFilesDir C:\df-install\commercial -LicenseKey YOUR_KEY
+```
+
+Where the script deviates from the manual procedure above: it runs the site under the application pool identity rather than the Administrator account (see the note under [Create DreamFactory site](#create-dreamfactory-site)), registers the FastCGI handler with `appcmd` instead of PHP Manager, and verifies the result by requesting `/`, `/api/v2/system/environment`, logging in, and sending a PUT through IIS.
+
 ## Troubleshooting Common Windows Installation Issues
+
+### HTTP 403.14 when opening the site root
+
+**Error**: `HTTP Error 403.14 - Forbidden` for `http://localhost/`, while `http://localhost/index.php` works.
+
+**Cause**: `index.php` is not in the site's default document list. The `web.config` shipped with DreamFactory does not add it.
+
+**Fix**: See [Default document](#default-document).
+
+### 500 with `file_put_contents(...storage\framework/cache/...)` in the response
+
+**Error**: Every request returns HTTP 500 with a JSON error mentioning `storage\framework/cache/data/...: Failed to open stream`.
+
+**Cause**: PHP is running as the anonymous `IUSR` account, which has no write access to `storage`. This happens when the site uses pass-through authentication and Anonymous Authentication is left on its default user.
+
+**Fix**: Either set **Connect as** to the local Administrator account as described above, or switch Anonymous Authentication to **Application pool identity** and grant `IIS_IUSRS` on the folders under [Directory permissions](#directory-permissions).
+
+### UI loads but login returns 500 (SQLite system database)
+
+**Cause**: The `database` folder is read-only for the web server. SQLite needs to write both `database.sqlite` and its journal file.
+
+**Fix**: `icacls "database" /grant "IIS_IUSRS:(OI)(CI)F" /T` from the DreamFactory installation directory, then `iisreset`.
+
+### `df:setup` says "The phone field is required." and creates no admin
+
+**Cause**: `df:setup` was run with `--admin_email` and `--admin_password` but without `--admin_phone`. The command reports the validation error and exits 0.
+
+**Fix**: Re-run `df:setup` with `--admin_phone` added (any value such as `000-000-0000` works). The migrations and seeders are safe to re-run.
+
 
 ### 'Class not found' or autoload errors
 
@@ -611,7 +700,7 @@ composer dump-autoload
 
 **Cause**: PHP extensions on Windows depend on the Visual C++ runtime. If the correct VC++ redistributable version is not installed, extensions silently fail to load.
 
-**Fix**: Download and install the [Visual C++ 2015–2019 Redistributable (x64)](https://aka.ms/vs/16/release/VC_redist.x64.exe), then restart IIS:
+**Fix**: Download and install the [Visual C++ 2015–2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe), then restart IIS:
 ```powershell
 iisreset
 ```
@@ -647,13 +736,24 @@ All extensions listed in `php.ini` should appear in the output. Missing extensio
 
 Once IIS is configured and DreamFactory is running, verify the installation is functional:
 
-**1. Check the system environment endpoint**
+**1. Check the site root and the system environment endpoint**
 
 From the Windows server (or from a client that can reach the server), run:
 ```powershell
+Invoke-WebRequest -Uri http://localhost/ -UseBasicParsing -MaximumRedirection 0
 Invoke-WebRequest -Uri http://localhost/api/v2/system/environment -UseBasicParsing
 ```
-A successful response returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+The first request should return HTTP 302 with a `Location` of `/dreamfactory/dist/index.html` (a 403.14 means the default document is missing). The second returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+
+**1b. Confirm write verbs reach PHP**
+
+After logging in through the API, refresh the session with a PUT. An HTTP 405 here means the Request Filtering verbs step was skipped:
+```powershell
+$login = Invoke-RestMethod -Method Post -Uri http://localhost/api/v2/system/admin/session -ContentType application/json `
+  -Body (@{ email = "admin@example.com"; password = "YourPassword" } | ConvertTo-Json)
+Invoke-WebRequest -Method Put -Uri http://localhost/api/v2/system/admin/session `
+  -Headers @{ "X-DreamFactory-Session-Token" = $login.session_token } -UseBasicParsing
+```
 
 **2. Access the admin UI**
 
