@@ -27,7 +27,7 @@ Before starting the installation, confirm all of the following are in place:
 - [ ] **URL Rewrite Module for IIS** — required for Laravel's routing. Download from [Microsoft](https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi).
 - [ ] **Supported system database** — for the DreamFactory system database, use SQLite (default, easiest), MySQL 8.0+, PostgreSQL 13+, or SQL Server. SQLite requires no additional setup and is recommended for initial installation.
 - [ ] **Local Administrator account** — IIS needs elevated permissions for directory access and FastCGI configuration.
-- [ ] **DreamFactory license key** — required for Enterprise edition. Contact [DreamFactory support](https://www.dreamfactory.com/contact) if you do not have one.
+- [ ] **DreamFactory license key** — required for Enterprise edition. Contact [DreamFactory support](https://www.dreamfactory.com/support/) if you do not have one.
 
  The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You must be able to access the GUI of the server using something like RDP, have the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to run on the same IIS instance as DreamFactory, however this is not typically supported. 
 
@@ -40,7 +40,7 @@ The procedure on this page was verified on Windows Server 2025 (build 26100) wit
 - **Internet Explorer is gone, but IE Enhanced Security Configuration is still there.** The Server Manager toggle (and the registry keys under `HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components`) still exist and still block downloads in Edge until turned off.
 - **`winget` is preinstalled**, so Git, the VC++ runtime, and other tools can be installed from an elevated prompt without a browser. Note that `winget` does not work when run as `SYSTEM` (for example from a cloud-provider run-command agent); use the direct installer links in this guide for unattended installs.
 - **OpenSSH Server is built in** (service `sshd`, off by default). It is a convenient alternative to RDP for copying the composer files and running the command-line steps.
-- **Cloud images:** on AWS the `Windows_Server-2025-*-Full-Base` AMIs ship the SSM Agent, so every step below can be run through Systems Manager Run Command with no inbound ports. Early 2025 agent builds needed `wmic.exe`, which is now a Feature on Demand; current AMIs include a fixed agent.
+- **Cloud images:** on AWS the `Windows_Server-2025-*-Full-Base` AMIs ship the SSM Agent, so every step below can be run through Systems Manager Run Command with no inbound ports. SSM Agent builds before 3.3.1311.0 (November 2024) depended on `wmic.exe`, which Server 2025 no longer installs by default; current AMIs ship a fixed agent.
 - **Resource sizing:** `composer install` for a commercial composer set took about 15 minutes on a 2 vCPU / 2 GB instance. Give the server at least 4 GB and 10 GB of free disk for a comfortable install.
 
 ## Server role setup
@@ -157,9 +157,9 @@ Run **both** downloaded installers.
 
 For the drivers to be used, you also need the sqlsrv PHP extensions. Start by going to the releases page [here](https://github.com/microsoft/msphpsql/releases).
 
-Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the Windows_5.12.0RTW.zip for PHP v8.3.
+Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the `Windows_<version>RTW.zip` package; it contains the DLLs for every PHP version the release supports.
 
-As of this writing, the latest release of the extension package can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows_5.12.0RTW.zip).
+As of this writing (November 2026) the latest release is 5.13.3, which can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.13.3/Windows_5.13.3RTW.zip). It ships DLLs for PHP 8.3 and 8.4.
 
 ## Getting DreamFactory running
 
@@ -204,8 +204,6 @@ extension=sqlite3
 extension=tidy
 extension=xsl
 extension=zip
-extension=php_pdo_sqlsrv.dll
-extension=php_sqlsrv.dll
 
 ; OPcache — required for acceptable performance
 zend_extension=opcache
@@ -215,8 +213,17 @@ opcache.interned_strings_buffer=16
 opcache.max_accelerated_files=20000
 opcache.revalidate_freq=0
 opcache.validate_timestamps=1
-opcache.fast_shutdown=1
 opcache.enable_cli=0
+
+; IIS FastCGI. php.ini-development says of cgi.force_redirect: "You CAN safely turn this off for IIS, in fact, you MUST."
+cgi.force_redirect=0
+cgi.fix_pathinfo=1
+fastcgi.impersonate=1
+fastcgi.logging=0
+
+; Error logging (create the C:\php\logs folder)
+log_errors=On
+error_log="C:\php\logs\php_errors.log"
 
 ; DreamFactory recommended PHP settings
 memory_limit=256M
@@ -224,14 +231,13 @@ max_execution_time=300
 max_input_time=300
 post_max_size=100M
 upload_max_filesize=100M
-cgi.fix_pathinfo=0
 display_errors=Off
 display_startup_errors=Off
 expose_php=Off
 date.timezone=UTC
 ```
 
-4. Save and close php.ini.
+4. Save and close php.ini, then create the folder `C:\php\logs` so PHP can write its error log there.
 
 :::note
 The `memory_limit` of 256M is a minimum. If you're running complex joins, large result sets, or heavy scripting workloads, increase to 512M.
@@ -267,12 +273,19 @@ This is an optional step dependent on if you intend to use DreamFactory with SQL
 
 The v17 and v18 drivers should have been installed during the previous steps, if not, install them now. 
 
-Open the Windows_5.12.0RTW.zip downloaded earlier, in the x64 folder there should be 4 .dll files. Copy/paste the **two** nts (Non Thread Safe) .dll into your php ext folder (`C:\php\ext\`)
+Open the `Windows_5.13.3RTW.zip` downloaded earlier. Its `Windows` folder contains one DLL per PHP version, thread model, and architecture. Copy the **two** 64-bit NTS (Non Thread Safe) files for your PHP version, `php_sqlsrv_83_nts_x64.dll` and `php_pdo_sqlsrv_83_nts_x64.dll`, into your PHP ext folder (`C:\php\ext\`).
 
-Then, rename both files removing the "_83_nts" at the end of the filename. The files are named:
+Then rename both files, removing the `_83_nts_x64` suffix, so they are named:
 
 - php_pdo_sqlsrv.dll
 - php_sqlsrv.dll
+
+Finally, add the two extensions to the end of `php.ini`. They are deliberately not in the main extension block above, because PHP logs a startup warning on every request if they are listed but the DLLs are missing:
+
+```ini
+extension=php_sqlsrv.dll
+extension=php_pdo_sqlsrv.dll
+```
 
 ### Get (git) DreamFactory code
 
@@ -320,11 +333,13 @@ The phone number is required. If `--admin_phone` is left out, the command prints
 Finally, add your license key to the end of the .env file located in the dreamfactory installation directory. You can add it to the bottom of the file like:
 `DF_LICENSE_KEY={YOUR LICENSE KEY}`
 
-:::note Ensure that you remove curly brackets seen in the example above.:::
+:::note
+Ensure that you remove the curly brackets seen in the example above.
+:::
 
 ### Production .env settings
 
-Before going live, update the following values in your `.env` file. The defaults from `df:env` are appropriate for initial setup and testing but must be changed for any production or customer-facing deployment:
+Before going live, set the following values in your `.env` file. The `.env` written by `df:env` sets `APP_ENV=local` and leaves `APP_DEBUG` and `APP_LOG_LEVEL` unset, which is fine for initial setup and testing but should be made explicit for any production or customer-facing deployment:
 
 ```env
 APP_ENV=production
@@ -332,14 +347,14 @@ APP_DEBUG=false
 APP_LOG_LEVEL=warning
 ```
 
-| Setting | Dev Default | Production Value | Why |
-|---------|-------------|-----------------|-----|
+| Setting | After `df:env` | Production Value | Why |
+|---------|----------------|-----------------|-----|
 | `APP_ENV` | `local` | `production` | Enables Laravel production optimizations |
-| `APP_DEBUG` | `true` | `false` | Prevents stack traces from appearing in API error responses |
-| `APP_LOG_LEVEL` | `debug` | `warning` | Prevents logs from flooding with routine request/response info |
+| `APP_DEBUG` | not set (Laravel treats it as `false`) | `false` | Prevents stack traces from appearing in API error responses |
+| `APP_LOG_LEVEL` | not set (defaults to `warning`) | `warning` | Prevents logs from flooding with routine request/response info |
 
 :::danger
-Leaving `APP_DEBUG=true` in production means every PHP exception will return a full stack trace — including file paths, SQL queries, and environment details — to anyone calling your API. Change this before pointing any external traffic at the server.
+Setting `APP_DEBUG=true` in production means every PHP exception will return a full stack trace — including file paths, SQL queries, and environment details — to anyone calling your API. Change this before pointing any external traffic at the server.
 :::
 
 ### Test DreamFactory
@@ -406,6 +421,8 @@ Next, click on request restricions, and ensure the following are set:
 Click **OK** to save the handler mapping. 
 
 ### PHP manager config
+
+If you skipped PHP Manager, you can skip this section too: the `php.ini` block earlier on this page already contains the settings that its recommendations apply (`cgi.force_redirect=0`, `cgi.fix_pathinfo=1`, `fastcgi.impersonate=1`, `fastcgi.logging=0`, `date.timezone`, and an `error_log` path). Confirm PHP works by browsing to a `phpinfo()` file in the site's `public` folder instead.
 
 Again, from the server view on the left, click on the **PHP Manager** icon. 
 
@@ -570,7 +587,7 @@ For details on adding SSL, DreamFactory recommends using [certbot](https://certb
 The process of installing Oracle drivers is a more manual process than with our Linux installers. To begin you will need to download 3 things:
 - The Oracle "Basic" Instant Client package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-basic-windows.x64-23.7.0.25.01.zip)
 - The Oracle "SDK" Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
-- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
+- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 NTS package for PHP 8.3 (version 3.4.0 is the first oci8 release with PHP 8.3 DLLs). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
 
 ![PECL website showing PHP oci8 extension DLL download options for Windows](/img/windows-install/PeclDLLPage.png)
 - `Note you will want to click on the DLL button under downloads on the Pecl site for windows .dll files`
@@ -607,7 +624,7 @@ The fastCGI path is located in the IIS Manager > Your Server > fastCGI Settings 
 
 ![IIS FastCGI Settings dialog showing PATH environment variable collection for Oracle driver configuration](/img/windows-install/fastcgi-path.png)
 
-Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (It will be named along the lines of php_oci8-3.2.1-8.3-nts-vc15-x64) and move the php_oci8.dll file to the ext directory where PHP is located on your system (e.g PHP\v8.3\ext). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
+Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (it will be named along the lines of `php_oci8-3.4.0-8.3-nts-vs16-x64.zip`) and move the php_oci8.dll file to the ext directory where PHP is located on your system (`C:\php\ext` if you followed this guide). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
 
 
 ## MCP Daemon
@@ -720,17 +737,17 @@ All extensions listed in `php.ini` should appear in the output. Missing extensio
 
 **Error**: `PHP Startup: Unable to load dynamic library 'sodium'`
 
-**Cause**: The `sodium` extension requires the **Non-Thread-Safe (NTS)** PHP build when used with IIS FastCGI. The Thread-Safe (TS) build includes a different sodium DLL that conflicts with IIS.
+**Cause**: PHP cannot find or load `ext\php_sodium.dll`. The usual reasons are a wrong or unset `extension_dir`, a DLL from a different PHP build (a Thread-Safe or 32-bit extension under an NTS x64 `php-cgi.exe`), or a missing dependency such as `libsodium.dll`, which ships in the PHP zip root and must stay next to `php-cgi.exe`.
 
-**Fix**: Confirm you downloaded the NTS version of PHP from [windows.php.net](https://windows.php.net/download/). The filename should contain `nts` (e.g., `php-8.3.x-nts-Win32-vs16-x64.zip`). Replace your PHP installation with the NTS build if needed.
+**Fix**: Confirm you downloaded the NTS x64 version of PHP from [windows.php.net](https://windows.php.net/download/); the filename should contain `nts` (e.g., `php-8.3.x-nts-Win32-vs16-x64.zip`). Check that `php.ini` is the one IIS loads (compare `phpinfo()` with `php --ini`), that `extension_dir` points at `C:\php\ext`, and that the whole zip was extracted to `C:\php`, not just the `ext` folder.
 
 ### White screen or blank page after IIS setup
 
 **Error**: Browser shows a blank white page with no error when accessing DreamFactory through IIS.
 
-**Cause**: FastCGI Standard Error Mode is set to return the PHP error in the response body, which IIS then suppresses.
+**Cause**: A PHP fatal error occurred and `display_errors` is `Off`, so nothing is rendered. The detail is in the PHP error log (`C:\php\logs\php_errors.log` if you used the `php.ini` block above) or in `storage\logs\dreamfactory.log`.
 
-**Fix**: In IIS Manager, go to the server view > **FastCGI Settings** > select the PHP handler > **Edit** > change **Standard Error Mode** to **IgnoreAndReturn200**.
+**Fix**: Read the log and fix the reported error (missing extension, unreadable `.env`, wrong permissions). If the log is empty, confirm `log_errors=On` and `error_log` are set and the log folder exists. Also confirm **FastCGI Settings** > PHP handler > **Standard Error Mode** is **IgnoreAndReturn200**, otherwise PHP warnings become IIS 500 pages.
 
 ### php artisan commands fail with database errors during setup
 
@@ -746,10 +763,10 @@ Once IIS is configured and DreamFactory is running, verify the installation is f
 
 From the Windows server (or from a client that can reach the server), run:
 ```powershell
-Invoke-WebRequest -Uri http://localhost/ -UseBasicParsing -MaximumRedirection 0
+curl.exe -sI http://localhost/
 Invoke-WebRequest -Uri http://localhost/api/v2/system/environment -UseBasicParsing
 ```
-The first request should return HTTP 302 with a `Location` of `/dreamfactory/dist/index.html` (a 403.14 means the default document is missing). The second returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+The first request should return HTTP 302 with a `Location` of `/dreamfactory/dist/index.html` (a 403.14 means the default document is missing). `curl.exe` is built into Windows Server 2019 and later; it is used here because Windows PowerShell's `Invoke-WebRequest` reports a 302 with `-MaximumRedirection 0` as an error. The second returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
 
 **1b. Confirm write verbs reach PHP**
 
@@ -769,14 +786,14 @@ Navigate to `http://localhost` (or the server's IP/hostname) in a browser. You s
 
 After logging in, verify there is **no red banner** at the top of the admin UI. A red banner indicates a configuration issue — common causes include a missing or invalid license key, or a failed database connection. If a banner appears, check the `.env` file in the DreamFactory installation directory and confirm `DF_LICENSE_KEY` is set correctly (no curly braces).
 
-**4. Create admin user via CLI (if setup was skipped)**
+**4. Create the admin user via CLI (if setup was skipped)**
 
-If you need to create or reset the admin account via command line:
+If the login page reports an unknown user, no admin was created. Run `df:setup` again with the admin options; it only creates a user when none exists:
 ```cmd
 cd C:\inetpub\wwwroot\dreamfactory
-php artisan df:create-admin-user
+php artisan df:setup --admin_first_name=First --admin_last_name=Last --admin_email=admin@example.com --admin_password=AtLeast16Characters --admin_phone=000-000-0000 --no-interaction
 ```
-Follow the prompts to set the email and password for the administrator account.
+If it answers `Your instance is already setup.`, an admin exists and the password must be reset through the admin UI by another administrator. There is no `df:create-admin-user` command.
 
 **5. Make a test API call**
 
