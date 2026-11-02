@@ -35,7 +35,7 @@ A local Administrator account is also required at minimum for testing permission
 
 ### Windows Server 2025 notes
 
-The procedure on this page was verified on Windows Server 2025 (build 26100) with DreamFactory 7.7.1 and PHP 8.3.36 in November 2026. The steps are the same as for 2022; the differences are in the environment around them:
+The procedure on this page was verified on Windows Server 2025 (build 26100) with DreamFactory 7.7.1 and PHP 8.3.36 in November 2026: the scripted install, the site running as a local Administrator account and as the application pool identity, the SQL Server and Oracle driver steps, and PHP Manager 2.12. The steps are the same as for 2022; the differences are in the environment around them:
 
 - **Internet Explorer is gone, but IE Enhanced Security Configuration is still there.** The Server Manager toggle (and the registry keys under `HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components`) still exist and still block downloads in Edge until turned off.
 - **`winget` is preinstalled**, so Git, the VC++ runtime, and other tools can be installed from an elevated prompt without a browser. Note that `winget` does not work when run as `SYSTEM` (for example from a cloud-provider run-command agent); use the direct installer links in this guide for unattended installs.
@@ -140,7 +140,7 @@ Download `PHPManagerForIIS_x64.msi` from the [PHP Manager 2 releases page on Git
 Do not use the older **PHP Manager 1.5.0 for IIS 10** listing on iis.net. Its **Download this extension** button no longer links to a file, so clicking it does nothing. The GitHub release above is the maintained successor and installs on IIS 10 on Windows Server 2019, 2022 and 2025.
 :::
 
-PHP Manager 2.12 predates PHP 8.3, so its diagnostics may flag an 8.3 install as obsolete and some of its recommendations are tuned for older releases. It still registers the FastCGI handler and edits `php.ini` correctly.
+PHP Manager 2.12 predates PHP 8.3. Verified on Windows Server 2025 with PHP 8.3.36: the MSI installs, registers the **PHP** provider in IIS Manager, and recognizes a PHP 8.3 FastCGI handler that was registered by hand, both in the UI and through its PowerShell snap-in (`Add-PSSnapin PHPManagerSnapin; Get-PHPVersion`). Installing it does not change `php.ini`. Users report that its diagnostics flag 8.3 as obsolete, so treat **View Recommendations** as suggestions: the `php.ini` block on this page already contains the settings it would apply. It needs the IIS Management Console feature (`Web-Mgmt-Console`), which the role wizard installs when you accept the management tools.
 
 Simply run the downloaded installer while IIS is closed to complete the install.
 
@@ -178,6 +178,10 @@ You might need to enable file name extentions in the **View** tab of the file ex
 3. Open the newly created php.ini and copy/paste the following at the bottom of the file:
 
 ```ini
+; Where PHP looks for extension DLLs. PHP's compiled-in default on Windows is C:\php\ext,
+; so set this explicitly if PHP lives anywhere else.
+extension_dir="C:\php\ext"
+
 ; Extensions required by DreamFactory
 extension=ldap
 extension=curl
@@ -238,6 +242,10 @@ date.timezone=UTC
 ```
 
 4. Save and close php.ini, then create the folder `C:\php\logs` so PHP can write its error log there.
+
+:::warning
+Keep `extension_dir` in step with where you extracted PHP. If it points at a folder that does not exist, every `extension=` line fails, and because the block above turns `display_startup_errors` off, the only evidence is a run of "Unable to load dynamic library" warnings in `php_errors.log`. `php -m` will list only the built-in modules.
+:::
 
 :::note
 The `memory_limit` of 256M is a minimum. If you're running complex joins, large result sets, or heavy scripting workloads, increase to 512M.
@@ -386,7 +394,7 @@ Next, right click on the **sites** folder and select **Add Website**. Then fill 
 - Physical Path: `{dreamfactory install dir}/public` if you've been following along this should be: `C:\inetpub\wwwroot\dreamfactory\public\`
 - Application pool: use a dedicated pool with **.NET CLR version** set to **No Managed Code**
 - Connect as...
-  - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the **Specific User** option. Other options such as domain users can be used, however you might run into permission issues that will need to be solved. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non-local admin account permissions. 
+  - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the **Specific User** option. With `fastcgi.impersonate=1` (set in the `php.ini` block above) PHP then runs as that account, which is why no folder permissions need to be granted for this path. Other options such as domain users can be used, however you might run into permission issues that will need to be solved. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non-local admin account permissions. 
   - Use the "Test Settings" button, and ensure you have two green check marks. 
 
 :::note
@@ -394,7 +402,7 @@ Due to the vast diversity in Windows environments, initial testing of DreamFacto
 :::
 
 :::info[Alternative: run the site as the application pool identity]
-If you cannot store an Administrator password in IIS (unattended installs, hardened servers), the site can run under its application pool identity instead. This was verified on Windows Server 2025:
+If you cannot store an Administrator password in IIS (unattended installs, hardened servers), the site can run under its application pool identity instead. Both identities were verified on Windows Server 2025:
 
 1. Leave **Connect as** on **Application user (pass-through authentication)**.
 2. In the site's **Authentication** feature, edit **Anonymous Authentication** and choose **Application pool identity**. By default IIS uses the `IUSR` account for anonymous requests, and `IUSR` is **not** a member of `IIS_IUSRS`, so PHP fails with `file_put_contents(...storage\framework/cache/...)` errors until this is changed.
@@ -624,7 +632,7 @@ The fastCGI path is located in the IIS Manager > Your Server > fastCGI Settings 
 
 ![IIS FastCGI Settings dialog showing PATH environment variable collection for Oracle driver configuration](/img/windows-install/fastcgi-path.png)
 
-Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (it will be named along the lines of `php_oci8-3.4.0-8.3-nts-vs16-x64.zip`) and move the php_oci8.dll file to the ext directory where PHP is located on your system (`C:\php\ext` if you followed this guide). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
+Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (it will be named along the lines of `php_oci8-3.4.0-8.3-nts-vs16-x64.zip`). The DLL inside is named `php_oci8_19.dll` (built against the Instant Client 19 interface, which newer clients still provide). Move it to the ext directory where PHP is located on your system (`C:\php\ext` if you followed this guide), add `extension=php_oci8_19.dll` to your php.ini file, and restart IIS. Verify with `php -m` (it should list `oci8`) and `php -r "echo oci_client_version();"`, which prints the Instant Client version, `23.7.0.25.1` for the packages above. If `oci8` is missing from `php -m`, the Instant Client folder is not on `PATH` for that process; the extension then fails to load with only a line in `php_errors.log`. Congratulations!
 
 
 ## MCP Daemon
@@ -693,6 +701,19 @@ Where the script deviates from the manual procedure above: it runs the site unde
 **Fix**: Re-run `df:setup` with `--admin_phone` added (any value such as `000-000-0000` works). The migrations and seeders are safe to re-run.
 
 
+### `'crontab' is not recognized` when running artisan commands
+
+**Error**: Every `php artisan` command (including `df:env` and `df:setup`) prints:
+```
+The system cannot find the path specified.
+'crontab' is not recognized as an internal or external command,
+operable program or batch file.
+```
+
+**Cause**: The df-scheduler package tries to install a Linux cron entry on every console run and has no Windows guard. The command it was asked to run still executes normally.
+
+**Fix**: None needed. Ignore the lines; on Windows the scheduler is driven by the [Task Scheduler job](#scheduled-task-required-for-dreamfactory-scheduler) instead.
+
 ### 'Class not found' or autoload errors
 
 **Error**: `Fatal error: Class 'DreamFactory\...' not found`
@@ -721,9 +742,9 @@ composer dump-autoload
 
 **Error**: `PHP Startup: Unable to load dynamic library 'curl'` or similar extension load error in PHP logs.
 
-**Cause**: PHP extensions on Windows depend on the Visual C++ runtime. If the correct VC++ redistributable version is not installed, extensions silently fail to load.
+**Cause**: PHP extensions on Windows depend on the Visual C++ runtime. If the correct VC++ redistributable version is not installed, extensions silently fail to load. The same error for *every* extension, with `(tried: C:\php\ext\...)` in the message while PHP is installed elsewhere, means `extension_dir` is wrong: PHP's compiled-in default is `C:\php\ext`.
 
-**Fix**: Download and install the [Visual C++ 2015–2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe), then restart IIS:
+**Fix**: If the paths in the warning do not match your PHP folder, set `extension_dir` in `php.ini` (see [Installing PHP](#installing-php)). Otherwise download and install the [Visual C++ 2015–2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe), then restart IIS:
 ```powershell
 iisreset
 ```
@@ -766,7 +787,7 @@ From the Windows server (or from a client that can reach the server), run:
 curl.exe -sI http://localhost/
 Invoke-WebRequest -Uri http://localhost/api/v2/system/environment -UseBasicParsing
 ```
-The first request should return HTTP 302 with a `Location` of `/dreamfactory/dist/index.html` (a 403.14 means the default document is missing). `curl.exe` is built into Windows Server 2019 and later; it is used here because Windows PowerShell's `Invoke-WebRequest` reports a 302 with `-MaximumRedirection 0` as an error. The second returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+The first request should return HTTP 302 with a `Location` of `/dreamfactory/dist/index.html` (a 403.14 means the default document is missing). `curl.exe` is built into Windows Server 2019 and later; it is used here because Windows PowerShell's `Invoke-WebRequest` turns a 302 with `-MaximumRedirection 0` into the unhelpful error `Operation is not valid due to the current state of the object`. The second returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
 
 **1b. Confirm write verbs reach PHP**
 
