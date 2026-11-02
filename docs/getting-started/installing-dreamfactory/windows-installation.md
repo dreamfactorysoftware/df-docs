@@ -659,9 +659,9 @@ Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 
 ## Unattended installation
 
-Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, [`install-dreamfactory-win.ps1`](/scripts/install-dreamfactory-win.ps1), performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
+Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, `install-dreamfactory-win.ps1`, lives alongside the Linux installers in the [`installers` folder of the DreamFactory repository](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers). It performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
 
-Run it from an elevated PowerShell prompt, or through a cloud run-command agent (it works as `SYSTEM`):
+Download the script from that folder (or clone the repository) and run it from an elevated PowerShell prompt, or through a cloud run-command agent (it works as `SYSTEM`):
 
 ```powershell
 .\install-dreamfactory-win.ps1 -AdminEmail admin@example.com -AdminPassword 'AtLeast16Characters' -AdminPhone 000-000-0000 `
