@@ -132,9 +132,15 @@ Just get the installer downloaded. It is run later in the process.
 
 ### PHP Manager
 
-PHP Manager is an IIS utility to make managing PHP and extensions much easier. 
+PHP Manager is an IIS utility to make managing PHP and extensions much easier. It is optional: every step below that uses it also lists the equivalent IIS Manager or `appcmd` action.
 
-Go to the link [here]( https://www.iis.net/downloads/community/2018/05/php-manager-150-for-iis-10) and click **Download this extension**. 
+Download `PHPManagerForIIS_x64.msi` from the [PHP Manager 2 releases page on GitHub](https://github.com/phpmanager/phpmanager/releases/latest). The current release is 2.12 (March 2023).
+
+:::warning
+Do not use the older **PHP Manager 1.5.0 for IIS 10** listing on iis.net. Its **Download this extension** button no longer links to a file, so clicking it does nothing. The GitHub release above is the maintained successor and installs on IIS 10 on Windows Server 2019, 2022 and 2025.
+:::
+
+PHP Manager 2.12 predates PHP 8.3, so its diagnostics may flag an 8.3 install as obsolete and some of its recommendations are tuned for older releases. It still registers the FastCGI handler and edits `php.ini` correctly.
 
 Simply run the downloaded installer while IIS is closed to complete the install.
 
