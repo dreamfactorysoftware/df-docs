@@ -27,6 +27,53 @@ Check what you have with `composer show dreamfactory/df-mcp-server | grep versio
 Throughout this page, a heading or table row marked **7.7.1+** applies only to 7.7.1 and later. A block marked **7.7.0** applies only to 7.7.0. Everything unmarked applies to both. The [What changed in 7.7.1](#what-changed-in-771) table lists every difference in one place.
 :::
 
+## Before you start
+
+### Know your starting point
+
+Most hosts are not blank. A daemon may already be running from an earlier release, under a hand-written unit, as the wrong user. Run these on the DreamFactory host first; the table says what each answer means and where to go.
+
+```bash
+cd /opt/dreamfactory                                              # your install root
+composer show dreamfactory/df-mcp-server | grep versions          # 1.3.0 = 7.7.0, 1.4.0 = 7.7.1
+ps -o user,pid,args -C node                                       # daemons already running, and as whom
+systemctl list-units --type=service --all | grep -i -E 'mcp|daemon'
+grep -l -E 'npm start|tsx' /etc/systemd/system/*.service 2>/dev/null   # units that bypass the launcher
+curl -s http://127.0.0.1:8006/health; echo                        # data daemon
+curl -s http://127.0.0.1:3700/health; echo                        # 7.7.1+: System API MCP daemon
+grep -E '^user' /etc/php/*/fpm/pool.d/www.conf                    # the PHP-FPM user
+```
+
+| What you see | What it means | Go to |
+|---|---|---|
+| No `node` process, `/health` refuses the connection | Nothing is running yet. Fresh install. | [Installing the data daemon](#installing-the-data-daemon) |
+| `/health` answers but has **no `version` and no `internal_key` field** | A pre-7.7.1 daemon is still running from memory, even if the package has been upgraded underneath it. | [Upgrading to 7.7.1](#upgrading-to-771), step 1 |
+| `/health` on 8006 answers with `version` and `internal_key` | The 7.7.1 daemon is up. Verify the rest with the [health endpoint](#verifying-the-install). | [Verifying the install](#verifying-the-install) |
+| `internal_key: "missing"` | Normal until the first MCP request creates the key file. Not a fault by itself. | [The daemon shared secret](#the-daemon-shared-secret-771) |
+| A unit file that runs `npm start` or `tsx` | A hand-written unit from 7.6 or 7.7.0. It does not resolve the shared secret and needs dev dependencies. | [Upgrading to 7.7.1](#upgrading-to-771), step 2 |
+| The `node` process runs as a different user than PHP-FPM | On 7.7.1 the daemon cannot read the key file, so every call will be refused. | [Daemonizing for production](#daemonizing-for-production) |
+| 8006 answers but 3700 refuses | Only the data daemon runs. Fine unless you use `system_mcp` services. | [Installing the System API MCP daemon](#installing-the-system-api-mcp-daemon-771) |
+
+### The four rules behind most failures
+
+Nearly every MCP support case comes down to one of these. Each is covered in full further down; the point here is to have them in mind before touching anything.
+
+1. **`APP_URL` is the external HTTPS URL clients use**, never `http://localhost` and never the internal address behind a proxy. It drives every OAuth URL. Wrong value, login loop. See [Configuration](#configuration) and [Running behind a reverse proxy](#running-behind-a-reverse-proxy).
+2. **Clients connect to `https://<host>/mcp/{service}`**, with no trailing slash, not to `/api/v2/...`, and never to a daemon port. See [Connecting a client](#connecting-a-client).
+3. **The daemons must be able to call DreamFactory back.** If the address clients use is not reachable from the daemon (Docker port mapping, a sidecar, a proxy-only hostname), set `MCP_INTERNAL_BASE_URL`. The symptom is `tools/list` working while every tool call fails. See [Daemon callback URL](#daemon-callback-url-mcp_internal_base_url).
+4. **Every `.env` change needs `php artisan config:clear`, run as a non-root user.** A PHP-FPM restart alone does nothing, and artisan run as root leaves cache files PHP-FPM cannot read. See [Applying configuration changes](#applying-configuration-changes).
+
+### Which sections you need
+
+| You are... | Read |
+|---|---|
+| Installing MCP on a host for the first time | [Prerequisites](#prerequisites), [Installing the data daemon](#installing-the-data-daemon), [The daemon shared secret](#the-daemon-shared-secret-771), [Configuration](#configuration), [Verifying the install](#verifying-the-install) |
+| Upgrading an existing install to 7.7.1 | [What changed in 7.7.1](#what-changed-in-771), [Upgrading to 7.7.1](#upgrading-to-771), then [Verifying the install](#verifying-the-install) |
+| Behind a load balancer, ALB, Cloudflare, or TLS-terminating nginx | [Running behind a reverse proxy](#running-behind-a-reverse-proxy), including [Load balancers and multiple nodes](#load-balancers-and-multiple-nodes) |
+| Running DreamFactory in Docker or compose | [Daemon callback URL](#daemon-callback-url-mcp_internal_base_url), [System API MCP daemon as a sidecar](#system-api-mcp-daemon-as-a-sidecar-container-771) |
+| Adding the System API MCP service type | [Installing the System API MCP daemon](#installing-the-system-api-mcp-daemon-771) |
+| Here because it worked and then stopped | [Verifying the install](#verifying-the-install), then [Troubleshooting](#troubleshooting). A recent `composer update` is the usual cause: see [Reinstall after every composer update](#reinstall-after-every-composer-update) |
+
 ## Overview
 
 The MCP server runs in two or three parts on your DreamFactory host:
