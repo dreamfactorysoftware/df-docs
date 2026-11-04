@@ -661,11 +661,48 @@ Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 
 Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, `install-dreamfactory-win.ps1`, lives alongside the Linux installers in the [`installers` folder of the DreamFactory repository](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers). It performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
 
-Download the script from that folder (or clone the repository) and run it from an elevated PowerShell prompt, or through a cloud run-command agent (it works as `SYSTEM`):
+### Running the script
+
+1. On a fresh server, open an elevated PowerShell prompt and download the script. A file saved through a browser carries the mark of the web, so unblock it or the default execution policy refuses to run it:
 
 ```powershell
-.\install-dreamfactory-win.ps1 -AdminEmail admin@example.com -AdminPassword 'AtLeast16Characters' -AdminPhone 000-000-0000 `
-  -DfRef 7.7.1 -ComposerFilesDir C:\df-install\commercial -LicenseKey YOUR_KEY
+Set-ExecutionPolicy -Scope Process Bypass -Force
+New-Item -ItemType Directory -Force C:\df-install | Out-Null
+Invoke-WebRequest -UseBasicParsing -Uri https://raw.githubusercontent.com/dreamfactorysoftware/dreamfactory/master/installers/install-dreamfactory-win.ps1 -OutFile C:\df-install\install-dreamfactory-win.ps1
+Unblock-File C:\df-install\install-dreamfactory-win.ps1
+Get-Help C:\df-install\install-dreamfactory-win.ps1 -Full
+```
+
+2. Open source install. `-DfRef` is the git tag or branch to check out; leave it off for the default branch. The system database defaults to SQLite; `-DbConnection mysql`, `pgsql` or `sqlsrv` together with the `-Db*` parameters uses an existing database server instead.
+
+```powershell
+C:\df-install\install-dreamfactory-win.ps1 -DfRef 7.7.1 `
+  -AdminFirst Jane -AdminLast Doe -AdminEmail admin@example.com -AdminPassword 'AtLeast16Characters' -AdminPhone 000-000-0000
+```
+
+3. Commercial install. Put the `composer.json`, `composer-dist.json` and `composer.lock` from your commercial package in a folder and add these parameters to the command above. Add `-GithubToken` if Composer needs to authenticate to private repositories; the token reaches Composer only through the `COMPOSER_AUTH` environment variable.
+
+```powershell
+  -ComposerFilesDir C:\df-install\commercial -LicenseKey YOUR_KEY
+```
+
+The script can also run through a cloud run-command agent such as AWS Systems Manager, which runs it as `SYSTEM`.
+
+### What to expect during the run
+
+- Output stops for several minutes right after the `== Prep` line while `Install-WindowsFeature` adds the IIS role. Nothing is printed until it returns. The PHP download and `composer install` are the other long quiet stretches.
+- If the `IIS features:` line reports `restart=True`, reboot and run the script again. Finished phases are skipped.
+- `'crontab' is not recognized` lines during the DreamFactory phase are the [scheduler noise](#crontab-is-not-recognized-when-running-artisan-commands) described under Troubleshooting.
+- A successful run ends with `VERIFY OK`. Everything is also written to `C:\df-install\install.log`. `AdminPassword`, `LicenseKey` and `GithubToken` are never echoed or logged.
+- Afterwards `http://localhost/` redirects to the admin UI and the account you gave can log in.
+
+### Re-running a phase
+
+Each phase (`Prep`, `Php`, `Composer`, `DreamFactory`, `Iis`, `Verify`) writes a marker in `C:\df-install\state\` and is skipped on the next run. `-Phase <name>` runs a single phase; delete its marker first to make it redo the work:
+
+```powershell
+Remove-Item C:\df-install\state\Iis.done
+C:\df-install\install-dreamfactory-win.ps1 -Phase Iis
 ```
 
 Where the script deviates from the manual procedure above: it runs the site under the application pool identity rather than the Administrator account (see the note under [Create DreamFactory site](#create-dreamfactory-site)), registers the FastCGI handler with `appcmd` instead of PHP Manager, and verifies the result by requesting `/`, `/api/v2/system/environment`, logging in, and sending a PUT through IIS.
