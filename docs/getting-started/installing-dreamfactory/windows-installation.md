@@ -35,7 +35,7 @@ A local Administrator account is also required at minimum for testing permission
 
 ### Windows Server 2025 notes
 
-The procedure on this page was verified on Windows Server 2025 (build 26100) with DreamFactory 7.7.1 and PHP 8.3.36 in November 2026: the scripted install, the site running as a local Administrator account and as the application pool identity, the SQL Server and Oracle driver steps, and PHP Manager 2.12. The steps are the same as for 2022; the differences are in the environment around them:
+The procedure on this page was verified on Windows Server 2025 (build 26100) with DreamFactory 7.7.1 and PHP 8.3.36 in November 2026: the scripted install, the site running as a local Administrator account and as the application pool identity, the SQL Server and Oracle driver steps including a SQL Server connection through the installed drivers, and PHP Manager 2.12. The steps are the same as for 2022; the differences are in the environment around them:
 
 - **Internet Explorer is gone, but IE Enhanced Security Configuration is still there.** The Server Manager toggle (and the registry keys under `HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components`) still exist and still block downloads in Edge until turned off.
 - **`winget` is preinstalled**, so Git, the VC++ runtime, and other tools can be installed from an elevated prompt without a browser. Note that `winget` does not work when run as `SYSTEM` (for example from a cloud-provider run-command agent); use the direct installer links in this guide for unattended installs.
@@ -737,6 +737,20 @@ Where the script deviates from the manual procedure above: it runs the site unde
 
 **Fix**: Re-run `df:setup` with `--admin_phone` added (any value such as `000-000-0000` works). The migrations and seeders are safe to re-run.
 
+
+### SQL Server service fails its connection test
+
+**Error**: `SQLSTATE[08001]: [Microsoft][ODBC Driver 18 for SQL Server]SSL Provider: The certificate chain was issued by an authority that is not trusted.`
+
+**Cause**: ODBC Driver 18 encrypts by default and validates the server certificate, so a SQL Server with a self-signed certificate (the default for a fresh install or a container) is rejected. When both drivers are installed, as this guide and the unattended installer do, the `sqlsrv` extension uses Driver 17, which does not validate the certificate. The extension only uses Driver 18 when Driver 17 is absent or the connection asks for it.
+
+**Fix**: Install ODBC Driver 17 alongside 18 (see [SQL Server drivers](#sql-server-drivers)), or give the SQL Server a trusted certificate, or set `TrustServerCertificate=yes` on the connection.
+
+**Error**: `SQLSTATE[08001]: [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: No such host is known.`
+
+**Cause**: The host in the service configuration does not resolve from the server. The message comes from the ODBC driver, so PHP, the extension and the driver are all working.
+
+**Fix**: From the server, check the name with `Resolve-DnsName <host>` and the port with `Test-NetConnection <host> -Port 1433`. Host and port are separate fields in the service form.
 
 ### `'crontab' is not recognized` when running artisan commands
 
