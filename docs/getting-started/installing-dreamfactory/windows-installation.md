@@ -277,7 +277,7 @@ If both of those commands are successful, you are safe to keep moving forward.
 
 ### Installing SQL Server drivers (optional)
 
-This is an optional step dependent on if you intend to use DreamFactory with SQL Server.
+This is an optional step dependent on if you intend to use DreamFactory with SQL Server. The [unattended installer script](#unattended-installation) performs it by default, installing ODBC Driver 17 and 18 and both extensions; pass `-SkipSqlServer` to leave them out.
 
 The v17 and v18 drivers should have been installed during the previous steps, if not, install them now. 
 
@@ -659,7 +659,7 @@ Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 
 ## Unattended installation
 
-Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, `install-dreamfactory-win.ps1`, lives alongside the Linux installers in the [`installers` folder of the DreamFactory repository](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers). It performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
+Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, `install-dreamfactory-win.ps1`, lives alongside the Linux installers in the [`installers` folder of the DreamFactory repository](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers). It performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, SQL Server drivers, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
 
 ### Running the script
 
@@ -698,7 +698,7 @@ The script can also run through a cloud run-command agent such as AWS Systems Ma
 
 ### Re-running a phase
 
-Each phase (`Prep`, `Php`, `Composer`, `DreamFactory`, `Iis`, `Verify`) writes a marker in `C:\df-install\state\` and is skipped on the next run. `-Phase <name>` runs a single phase; delete its marker first to make it redo the work:
+Each phase (`Prep`, `Php`, `SqlServer`, `Composer`, `DreamFactory`, `Iis`, `Verify`) writes a marker in `C:\df-install\state\` and is skipped on the next run. `-Phase <name>` runs a single phase; delete its marker first to make it redo the work:
 
 ```powershell
 Remove-Item C:\df-install\state\Iis.done
