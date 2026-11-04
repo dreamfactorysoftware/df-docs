@@ -20,7 +20,7 @@ MCP deployment changed between 7.7.0 and 7.7.1. Each DreamFactory release ships 
 | DreamFactory | `df-mcp-server` | Also ships |
 |---|---|---|
 | 7.7.0 | 1.3.0 | — |
-| 7.7.1 | 1.4.0 | `dreamfactory/df-system-mcp-server` (the System API MCP daemon) |
+| 7.7.1 | 1.4.0 | `dreamfactory/df-system-mcp-server` 0.5.1 (the System API MCP daemon; its own `package.json` and `/health` report 0.5.0) |
 
 Check what you have with `composer show dreamfactory/df-mcp-server | grep versions`.
 
@@ -55,10 +55,10 @@ Both daemons execute tools by calling DreamFactory's REST API back, so each one 
 
 A working DreamFactory installation, plus the following **on the server**:
 
-- **Node.js 20 or newer, and npm.** The MCP SDK the daemon uses needs the global Web Crypto API, which Node 18 lacks. On Node 18 the daemon exits at startup with `ReferenceError: crypto is not defined`. On Ubuntu:
+- **Node.js 22 LTS (20 is the minimum), and npm.** The MCP SDK the daemon uses needs the global Web Crypto API, which Node 18 lacks. On Node 18 the daemon exits at startup with `ReferenceError: crypto is not defined`. Node 20 still works but reached end of life in April 2026, so install 22 on a new host. On Ubuntu:
 
   ```bash
-  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
   sudo apt-get install -y nodejs
   node -v && npm -v
   ```
@@ -71,7 +71,13 @@ Confirm the packages and routes are present:
 ```bash
 ls vendor/dreamfactory/df-mcp-server
 ls vendor/dreamfactory/df-system-mcp-server    # 7.7.1+
-php artisan route:list | grep '/mcp/'
+php artisan route:list | grep 'mcp/'          # no leading slash: route:list prints "mcp/{mcpService}"
+```
+
+Also find out which user PHP-FPM runs as. The systemd units below use `www-data`; replace it with whatever this prints if it differs (a dedicated `dreamfactory` account is common):
+
+```bash
+grep -E '^user' /etc/php/*/fpm/pool.d/www.conf
 ```
 
 ## Installing the data daemon
@@ -100,7 +106,11 @@ npm install --omit=dev
 
 ### Reinstall after every `composer update`
 
-Composer replaces the whole package directory when it updates `dreamfactory/df-mcp-server`, which deletes `daemon/node_modules`. The shipped `dist/` comes back, the dependencies do not, so the daemon fails at startup with `ERR_MODULE_NOT_FOUND` (typically naming `express`) and, under systemd with `Restart=always`, loops. Run the install step above again after any upgrade, then restart the daemon.
+Composer replaces the whole package directory when it updates `dreamfactory/df-mcp-server`, which deletes `daemon/node_modules`. The shipped `dist/` comes back, the dependencies do not, so the next daemon start fails with `ERR_MODULE_NOT_FOUND` (typically naming `express`) and, under systemd with `Restart=always`, loops. Run the install step above again after any upgrade, then restart the daemon.
+
+:::caution A running daemon hides this
+A daemon that was already running keeps serving the **old** code from memory after the upgrade. Deleting `node_modules` does not affect it, it still answers `/health`, and the health check reports it as `ok`, so nothing looks wrong until the next reboot. Reinstall and restart the daemon as part of every upgrade, even when it looks healthy. The tell that you are still on pre-7.7.1 daemon code: its `/health` response has no `version` and no `internal_key` field.
+:::
 
 ### Starting the daemon
 
@@ -146,8 +156,10 @@ sudo systemctl enable --now df-mcp-daemon
 sudo systemctl status df-mcp-daemon
 ```
 
-:::tip Run the daemon as the web-server user
-`User=www-data` is not cosmetic. On 7.7.1 the daemon must read the shared-secret file that PHP-FPM writes to `storage/framework/mcp_internal_key` (mode 0600), and on both versions a first run with missing `node_modules` writes into the package directory. Use whatever user PHP-FPM runs as on your distribution. If the daemon runs as a user that cannot read that file, every MCP call is rejected with `403 Forbidden: invalid internal key`.
+:::tip Run the daemon as the PHP-FPM user
+`User=www-data` is not cosmetic. On 7.7.1 the daemon must read the shared-secret file that PHP-FPM writes to `storage/framework/mcp_internal_key` (mode 0600), and on both versions a first run with missing `node_modules` writes into the package directory. Use the user you found in `pool.d/www.conf` under [Prerequisites](#prerequisites). If the daemon runs as a user that cannot read that file, every MCP call is rejected with `403 Forbidden: invalid internal key`.
+
+If that account has no home directory (common for a dedicated `dreamfactory` user), `npm` cannot run under it: add `Environment=HOME=/tmp` to the unit, or do every `npm ci` step as that user with `sudo -u <user> -H env HOME=/tmp npm ci --omit=dev` so the launcher never has to run npm itself.
 :::
 
 ### Viewing the daemon logs
@@ -184,7 +196,14 @@ Wrap that in a Windows service (NSSM or `sc.exe`) or a Task Scheduler "at startu
 
 The `system_mcp` service type ("System API MCP Server") lets an AI client administer the instance through DreamFactory's System API. It is served by a second daemon, `df-system-mcp-server`, which Composer installs as a sibling package at `vendor/dreamfactory/df-system-mcp-server`. Until that daemon runs, every request to a `system_mcp` service returns `503` with setup instructions. Nothing else depends on it, so skip this section if you do not use that service type.
 
-Start it with the launcher that ships in `df-mcp-server`:
+Like the data daemon, it ships compiled (`build/index.js`) with a `package-lock.json`, so install its runtime dependencies the same way, and again after every `composer update` that replaces the package:
+
+```bash
+cd vendor/dreamfactory/df-system-mcp-server
+npm ci --omit=dev
+```
+
+Then start it with the launcher that ships in `df-mcp-server`:
 
 ```bash
 vendor/dreamfactory/df-mcp-server/scripts/start-system-daemon.sh
@@ -193,7 +212,7 @@ vendor/dreamfactory/df-mcp-server/scripts/start-system-daemon.sh
 What the launcher does:
 
 - Finds the package at `vendor/dreamfactory/df-system-mcp-server` (override with `DF_SYSTEM_MCP_DIR`).
-- **Builds it on first run.** The Composer package does not include a compiled `build/` directory, so the launcher runs `npm install` and `npm run build` once. This needs network access and takes a minute. After a `composer update` replaces the package, the next start rebuilds the same way.
+- Installs the runtime dependencies itself if `node_modules` is missing (and would build `build/` if that were missing, which it is not in the shipped package). Doing the `npm ci` step above by hand keeps that out of the service user's hands; see the home-directory note under [Daemonizing for production](#daemonizing-for-production).
 - Listens on `127.0.0.1:3700`, which matches DreamFactory's default `MCP_SYSTEM_DAEMON_URL`, so **no `.env` change is needed** when it runs on the DreamFactory host.
 - Calls DreamFactory back on `MCP_INTERNAL_BASE_URL`, or `http://127.0.0.1` when that is unset.
 - Passes the daemon only its own settings (`MCP_SYSTEM_DAEMON_HOST`, `MCP_SYSTEM_DAEMON_PORT`, `DREAMFACTORY_URL`, `MCP_INTERNAL_KEY`, `SESSION_TTL_SECONDS`), not the rest of DreamFactory's environment.
@@ -252,7 +271,7 @@ Set these in your DreamFactory `.env`:
 |---|---|---|---|
 | `APP_URL` | `https://df.example.com` | both | The external URL clients use. Not `http://localhost`. |
 | `DF_FRONTEND_URL` | *(optional)* | both | Override only if the admin SPA is on a different host. |
-| `LOG_LEVEL` | `warning` | both | Set to `debug` while troubleshooting OAuth, then revert. |
+| `APP_LOG_LEVEL` | `warning` | both | Set to `debug` while troubleshooting OAuth, then revert. (Not `LOG_LEVEL`, which DreamFactory ignores.) |
 | `MCP_DAEMON_ENABLED` | `true` | both | Set to `false` to disable the data daemon and every `mcp` service (they answer `503`). |
 | `MCP_DAEMON_URL` | `http://127.0.0.1:8006` | both | Where DreamFactory reaches the data daemon. Change it only if you changed the daemon's host or port (`MCP_DAEMON_HOST` / `MCP_DAEMON_PORT` in the daemon's environment). |
 | `MCP_INTERNAL_BASE_URL` | *(optional)* | both | URL the daemons call DreamFactory back on. **Required when the external port differs from the internal one** (typical Docker port mapping). See [below](#daemon-callback-url-mcp_internal_base_url). |
@@ -340,9 +359,13 @@ sudo systemctl restart php8.5-fpm   # use your PHP version; also clears OPcache
 
 ### 7.7.1+: the health endpoint
 
-One admin-only call reports whether each daemon is reachable, whether `APP_URL` matches the address you are connecting on, and whether the shared secret and callback URL are in place:
+One admin-only call reports whether each daemon is reachable, whether `APP_URL` matches the address you are connecting on, and whether the shared secret and callback URL are in place. It needs an admin session token, which the [admin login endpoint](../api-reference/api-endpoints.md) returns:
 
 ```bash
+ADMIN_TOKEN=$(curl -s -X POST https://df.example.com/api/v2/system/admin/session \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"admin@example.com","password":"..."}' | jq -r .session_token)
+
 curl -s -H "X-DreamFactory-Session-Token: $ADMIN_TOKEN" \
   https://df.example.com/_internal/ai/mcp-health | jq .
 ```
@@ -370,6 +393,11 @@ curl -s http://127.0.0.1:3700/health     # 7.7.1+: System API MCP daemon
 ```
 
 `/health` does not require the shared secret, so it answers even when the key is misconfigured. If it answers but MCP calls return `403`, the problem is the key.
+
+Two things in that response are normal and not faults:
+
+- **7.7.1+:** `internal_key: "missing"` on a fresh install. DreamFactory writes the key file on the first proxied MCP request, and the daemon reads it lazily on its first call, so the status stays `missing` until a client has connected once. It should read `file` (or `env`) after that.
+- **7.7.1+:** a response with **no** `version` and **no** `internal_key` field at all means the daemon process is still running pre-7.7.1 code. Restart it (see [Upgrading to 7.7.1](#upgrading-to-771)).
 
 Then confirm the routes and OAuth discovery from outside:
 
@@ -466,7 +494,7 @@ For tool calls and the full list of required headers, see [MCP Server](./mcp-ser
 
 ## Troubleshooting
 
-On 7.7.1, run the [health endpoint](#verifying-the-install) first; it names most of the problems below outright. Then enable debug logging — OAuth failures are otherwise silent. Set `LOG_LEVEL=debug`, run `config:clear`, then:
+On 7.7.1, run the [health endpoint](#verifying-the-install) first; it names most of the problems below outright. Then enable debug logging — OAuth failures are otherwise silent. Set `APP_LOG_LEVEL=debug`, run `config:clear`, then:
 
 ```bash
 tail -f storage/logs/dreamfactory.log
@@ -508,11 +536,12 @@ DreamFactory 7.7.1 adds [Exposed Services scoping](./mcp-exposed-services.md) an
 
 Deployment steps the upgrade adds, beyond the migrations:
 
-1. **Reinstall the daemon's dependencies.** The upgrade replaces the package directory, so `daemon/node_modules` is gone. Run `npm ci --omit=dev` in `vendor/dreamfactory/df-mcp-server/daemon` and restart the daemon (see [Reinstall after every composer update](#reinstall-after-every-composer-update)).
-2. **Let the shared secret be created.** The first MCP request after the upgrade writes `storage/framework/mcp_internal_key`. The daemon must run as a user that can read it; if it was running as someone else before, fix the unit's `User=` now. If you had set `MCP_INTERNAL_KEY` on 7.7.0, keep it on both sides and nothing changes.
-3. **Drop `MCP_STATELESS=true` if you set it for multi-node on 7.7.0.** It is now the default. Leaving it set is harmless.
-4. **Start the System API MCP daemon** only if you intend to create `system_mcp` services. Nothing else needs it.
-5. **Run the health endpoint** and clear every `warn` and `error` before reconnecting clients.
+1. **Reinstall the daemon's dependencies and restart the daemon, even if it looks healthy.** The upgrade replaces the package directory, so `daemon/node_modules` is gone, but a daemon that was already running keeps serving the old code from memory and still passes the health check. Run `npm ci --omit=dev` in `vendor/dreamfactory/df-mcp-server/daemon`, then restart (see [Reinstall after every composer update](#reinstall-after-every-composer-update)). You are on the new code when `/health` reports `version` and `internal_key`.
+2. **Replace a hand-written unit.** Most 7.6 and 7.7.0 installs run the daemon from a unit that calls `npm start` or `tsx` directly. Replace it with the launcher-based unit from [Daemonizing for production](#daemonizing-for-production) (`ExecStart=.../scripts/start-daemon.sh`), disable the old one, and set `User=` to the PHP-FPM user. Only the launcher resolves the shared secret, and `npm start` needs dev dependencies that `--omit=dev` no longer installs.
+3. **Let the shared secret be created.** The first MCP request after the upgrade writes `storage/framework/mcp_internal_key`; until then the daemon's `/health` reports `internal_key: "missing"`, which is expected. The daemon must run as a user that can read the file. If you had set `MCP_INTERNAL_KEY` on 7.7.0, keep it on both sides and nothing changes.
+4. **Drop `MCP_STATELESS=true` if you set it for multi-node on 7.7.0.** It is now the default. Leaving it set is harmless.
+5. **Install and start the System API MCP daemon** only if you intend to create `system_mcp` services. Nothing else needs it.
+6. **Run the health endpoint** and clear every `warn` and `error` before reconnecting clients.
 
 :::caution Service export/import across versions
 The new fields travel with MCP service exports. Importing a scoped 7.7.1 service into a **pre-7.7.1** instance silently drops `exposed_services`, `scope_tools`, and `allow_api_key_auth` — the older instance doesn't know those fields. In the other direction, importing a **pre-7.7.1** export into 7.7.1 creates an MCP service with **no exposure** (the export carries no `exposed_services`, and empty means none) — open the service and select its Exposed Services after the import.
