@@ -62,6 +62,7 @@ DreamFactory 7.7.0 and 7.7.1 are in-place upgrades from any earlier 7.x release,
   If nothing is returned, add `CACHE_STORE=file` (or `redis` / `memcached` if you use one of those).
 - **Configuration files are replaced.** Checking out the new release replaces the tracked files in `config/`, `app/` and `public/` — including the new `config/cache.php` with `'serializable_classes' => true` (see [Configuration Notes for Laravel 13-Based Releases](#configuration-notes-for-laravel-13-based-releases)). Local edits to those files are saved by `git stash`; re-apply them by hand rather than with `git stash pop`.
 - **New in 7.7.1: the System API MCP daemon.** The `df-system-mcp-server` package is installed with every full edition. The `system_mcp` service type needs that daemon running (`vendor/dreamfactory/df-mcp-server/scripts/start-system-daemon.sh`, Node.js required); until it is started, requests to a `system_mcp` service return a 503 with setup instructions. Nothing else depends on it.
+- **Windows servers.** The [Upgrade Process](#upgrade-process) below is written for Linux. On Windows Server with IIS, follow [Upgrading DreamFactory on Windows](/upgrades-and-migrations/upgrading-dreamfactory-on-windows), which runs the same commands without `sudo`, PHP-FPM or `chown`.
 
 ## Pre-Upgrade Checklist
 
@@ -157,7 +158,7 @@ For minor version upgrades and patch releases, you can perform an in-place upgra
 
 - **Backup Required**: Always perform complete backups before upgrading
 - **Git Repository**: Your DreamFactory installation must be a Git repository
-- **Command Line Access**: Shell/SSH access to your server
+- **Command Line Access**: Shell/SSH access to your server. The steps below are for Linux; Windows Server with IIS has its own guide, [Upgrading DreamFactory on Windows](/upgrades-and-migrations/upgrading-dreamfactory-on-windows)
 - **Commercial composer files**: For commercial installs, the `composer.json`, `composer.json-dist` and `composer.lock` for your target version, provided by DreamFactory support
 
 ## Upgrade Process

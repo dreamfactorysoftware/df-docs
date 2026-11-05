@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 title: Upgrading to PHP 8.1
 id: upgrading-to-php-8.1
 description: "Migration guide for moving DreamFactory from PHP 7.x to PHP 8.1 on Ubuntu, including service-specific changes and required dependency updates."
