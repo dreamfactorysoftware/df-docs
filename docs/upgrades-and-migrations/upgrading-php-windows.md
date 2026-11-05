@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 title: Upgrading PHP On Windows
 id: upgrading-php-on-windows
 description: "Steps to upgrade the PHP version on a Windows server running DreamFactory, covering backups, the NTS build, installation, and troubleshooting."
@@ -125,6 +125,7 @@ For additional help, contact [DreamFactory Support](https://www.dreamfactory.com
 
 ## Related Documentation
 
+- [Upgrading DreamFactory on Windows](/upgrades-and-migrations/upgrading-dreamfactory-on-windows)
 - [Windows Installation Guide](/getting-started/installing-dreamfactory/windows-installation)
 - [PHP security advisory: CVE-2026-109618 and CVE-2026-109619](/Security/php-cve-2026-109618-109619)
 - [System Configuration](/getting-started/dreamfactory-configuration/basic-configuration)

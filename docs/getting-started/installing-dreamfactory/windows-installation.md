@@ -657,6 +657,26 @@ After starting, you can verify the daemon is running by checking its health endp
 Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 ```
 
+:::warning[7.7.1: `start-daemon-win.ps1` opens Notepad instead of starting the daemon]
+The script launches `npx` with `Start-Process`, which on a standard Node.js install resolves to the extension-less `npx` shell script and opens it in Notepad. The script still prints `Daemon started`, but nothing listens on port 8006. Until a fixed script ships, start the daemon with `npx.cmd`:
+
+```powershell
+cd {dreamfactory path}\vendor\dreamfactory\df-mcp-server\daemon
+npm install
+Start-Process npx.cmd -ArgumentList "tsx src/server.ts" -WorkingDirectory (Get-Location) -WindowStyle Hidden
+```
+:::
+
+From 7.7.1 the `system_mcp` service type needs a second daemon, the System API MCP daemon. Its script builds the daemon on first run and listens on `127.0.0.1:3700`:
+
+```powershell
+cd {dreamfactory path}\vendor\dreamfactory\df-mcp-server\scripts
+.\start-system-daemon-win.ps1
+Invoke-WebRequest -Uri http://127.0.0.1:3700/health -UseBasicParsing
+```
+
+Use Node.js 22.23.4 or later for both daemons; earlier releases carry the Brotli decoder flaw CVE-2026-111497, which is not fixed in Node.js 20 and earlier.
+
 ## Unattended installation
 
 Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, `install-dreamfactory-win.ps1`, lives alongside the Linux installers in the [`installers` folder of the DreamFactory repository](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers). It performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, SQL Server drivers, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.

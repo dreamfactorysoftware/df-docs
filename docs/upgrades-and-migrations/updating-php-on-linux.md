@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: Updating PHP on Linux
 id: updating-php-on-linux
 description: "Install a PHP security release under DreamFactory on Ubuntu, Debian and RHEL-family servers, move to a supported PHP branch, and roll back if DreamFactory stops working."
