@@ -2,8 +2,8 @@
 sidebar_position: 4
 title: Windows Installation
 id: windows-installation
-description: Step-by-step guide to installing DreamFactory on Windows Server 2019/2022 with IIS, PHP, and required dependencies.
-keywords: [DreamFactory Windows install, Windows Server IIS, DreamFactory installation, self-hosted API Windows, DreamFactory Windows Server, PHP IIS FastCGI, DreamFactory troubleshooting]
+description: Step-by-step guide to installing DreamFactory on Windows Server 2019, 2022, or 2025 with IIS, PHP, and required dependencies.
+keywords: [DreamFactory Windows install, Windows Server 2025, Windows Server IIS, DreamFactory installation, self-hosted API Windows, DreamFactory Windows Server, PHP IIS FastCGI, DreamFactory troubleshooting]
 ---
 
 
@@ -15,7 +15,7 @@ This page contains installation instructions for Windows.
 
 Before starting the installation, confirm all of the following are in place:
 
-- [ ] **Windows Server 2019 or 2022** (64-bit) — or Windows 10/11 for local development. This guide does not cover 32-bit environments.
+- [ ] **Windows Server 2019, 2022, or 2025** (64-bit) — or Windows 10/11 for local development. This guide does not cover 32-bit environments. See [Windows Server 2025 notes](#windows-server-2025-notes) for what differs on 2025.
 - [ ] **IIS 10+ with CGI feature enabled** — the CGI role is required for PHP FastCGI. Enable it with:
   ```powershell
   Enable-WindowsOptionalFeature -Online -FeatureName IIS-CGI
@@ -23,15 +23,25 @@ Before starting the installation, confirm all of the following are in place:
 - [ ] **PHP 8.3 or later** — use the **Non-Thread-Safe (NTS)** build for IIS/FastCGI deployments. Download from [windows.php.net](https://windows.php.net/download/).
 - [ ] **Composer** — PHP dependency manager. Download the installer from [getcomposer.org](https://getcomposer.org/Composer-Setup.exe).
 - [ ] **Git for Windows** — required to clone the DreamFactory repository. Download from [git-scm.com](https://git-scm.com/download/win).
-- [ ] **Visual C++ 2015–2019 Redistributable** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/16/release/VC_redist.x64.exe).
+- [ ] **Visual C++ 2015–2022 Redistributable (x64)** — required by PHP and its extensions on Windows. Download from [Microsoft](https://aka.ms/vs/17/release/vc_redist.x64.exe). PHP 8.3 builds are compiled with Visual Studio 2019 (`vs16`) and PHP 8.4 with Visual Studio 2022 (`vs17`); both need this same 2015–2022 runtime.
 - [ ] **URL Rewrite Module for IIS** — required for Laravel's routing. Download from [Microsoft](https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi).
 - [ ] **Supported system database** — for the DreamFactory system database, use SQLite (default, easiest), MySQL 8.0+, PostgreSQL 13+, or SQL Server. SQLite requires no additional setup and is recommended for initial installation.
 - [ ] **Local Administrator account** — IIS needs elevated permissions for directory access and FastCGI configuration.
-- [ ] **DreamFactory license key** — required for Enterprise edition. Contact [DreamFactory support](https://www.dreamfactory.com/contact) if you do not have one.
+- [ ] **DreamFactory license key** — required for Enterprise edition. Contact [DreamFactory support](https://www.dreamfactory.com/support/) if you do not have one.
 
  The server must not have any other IIS/web applications running on it in order to work with DreamFactory. You must be able to access the GUI of the server using something like RDP, have the ability to transfer files from your client machine to the server, and it is recommended to turn IE enhanced security **off** to make downloading some of the necessary installation files easier. Other applications might be able to run on the same IIS instance as DreamFactory, however this is not typically supported. 
 
 A local Administrator account is also required at minimum for testing permissions, and possibly in perpetuity for IIS permissions.  
+
+### Windows Server 2025 notes
+
+The procedure on this page was verified on Windows Server 2025 (build 26100) with DreamFactory 7.7.1 and PHP 8.3.36 in November 2026: the scripted install, the site running as a local Administrator account and as the application pool identity, the SQL Server and Oracle driver steps including a SQL Server connection through the installed drivers, and PHP Manager 2.12. The steps are the same as for 2022; the differences are in the environment around them:
+
+- **Internet Explorer is gone, but IE Enhanced Security Configuration is still there.** The Server Manager toggle (and the registry keys under `HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components`) still exist and still block downloads in Edge until turned off.
+- **`winget` is preinstalled**, so Git, the VC++ runtime, and other tools can be installed from an elevated prompt without a browser. Note that `winget` does not work when run as `SYSTEM` (for example from a cloud-provider run-command agent); use the direct installer links in this guide for unattended installs.
+- **OpenSSH Server is built in** (service `sshd`, off by default). It is a convenient alternative to RDP for copying the composer files and running the command-line steps.
+- **Cloud images:** on AWS the `Windows_Server-2025-*-Full-Base` AMIs ship the SSM Agent, so every step below can be run through Systems Manager Run Command with no inbound ports. SSM Agent builds before 3.3.1311.0 (November 2024) depended on `wmic.exe`, which Server 2025 no longer installs by default; current AMIs ship a fixed agent.
+- **Resource sizing:** `composer install` for a commercial composer set took about 15 minutes on a 2 vCPU / 2 GB instance. Give the server at least 4 GB and 10 GB of free disk for a comfortable install.
 
 ## Server role setup
 
@@ -94,11 +104,11 @@ Git can be downloaded from [here](https://git-scm.com/download/win). Select the 
 
 To install git, simply run the installer you downloaded and click **yes**/**next** on all default options. 
 
-### Visual C++ 2015-2019
+### Visual C++ 2015-2022
 
-Download [here](https://aka.ms/vs/16/release/VC_redist.x64.exe)
+Download [here](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
-Simply run the installer to install.
+Simply run the installer to install. If it reports that a newer version is already present, that is fine.
 
 ### URL rewrite module
 
@@ -110,7 +120,7 @@ Simply run the installer to install.
 
 PHP for Windows can be downloaded [here](https://windows.php.net/download#php-8.3). Be sure to get a 64-bit, **non-thread-safe (NTS)** version. Download the .zip file.
 
-Use PHP 8.3.36 or a later 8.3 release. Earlier builds have the critical vulnerabilities described in the [PHP security advisory](/Security/php-cve-2026-109618-109619). Download the file named like `php-8.3.36-nts-Win32-vs16-x64.zip`.
+Use PHP 8.3.36 or a later 8.3 release. Earlier builds have the critical vulnerabilities described in the [PHP security advisory](/Security/php-cve-2026-109618-109619). Download the file named like `php-8.3.36-1-nts-Win32-vs16-x64.zip` (the `-1` is a rebuild number that newer Windows builds carry). Older releases are listed at [downloads.php.net/~windows/releases](https://downloads.php.net/~windows/releases/).
 
 Just get the .zip downloaded. It is installed later in the process. 
 
@@ -122,9 +132,15 @@ Just get the installer downloaded. It is run later in the process.
 
 ### PHP Manager
 
-PHP Manager is an IIS utility to make managing PHP and extensions much easier. 
+PHP Manager is an IIS utility to make managing PHP and extensions much easier. It is optional: every step below that uses it also lists the equivalent IIS Manager or `appcmd` action.
 
-Go to the link [here]( https://www.iis.net/downloads/community/2018/05/php-manager-150-for-iis-10) and click **Download this extension**. 
+Download `PHPManagerForIIS_x64.msi` from the [PHP Manager 2 releases page on GitHub](https://github.com/phpmanager/phpmanager/releases/latest). The current release is 2.12 (March 2023).
+
+:::warning
+Do not use the older **PHP Manager 1.5.0 for IIS 10** listing on iis.net. Its **Download this extension** button no longer links to a file, so clicking it does nothing. The GitHub release above is the maintained successor and installs on IIS 10 on Windows Server 2019, 2022 and 2025.
+:::
+
+PHP Manager 2.12 predates PHP 8.3. Verified on Windows Server 2025 with PHP 8.3.36: the MSI installs, registers the **PHP** provider in IIS Manager, and recognizes a PHP 8.3 FastCGI handler that was registered by hand, both in the UI and through its PowerShell snap-in (`Add-PSSnapin PHPManagerSnapin; Get-PHPVersion`). Installing it does not change `php.ini`. Users report that its diagnostics flag 8.3 as obsolete, so treat **View Recommendations** as suggestions: the `php.ini` block on this page already contains the settings it would apply. It needs the IIS Management Console feature (`Web-Mgmt-Console`), which the role wizard installs when you accept the management tools.
 
 Simply run the downloaded installer while IIS is closed to complete the install.
 
@@ -141,9 +157,9 @@ Run **both** downloaded installers.
 
 For the drivers to be used, you also need the sqlsrv PHP extensions. Start by going to the releases page [here](https://github.com/microsoft/msphpsql/releases).
 
-Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the Windows_5.12.0RTW.zip for PHP v8.3.
+Find the latest release and look in the assets section. Windows packages are at the end of the list. Download the `Windows_<version>RTW.zip` package; it contains the DLLs for every PHP version the release supports.
 
-As of this writing, the latest release of the extension package can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows_5.12.0RTW.zip).
+As of this writing (November 2026) the latest release is 5.13.3, which can be directly downloaded [here](https://github.com/microsoft/msphpsql/releases/download/v5.13.3/Windows_5.13.3RTW.zip). It ships DLLs for PHP 8.3 and 8.4.
 
 ## Getting DreamFactory running
 
@@ -162,6 +178,10 @@ You might need to enable file name extentions in the **View** tab of the file ex
 3. Open the newly created php.ini and copy/paste the following at the bottom of the file:
 
 ```ini
+; Where PHP looks for extension DLLs. PHP's compiled-in default on Windows is C:\php\ext,
+; so set this explicitly if PHP lives anywhere else.
+extension_dir="C:\php\ext"
+
 ; Extensions required by DreamFactory
 extension=ldap
 extension=curl
@@ -187,8 +207,7 @@ extension=sodium
 extension=sqlite3
 extension=tidy
 extension=xsl
-extension=php_pdo_sqlsrv.dll
-extension=php_sqlsrv.dll
+extension=zip
 
 ; OPcache — required for acceptable performance
 zend_extension=opcache
@@ -198,8 +217,17 @@ opcache.interned_strings_buffer=16
 opcache.max_accelerated_files=20000
 opcache.revalidate_freq=0
 opcache.validate_timestamps=1
-opcache.fast_shutdown=1
 opcache.enable_cli=0
+
+; IIS FastCGI. php.ini-development says of cgi.force_redirect: "You CAN safely turn this off for IIS, in fact, you MUST."
+cgi.force_redirect=0
+cgi.fix_pathinfo=1
+fastcgi.impersonate=1
+fastcgi.logging=0
+
+; Error logging (create the C:\php\logs folder)
+log_errors=On
+error_log="C:\php\logs\php_errors.log"
 
 ; DreamFactory recommended PHP settings
 memory_limit=256M
@@ -207,14 +235,17 @@ max_execution_time=300
 max_input_time=300
 post_max_size=100M
 upload_max_filesize=100M
-cgi.fix_pathinfo=0
 display_errors=Off
 display_startup_errors=Off
 expose_php=Off
 date.timezone=UTC
 ```
 
-4. Save and close php.ini.
+4. Save and close php.ini, then create the folder `C:\php\logs` so PHP can write its error log there.
+
+:::warning
+Keep `extension_dir` in step with where you extracted PHP. If it points at a folder that does not exist, every `extension=` line fails, and because the block above turns `display_startup_errors` off, the only evidence is a run of "Unable to load dynamic library" warnings in `php_errors.log`. `php -m` will list only the built-in modules.
+:::
 
 :::note
 The `memory_limit` of 256M is a minimum. If you're running complex joins, large result sets, or heavy scripting workloads, increase to 512M.
@@ -246,16 +277,23 @@ If both of those commands are successful, you are safe to keep moving forward.
 
 ### Installing SQL Server drivers (optional)
 
-This is an optional step dependent on if you intend to use DreamFactory with SQL Server.
+This is an optional step dependent on if you intend to use DreamFactory with SQL Server. The [unattended installer script](#unattended-installation) performs it by default, installing ODBC Driver 17 and 18 and both extensions; pass `-SkipSqlServer` to leave them out.
 
 The v17 and v18 drivers should have been installed during the previous steps, if not, install them now. 
 
-Open the Windows_5.12.0RTW.zip downloaded earlier, in the x64 folder there should be 4 .dll files. Copy/paste the **two** nts (Non Thread Safe) .dll into your php ext folder (`C:\php\ext\`)
+Open the `Windows_5.13.3RTW.zip` downloaded earlier. Its `Windows` folder contains one DLL per PHP version, thread model, and architecture. Copy the **two** 64-bit NTS (Non Thread Safe) files for your PHP version, `php_sqlsrv_83_nts_x64.dll` and `php_pdo_sqlsrv_83_nts_x64.dll`, into your PHP ext folder (`C:\php\ext\`).
 
-Then, rename both files removing the "_83_nts" at the end of the filename. The files are named:
+Then rename both files, removing the `_83_nts_x64` suffix, so they are named:
 
 - php_pdo_sqlsrv.dll
 - php_sqlsrv.dll
+
+Finally, add the two extensions to the end of `php.ini`. They are deliberately not in the main extension block above, because PHP logs a startup warning on every request if they are listed but the DLLs are missing:
+
+```ini
+extension=php_sqlsrv.dll
+extension=php_pdo_sqlsrv.dll
+```
 
 ### Get (git) DreamFactory code
 
@@ -290,14 +328,26 @@ Once the df:env command finishes, run:
 `php artisan df:setup`
 This command prompts you to create your first admin user. This email and password are used to log in to the UI later. The root admin account details can be changed later.
 
+:::warning[Scripted installs must pass the admin phone number]
+`df:setup` accepts all of the admin details as options, which is how unattended installs run it:
+
+```cmd
+php artisan df:setup --admin_first_name=First --admin_last_name=Last --admin_email=admin@example.com --admin_password=AtLeast16Characters --admin_phone=000-000-0000 --no-interaction
+```
+
+The phone number is required. If `--admin_phone` is left out, the command prints `The phone field is required.` but still exits with code 0 and no admin user is created, so a script cannot tell that it failed. Check the output, or confirm the `user` table has a row, before moving on.
+:::
+
 Finally, add your license key to the end of the .env file located in the dreamfactory installation directory. You can add it to the bottom of the file like:
 `DF_LICENSE_KEY={YOUR LICENSE KEY}`
 
-:::note Ensure that you remove curly brackets seen in the example above.:::
+:::note
+Ensure that you remove the curly brackets seen in the example above.
+:::
 
 ### Production .env settings
 
-Before going live, update the following values in your `.env` file. The defaults from `df:env` are appropriate for initial setup and testing but must be changed for any production or customer-facing deployment:
+Before going live, set the following values in your `.env` file. The `.env` written by `df:env` sets `APP_ENV=local` and leaves `APP_DEBUG` and `APP_LOG_LEVEL` unset, which is fine for initial setup and testing but should be made explicit for any production or customer-facing deployment:
 
 ```env
 APP_ENV=production
@@ -305,14 +355,14 @@ APP_DEBUG=false
 APP_LOG_LEVEL=warning
 ```
 
-| Setting | Dev Default | Production Value | Why |
-|---------|-------------|-----------------|-----|
+| Setting | After `df:env` | Production Value | Why |
+|---------|----------------|-----------------|-----|
 | `APP_ENV` | `local` | `production` | Enables Laravel production optimizations |
-| `APP_DEBUG` | `true` | `false` | Prevents stack traces from appearing in API error responses |
-| `APP_LOG_LEVEL` | `debug` | `warning` | Prevents logs from flooding with routine request/response info |
+| `APP_DEBUG` | not set (Laravel treats it as `false`) | `false` | Prevents stack traces from appearing in API error responses |
+| `APP_LOG_LEVEL` | not set (defaults to `warning`) | `warning` | Prevents logs from flooding with routine request/response info |
 
 :::danger
-Leaving `APP_DEBUG=true` in production means every PHP exception will return a full stack trace — including file paths, SQL queries, and environment details — to anyone calling your API. Change this before pointing any external traffic at the server.
+Setting `APP_DEBUG=true` in production means every PHP exception will return a full stack trace — including file paths, SQL queries, and environment details — to anyone calling your API. Change this before pointing any external traffic at the server.
 :::
 
 ### Test DreamFactory
@@ -342,12 +392,21 @@ Next, right click on the **sites** folder and select **Add Website**. Then fill 
 
 - Site name: typically set to "dreamfactory" but can be whatever you'd like
 - Physical Path: `{dreamfactory install dir}/public` if you've been following along this should be: `C:\inetpub\wwwroot\dreamfactory\public\`
+- Application pool: use a dedicated pool with **.NET CLR version** set to **No Managed Code**
 - Connect as...
-  - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the **Specific User** option. Other options such as domain users can be used, however you might run into permission issues that will need to be solved. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non-local admin account permissions. 
+  - For the default DreamFactory configuration, the "Connect As" should be set to a **local server Administrator account** set under the **Specific User** option. With `fastcgi.impersonate=1` (set in the `php.ini` block above) PHP then runs as that account, which is why no folder permissions need to be granted for this path. Other options such as domain users can be used, however you might run into permission issues that will need to be solved. DreamFactory support is able to support the local Administrator account, but is unable to help with setting domain/non-local admin account permissions. 
   - Use the "Test Settings" button, and ensure you have two green check marks. 
 
 :::note
 Due to the vast diversity in Windows environments, initial testing of DreamFactory necessitates the use of the local Administrator account. If DreamFactory is accessible with the local Administrator account but encounters issues with domain or non-admin user accounts, the problem often stems from permissions issues. We strongly recommend and support the use of the local Administrator account. Troubleshooting permission issues is often required for non-admin accounts to resolve access discrepancies.
+:::
+
+:::info[Alternative: run the site as the application pool identity]
+If you cannot store an Administrator password in IIS (unattended installs, hardened servers), the site can run under its application pool identity instead. Both identities were verified on Windows Server 2025:
+
+1. Leave **Connect as** on **Application user (pass-through authentication)**.
+2. In the site's **Authentication** feature, edit **Anonymous Authentication** and choose **Application pool identity**. By default IIS uses the `IUSR` account for anonymous requests, and `IUSR` is **not** a member of `IIS_IUSRS`, so PHP fails with `file_put_contents(...storage\framework/cache/...)` errors until this is changed.
+3. Grant `IIS_IUSRS` Full control on the folders listed under [Directory permissions](#directory-permissions), including `database`.
 :::
 
 ### Handler mappings
@@ -370,6 +429,8 @@ Next, click on request restricions, and ensure the following are set:
 Click **OK** to save the handler mapping. 
 
 ### PHP manager config
+
+If you skipped PHP Manager, you can skip this section too: the `php.ini` block earlier on this page already contains the settings that its recommendations apply (`cgi.force_redirect=0`, `cgi.fix_pathinfo=1`, `fastcgi.impersonate=1`, `fastcgi.logging=0`, `date.timezone`, and an `error_log` path). Confirm PHP works by browsing to a `phpinfo()` file in the site's `public` folder instead.
 
 Again, from the server view on the left, click on the **PHP Manager** icon. 
 
@@ -413,6 +474,10 @@ Make the following changes:
 
 Click **OK** to save, then recycle the app pool.
 
+### Default document
+
+Select the DreamFactory site, open **Default Document**, click **Add...**, enter `index.php`, and move it to the top of the list. Without this, requesting the site root (`http://localhost/`) returns **HTTP 403.14** because the `web.config` that ships with DreamFactory contains the rewrite rules but does not declare a default document.
+
 ### Request filtering
 
 From the server view, select the **Request Filtering** icon. Then Navigate to the **HTTP Verbs** tab. On the right side, click **Allow Verb** and add the following verbs one at a time:
@@ -424,7 +489,17 @@ From the server view, select the **Request Filtering** icon. Then Navigate to th
 - PUT
 - PATCH
 
+This step is required: the `web.config` in the DreamFactory `public` folder does not allow these verbs itself. If PUT, PATCH, or DELETE calls return **HTTP 405**, this is the step that was missed. The same change from an elevated command prompt:
+
+```cmd
+%windir%\System32\inetsrv\appcmd.exe set config /section:requestFiltering /+verbs.[verb='PUT',allowed='true']
+%windir%\System32\inetsrv\appcmd.exe set config /section:requestFiltering /+verbs.[verb='PATCH',allowed='true']
+%windir%\System32\inetsrv\appcmd.exe set config /section:requestFiltering /+verbs.[verb='DELETE',allowed='true']
+```
+
 ### URL rewrite rules
+
+The DreamFactory repository ships a `public\web.config` that already contains the rewrite rules, so on a fresh clone there is usually nothing to import: once the URL Rewrite module is installed, `http://localhost/` should answer with a 302 redirect to `/dreamfactory/dist/index.html`. Import the rules manually only if `web.config` is missing or has been replaced.
 
 On the left side of the IIS management window, open the DreamFactory site, and select the **URL Rewrite** module. To import the URL rewrite rules:
 
@@ -441,19 +516,22 @@ IIS needs control over certian folders within the DreamFactory installation dire
 - `storage`
 - `bootstrap/cache`
 - `public`
+- `database` — only when the system database is SQLite. DreamFactory 7 stores it as `database\database.sqlite`, and SQLite also needs to create journal files next to it. Without write access on this folder the UI loads but logging in fails with HTTP 500.
 
 :::note
-Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results by running these two commands from the DreamFactory install directory:
+Sometimes these permisions don't set correctly with the properties window. If you are having permissions issues, we have seen good results by running these commands from the DreamFactory install directory:
 
-`icacls "bootstrap\cache" /grant "IIS_IUSRS:(OI)(CI)F"`
+`icacls "bootstrap\cache" /grant "IIS_IUSRS:(OI)(CI)F" /T`
 
-`icacls "storage" /grant "IIS_IUSRS:(OI)(CI)F"`
+`icacls "storage" /grant "IIS_IUSRS:(OI)(CI)F" /T`
+
+`icacls "database" /grant "IIS_IUSRS:(OI)(CI)F" /T`
 
 :::
 
 ### Accessing DreamFactory
 
-After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are some of the many additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, consult Microsoft's documentation as needed.
+After completing the setup, you can navigate to the server's IP address or hostname to view the DreamFactory login screen on port 80. On a cloud instance, also open TCP port 80 in the provider's security group or firewall; the Windows Firewall rule for HTTP is enabled automatically when the IIS role is installed. At this stage, DreamFactory is operational. However, implementing SSL and creating a DNS entry for the server are some of the many additional configuration options at your disposal. Due to the extensive variety of configurations possible beyond this point, this guide does not cover them in detail. For more advanced IIS configuration, consult Microsoft's documentation as needed.
 
 ## Post-Installation Configuration
 
@@ -517,7 +595,7 @@ For details on adding SSL, DreamFactory recommends using [certbot](https://certb
 The process of installing Oracle drivers is a more manual process than with our Linux installers. To begin you will need to download 3 things:
 - The Oracle "Basic" Instant Client package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-basic-windows.x64-23.7.0.25.01.zip)
 - The Oracle "SDK" Instant Client Package from [Oracle's Website](https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html) (Example file instantclient-sdk-windows.x64-23.7.0.25.01.zip)
-- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 package of that (version 3.2.1). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
+- The PHP oci8 extension (DLL) available at [Pecl PHP Site](https://pecl.php.net/package/oci8) By default, DreamFactory runs on PHP 8.3 so you will want the x64 NTS package for PHP 8.3 (version 3.4.0 is the first oci8 release with PHP 8.3 DLLs). If you are running DreamFactory using IIS as your webserver you must be using the non thread safe version of PHP.
 
 ![PECL website showing PHP oci8 extension DLL download options for Windows](/img/windows-install/PeclDLLPage.png)
 - `Note you will want to click on the DLL button under downloads on the Pecl site for windows .dll files`
@@ -554,7 +632,7 @@ The fastCGI path is located in the IIS Manager > Your Server > fastCGI Settings 
 
 ![IIS FastCGI Settings dialog showing PATH environment variable collection for Oracle driver configuration](/img/windows-install/fastcgi-path.png)
 
-Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (It will be named along the lines of php_oci8-3.2.1-8.3-nts-vc15-x64) and move the php_oci8.dll file to the ext directory where PHP is located on your system (e.g PHP\v8.3\ext). Once that is done add extension=php_oci8.dll to your php.ini file and then restart the IIS server (use php -m to make sure that the oci8 extension is installed). Congratulations!
+Almost there! Now, the last thing to do is to extract our PHP OCI8 extension package (it will be named along the lines of `php_oci8-3.4.0-8.3-nts-vs16-x64.zip`). The DLL inside is named `php_oci8_19.dll` (built against the Instant Client 19 interface, which newer clients still provide). Move it to the ext directory where PHP is located on your system (`C:\php\ext` if you followed this guide), add `extension=php_oci8_19.dll` to your php.ini file, and restart IIS. Verify with `php -m` (it should list `oci8`) and `php -r "echo oci_client_version();"`, which prints the Instant Client version, `23.7.0.25.1` for the packages above. If `oci8` is missing from `php -m`, the Instant Client folder is not on `PATH` for that process; the extension then fails to load with only a line in `php_errors.log`. Congratulations!
 
 
 ## MCP Daemon
@@ -579,7 +657,99 @@ After starting, you can verify the daemon is running by checking its health endp
 Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 ```
 
+## Unattended installation
+
+Every step on this page has a command-line equivalent, which makes a fully scripted install possible. A reference PowerShell script, `install-dreamfactory-win.ps1`, lives alongside the Linux installers in the [`installers` folder of the DreamFactory repository](https://github.com/dreamfactorysoftware/dreamfactory/tree/master/installers). It performs the whole procedure (IIS role, Git, VC++ runtime, URL Rewrite, PHP, SQL Server drivers, Composer, DreamFactory, IIS site, and a verification pass) in idempotent phases and was used to validate this guide on Windows Server 2025. It is a starting point for automation, not a supported installer; read it before running it.
+
+### Running the script
+
+1. On a fresh server, open an elevated PowerShell prompt and download the script. A file saved through a browser carries the mark of the web, so unblock it or the default execution policy refuses to run it:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass -Force
+New-Item -ItemType Directory -Force C:\df-install | Out-Null
+Invoke-WebRequest -UseBasicParsing -Uri https://raw.githubusercontent.com/dreamfactorysoftware/dreamfactory/master/installers/install-dreamfactory-win.ps1 -OutFile C:\df-install\install-dreamfactory-win.ps1
+Unblock-File C:\df-install\install-dreamfactory-win.ps1
+Get-Help C:\df-install\install-dreamfactory-win.ps1 -Full
+```
+
+2. Open source install. `-DfRef` is the git tag or branch to check out; leave it off for the default branch. The system database defaults to SQLite; `-DbConnection mysql`, `pgsql` or `sqlsrv` together with the `-Db*` parameters uses an existing database server instead.
+
+```powershell
+C:\df-install\install-dreamfactory-win.ps1 -DfRef 7.7.1 `
+  -AdminFirst Jane -AdminLast Doe -AdminEmail admin@example.com -AdminPassword 'AtLeast16Characters' -AdminPhone 000-000-0000
+```
+
+3. Commercial install. Put the `composer.json`, `composer-dist.json` and `composer.lock` from your commercial package in a folder and add these parameters to the command above. Add `-GithubToken` if Composer needs to authenticate to private repositories; the token reaches Composer only through the `COMPOSER_AUTH` environment variable.
+
+```powershell
+  -ComposerFilesDir C:\df-install\commercial -LicenseKey YOUR_KEY
+```
+
+The script can also run through a cloud run-command agent such as AWS Systems Manager, which runs it as `SYSTEM`.
+
+### What to expect during the run
+
+- Output stops for several minutes right after the `== Prep` line while `Install-WindowsFeature` adds the IIS role. Nothing is printed until it returns. The PHP download and `composer install` are the other long quiet stretches.
+- If the `IIS features:` line reports `restart=True`, reboot and run the script again. Finished phases are skipped.
+- `'crontab' is not recognized` lines during the DreamFactory phase are the [scheduler noise](#crontab-is-not-recognized-when-running-artisan-commands) described under Troubleshooting.
+- A successful run ends with `VERIFY OK`. Everything is also written to `C:\df-install\install.log`. `AdminPassword`, `LicenseKey` and `GithubToken` are never echoed or logged.
+- Afterwards `http://localhost/` redirects to the admin UI and the account you gave can log in.
+
+### Re-running a phase
+
+Each phase (`Prep`, `Php`, `SqlServer`, `Composer`, `DreamFactory`, `Iis`, `Verify`) writes a marker in `C:\df-install\state\` and is skipped on the next run. `-Phase <name>` runs a single phase; delete its marker first to make it redo the work:
+
+```powershell
+Remove-Item C:\df-install\state\Iis.done
+C:\df-install\install-dreamfactory-win.ps1 -Phase Iis
+```
+
+Where the script deviates from the manual procedure above: it runs the site under the application pool identity rather than the Administrator account (see the note under [Create DreamFactory site](#create-dreamfactory-site)), registers the FastCGI handler with `appcmd` instead of PHP Manager, and verifies the result by requesting `/`, `/api/v2/system/environment`, logging in, and sending a PUT through IIS.
+
 ## Troubleshooting Common Windows Installation Issues
+
+### HTTP 403.14 when opening the site root
+
+**Error**: `HTTP Error 403.14 - Forbidden` for `http://localhost/`, while `http://localhost/index.php` works.
+
+**Cause**: `index.php` is not in the site's default document list. The `web.config` shipped with DreamFactory does not add it.
+
+**Fix**: See [Default document](#default-document).
+
+### 500 with `file_put_contents(...storage\framework/cache/...)` in the response
+
+**Error**: Every request returns HTTP 500 with a JSON error mentioning `storage\framework/cache/data/...: Failed to open stream`.
+
+**Cause**: PHP is running as the anonymous `IUSR` account, which has no write access to `storage`. This happens when the site uses pass-through authentication and Anonymous Authentication is left on its default user.
+
+**Fix**: Either set **Connect as** to the local Administrator account as described above, or switch Anonymous Authentication to **Application pool identity** and grant `IIS_IUSRS` on the folders under [Directory permissions](#directory-permissions).
+
+### UI loads but login returns 500 (SQLite system database)
+
+**Cause**: The `database` folder is read-only for the web server. SQLite needs to write both `database.sqlite` and its journal file.
+
+**Fix**: `icacls "database" /grant "IIS_IUSRS:(OI)(CI)F" /T` from the DreamFactory installation directory, then `iisreset`.
+
+### `df:setup` says "The phone field is required." and creates no admin
+
+**Cause**: `df:setup` was run with `--admin_email` and `--admin_password` but without `--admin_phone`. The command reports the validation error and exits 0.
+
+**Fix**: Re-run `df:setup` with `--admin_phone` added (any value such as `000-000-0000` works). The migrations and seeders are safe to re-run.
+
+
+### `'crontab' is not recognized` when running artisan commands
+
+**Error**: Every `php artisan` command (including `df:env` and `df:setup`) prints:
+```
+The system cannot find the path specified.
+'crontab' is not recognized as an internal or external command,
+operable program or batch file.
+```
+
+**Cause**: The df-scheduler package tries to install a Linux cron entry on every console run and has no Windows guard. The command it was asked to run still executes normally.
+
+**Fix**: None needed. Ignore the lines; on Windows the scheduler is driven by the [Task Scheduler job](#scheduled-task-required-for-dreamfactory-scheduler) instead.
 
 ### 'Class not found' or autoload errors
 
@@ -609,9 +779,9 @@ composer dump-autoload
 
 **Error**: `PHP Startup: Unable to load dynamic library 'curl'` or similar extension load error in PHP logs.
 
-**Cause**: PHP extensions on Windows depend on the Visual C++ runtime. If the correct VC++ redistributable version is not installed, extensions silently fail to load.
+**Cause**: PHP extensions on Windows depend on the Visual C++ runtime. If the correct VC++ redistributable version is not installed, extensions silently fail to load. The same error for *every* extension, with `(tried: C:\php\ext\...)` in the message while PHP is installed elsewhere, means `extension_dir` is wrong: PHP's compiled-in default is `C:\php\ext`.
 
-**Fix**: Download and install the [Visual C++ 2015–2019 Redistributable (x64)](https://aka.ms/vs/16/release/VC_redist.x64.exe), then restart IIS:
+**Fix**: If the paths in the warning do not match your PHP folder, set `extension_dir` in `php.ini` (see [Installing PHP](#installing-php)). Otherwise download and install the [Visual C++ 2015–2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe), then restart IIS:
 ```powershell
 iisreset
 ```
@@ -625,17 +795,17 @@ All extensions listed in `php.ini` should appear in the output. Missing extensio
 
 **Error**: `PHP Startup: Unable to load dynamic library 'sodium'`
 
-**Cause**: The `sodium` extension requires the **Non-Thread-Safe (NTS)** PHP build when used with IIS FastCGI. The Thread-Safe (TS) build includes a different sodium DLL that conflicts with IIS.
+**Cause**: PHP cannot find or load `ext\php_sodium.dll`. The usual reasons are a wrong or unset `extension_dir`, a DLL from a different PHP build (a Thread-Safe or 32-bit extension under an NTS x64 `php-cgi.exe`), or a missing dependency such as `libsodium.dll`, which ships in the PHP zip root and must stay next to `php-cgi.exe`.
 
-**Fix**: Confirm you downloaded the NTS version of PHP from [windows.php.net](https://windows.php.net/download/). The filename should contain `nts` (e.g., `php-8.3.x-nts-Win32-vs16-x64.zip`). Replace your PHP installation with the NTS build if needed.
+**Fix**: Confirm you downloaded the NTS x64 version of PHP from [windows.php.net](https://windows.php.net/download/); the filename should contain `nts` (e.g., `php-8.3.x-nts-Win32-vs16-x64.zip`). Check that `php.ini` is the one IIS loads (compare `phpinfo()` with `php --ini`), that `extension_dir` points at `C:\php\ext`, and that the whole zip was extracted to `C:\php`, not just the `ext` folder.
 
 ### White screen or blank page after IIS setup
 
 **Error**: Browser shows a blank white page with no error when accessing DreamFactory through IIS.
 
-**Cause**: FastCGI Standard Error Mode is set to return the PHP error in the response body, which IIS then suppresses.
+**Cause**: A PHP fatal error occurred and `display_errors` is `Off`, so nothing is rendered. The detail is in the PHP error log (`C:\php\logs\php_errors.log` if you used the `php.ini` block above) or in `storage\logs\dreamfactory.log`.
 
-**Fix**: In IIS Manager, go to the server view > **FastCGI Settings** > select the PHP handler > **Edit** > change **Standard Error Mode** to **IgnoreAndReturn200**.
+**Fix**: Read the log and fix the reported error (missing extension, unreadable `.env`, wrong permissions). If the log is empty, confirm `log_errors=On` and `error_log` are set and the log folder exists. Also confirm **FastCGI Settings** > PHP handler > **Standard Error Mode** is **IgnoreAndReturn200**, otherwise PHP warnings become IIS 500 pages.
 
 ### php artisan commands fail with database errors during setup
 
@@ -647,13 +817,24 @@ All extensions listed in `php.ini` should appear in the output. Missing extensio
 
 Once IIS is configured and DreamFactory is running, verify the installation is functional:
 
-**1. Check the system environment endpoint**
+**1. Check the site root and the system environment endpoint**
 
 From the Windows server (or from a client that can reach the server), run:
 ```powershell
+curl.exe -sI http://localhost/
 Invoke-WebRequest -Uri http://localhost/api/v2/system/environment -UseBasicParsing
 ```
-A successful response returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+The first request should return HTTP 302 with a `Location` of `/dreamfactory/dist/index.html` (a 403.14 means the default document is missing). `curl.exe` is built into Windows Server 2019 and later; it is used here because Windows PowerShell's `Invoke-WebRequest` turns a 302 with `-MaximumRedirection 0` into the unhelpful error `Operation is not valid due to the current state of the object`. The second returns HTTP 200 with JSON containing DreamFactory version, PHP version, and platform information. A 500 error indicates a PHP or application configuration issue; check `C:\inetpub\wwwroot\dreamfactory\storage\logs\dreamfactory.log` for details.
+
+**1b. Confirm write verbs reach PHP**
+
+After logging in through the API, refresh the session with a PUT. An HTTP 405 here means the Request Filtering verbs step was skipped:
+```powershell
+$login = Invoke-RestMethod -Method Post -Uri http://localhost/api/v2/system/admin/session -ContentType application/json `
+  -Body (@{ email = "admin@example.com"; password = "YourPassword" } | ConvertTo-Json)
+Invoke-WebRequest -Method Put -Uri http://localhost/api/v2/system/admin/session `
+  -Headers @{ "X-DreamFactory-Session-Token" = $login.session_token } -UseBasicParsing
+```
 
 **2. Access the admin UI**
 
@@ -663,14 +844,14 @@ Navigate to `http://localhost` (or the server's IP/hostname) in a browser. You s
 
 After logging in, verify there is **no red banner** at the top of the admin UI. A red banner indicates a configuration issue — common causes include a missing or invalid license key, or a failed database connection. If a banner appears, check the `.env` file in the DreamFactory installation directory and confirm `DF_LICENSE_KEY` is set correctly (no curly braces).
 
-**4. Create admin user via CLI (if setup was skipped)**
+**4. Create the admin user via CLI (if setup was skipped)**
 
-If you need to create or reset the admin account via command line:
+If the login page reports an unknown user, no admin was created. Run `df:setup` again with the admin options; it only creates a user when none exists:
 ```cmd
 cd C:\inetpub\wwwroot\dreamfactory
-php artisan df:create-admin-user
+php artisan df:setup --admin_first_name=First --admin_last_name=Last --admin_email=admin@example.com --admin_password=AtLeast16Characters --admin_phone=000-000-0000 --no-interaction
 ```
-Follow the prompts to set the email and password for the administrator account.
+If it answers `Your instance is already setup.`, an admin exists and the password must be reset through the admin UI by another administrator. There is no `df:create-admin-user` command.
 
 **5. Make a test API call**
 
