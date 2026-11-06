@@ -144,3 +144,5 @@ Currently, the supported system database types are:
 - MySQL (MariaDB)
 - PostgreSQL
 - SQL Server
+
+SQLite is suitable for trials and development only. See [Choosing and Changing the System Database](/getting-started/dreamfactory-configuration/system-database) for guidance and `.env` settings for each engine.
