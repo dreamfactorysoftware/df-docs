@@ -43,10 +43,10 @@ Queue and scheduler workers are long-running processes and pick up a change when
 
 ## API
 
-Access is role-based, like any other system resource:
+Access is limited to admin accounts: full administrators, and restricted administrators whose role has `server_setting/*` (the **Config** tab). A role that grants `server_setting/*` or the whole `system` service to a non-admin user, or to an API key with no user, is not enough.
 
 - Full administrators have access.
-- Restricted administrators have access through the **Config** tab. Any other role needs `server_setting/*` on the `system` service. Restricted administrators created before this setting existed keep their Config tab but do not have `server_setting/*` until a root administrator opens the admin, changes any field (for example, clears and re-ticks one access tab) and selects **Save**, which grants it. Saving without changing anything sends nothing.
+- Restricted administrators have access through the **Config** tab. Restricted administrators created before this setting existed keep their Config tab but do not have `server_setting/*` until a root administrator opens the admin, changes any field (for example, clears and re-ticks one access tab) and selects **Save**, which grants it. Saving without changing anything sends nothing.
 - Every other caller gets `403`. A missing, expired or invalid session token is rejected before the role is checked.
 
 List settings:
@@ -104,7 +104,7 @@ curl -s -X DELETE https://df.example.com/api/v2/system/server_setting/log_level 
 
 The response is the same row with `"source": "env"`.
 
-A caller whose role does not include `server_setting/*` gets:
+An admin whose role does not include `server_setting/*` gets:
 
 ```json
 {
@@ -112,6 +112,19 @@ A caller whose role does not include `server_setting/*` gets:
     "code": 403,
     "context": null,
     "message": "Access Forbidden. GET access to component 'server_setting' of service 'system' is not allowed by this user's role.",
+    "status_code": 403
+  }
+}
+```
+
+A caller that is not an admin account gets, even when its role grants the access:
+
+```json
+{
+  "error": {
+    "code": 403,
+    "context": null,
+    "message": "Server settings are limited to administrators.",
     "status_code": 403
   }
 }
