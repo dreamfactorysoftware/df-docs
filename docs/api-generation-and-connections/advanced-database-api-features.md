@@ -2,8 +2,8 @@
 title: "Advanced Database API Features"
 linkTitle: "Advanced Database API Features"
 weight: 5
-description: "Use database transactions, functions, and virtual fields to extend DreamFactory API capabilities"
-keywords: [database transactions, SQL functions, virtual fields, rollback, nested inserts, data transformation]
+description: "Use database transactions, functions, virtual fields, and virtual relationships (including cross-service joins) to extend DreamFactory API capabilities"
+keywords: [database transactions, SQL functions, virtual fields, virtual relationships, cross-service joins, virtual foreign keys, rollback, nested inserts, data transformation]
 difficulty: "advanced"
 ---
 
@@ -142,6 +142,17 @@ Click on a field such as `sold_at` and scroll to the bottom of the column detail
 
 You can use the select box to determine when the database function is applied, meaning you can use different functions according to which HTTP method is used in conjunction with the endpoint call.
 
+The function is applied according to its use:
+
+| Use | When it runs | How to write it |
+|-----|--------------|-----------------|
+| `SELECT` | Reading records | A SQL expression that references the column by name, for example `date(sold_at)`. The result is returned under the field's name. |
+| `FILTER` | The field appears in a `filter` parameter | A SQL expression that replaces the column reference in the `WHERE` clause. |
+| `INSERT` | Creating records | A SQL expression with a `{value}` placeholder. DreamFactory replaces `{value}` with the quoted value from the request, for example `UPPER({value})`. |
+| `UPDATE` | Updating records | Same as `INSERT`, using `{value}`. |
+
+For example, to expose a PostGIS `geometry` column as GeoJSON, use `ST_AsGeoJSON(location)` for `SELECT` and `ST_GeomFromGeoJSON({value})` for `INSERT` and `UPDATE`.
+
 Once configured the `sales` table API call will now return a response that looks like this:
 
 ```
@@ -241,3 +252,76 @@ Once in place, subsequent calls to the `employees` table endpoint will produce J
   ]
 }
 ```
+
+## Virtual Relationships and Cross-Service Joins
+
+DreamFactory discovers relationships from the foreign keys in your database and makes them available through the `related` parameter (see [Joining tables](./interacting-with-api.md#joining-tables)). When a relationship has no foreign key behind it, you can define it yourself as a *virtual relationship*. DreamFactory stores the definition in its own system database, so nothing changes in your database.
+
+A virtual relationship can point at a table in a **different service**. This is how you join data across two databases, for example `orders` in MySQL with `customers` in PostgreSQL, in a single API call.
+
+### Creating a virtual relationship in the admin console
+
+1. Open the `Schema` tab, select the database service, and choose the table.
+2. In the `Relationships` section, click `Add Virtual Relationship`.
+3. Choose the relationship type, the local field, the referenced service, the referenced table, and the referenced field. For `many_many`, also choose the junction service, table and fields.
+4. Save the relationship.
+
+### Creating a virtual relationship with the API
+
+Send a `POST` to the table's `_related` schema resource on the service that owns the local table. This example links `orders.customer_id` in the `mysql` service to `customers.id` in the `crm` service:
+
+```http
+POST /api/v2/mysql/_schema/orders/_related
+Content-Type: application/json
+
+{
+  "resource": [
+    {
+      "type": "belongs_to",
+      "is_virtual": true,
+      "field": "customer_id",
+      "ref_service_id": 7,
+      "ref_table": "customers",
+      "ref_field": "id"
+    }
+  ]
+}
+```
+
+`ref_service_id` is the numeric ID of the referenced service. You can look it up with `GET /api/v2/system/service?filter=name=crm&fields=id,name`. If you leave `ref_service_id` out, DreamFactory uses the same service as the local table.
+
+| Property | Required for | Description |
+|----------|--------------|-------------|
+| `type` | all | `belongs_to`, `has_one`, `has_many`, or `many_many`. |
+| `is_virtual` | all | Must be `true`. |
+| `ref_table` | all | The referenced table. |
+| `field` | `belongs_to`, `many_many` | The local field. |
+| `ref_field` | `has_one`, `has_many`, `many_many` | The field in the referenced table. |
+| `ref_service_id` | optional | The service that holds `ref_table`. Defaults to the local service. |
+| `junction_service_id` | optional, `many_many` | The service that holds the junction table. Defaults to the local service. |
+| `junction_table` | `many_many` | The junction table. |
+| `junction_field` | `many_many` | The junction field that points at the local table. |
+| `junction_ref_field` | `many_many` | The junction field that points at the referenced table. |
+| `ref_on_update`, `ref_on_delete` | optional | Referential actions to record with the relationship. |
+
+DreamFactory rejects a definition that is missing a required property for its type.
+
+### Using the relationship
+
+DreamFactory generates a name for the relationship in the form `{ref_table}_by_{field}`. When the referenced table is in another service, the service name is prefixed, for example `crm.customers_by_customer_id`. To list the names, call `GET /api/v2/mysql/_schema/orders/_related`.
+
+Pass the name in the `related` parameter, exactly as you would for a foreign-key relationship:
+
+```http
+GET /api/v2/mysql/_table/orders?related=crm.customers_by_customer_id
+```
+
+Each order in the response includes its customer record from the `crm` service.
+
+### How cross-service joins work
+
+The join happens in DreamFactory, not in the database. DreamFactory first reads the local records, then collects the key values and requests the matching records from the referenced service with an `IN` filter, and then merges the results. Keep these points in mind:
+
+- Each relationship adds one more query per request. On large result sets, use `limit` and `fields` to keep both queries small.
+- Relationships on multi-column keys are not supported.
+
