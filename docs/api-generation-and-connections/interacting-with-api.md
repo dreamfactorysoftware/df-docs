@@ -164,6 +164,8 @@ The joined results are presented within a JSON array having a name matching that
     }
 ```
 
+These relationships come from the foreign keys in your database. To join tables that have no foreign key, or tables in two different services, define a virtual relationship. See [Virtual Relationships and Cross-Service Joins](./advanced-database-api-features.md#virtual-relationships-and-cross-service-joins).
+
 ### Inserting records
 
 To insert a record, send a `POST` request to the API, passing along a JSON-formatted payload. For instance, to add a new record to the `supplies` table, send a `POST` request to the following URI:
