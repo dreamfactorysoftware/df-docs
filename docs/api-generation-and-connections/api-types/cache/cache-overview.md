@@ -142,19 +142,19 @@ DreamFactory exposes a Cache API for direct cache operations:
 | ------ | -------- | ----------- |
 | `GET` | `/api/v2/{cache_service}/{key}` | Get cached value |
 | `POST` | `/api/v2/{cache_service}` | Store value in cache |
+| `PUT` | `/api/v2/{cache_service}/{key}` | Store or overwrite one value |
 | `DELETE` | `/api/v2/{cache_service}/{key}` | Delete cached value |
-| `DELETE` | `/api/v2/{cache_service}` | Flush all cached values |
+
+Every request works on named keys; there is no list or flush endpoint. TTL is set with the `ttl` query parameter, in seconds. See [Redis](./redis.md#api-endpoints) for the full reference.
 
 ### Example: Store a Value
 
 ```bash
-curl -X POST "https://example.com/api/v2/cache" \
+curl -X POST "https://example.com/api/v2/cache?ttl=3600" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "key": "user:123:profile",
-    "value": {"name": "John", "email": "john@example.com"},
-    "ttl": 3600
+    "user:123:profile": {"name": "John", "email": "john@example.com"}
   }'
 ```
 

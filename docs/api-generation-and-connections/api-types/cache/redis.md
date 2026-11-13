@@ -123,7 +123,7 @@ Click the plus button and select **Redis**.
 | Port | No | `6379` | Redis port number |
 | Password | No | - | Authentication password |
 | Database Index | No | `0` | Redis database number (0-15) |
-| Default TTL | No | `300` | Time to live in minutes before cached values expire |
+| Default TTL | No | `300` | Time to live in seconds, used when a request does not set `ttl` |
 
 ### Step 5: Save and Test
 
@@ -135,62 +135,66 @@ Save the service and use API Docs to test cache operations.
 
 | Method | Endpoint | Description |
 | ------ | -------- | ----------- |
-| `GET` | `/api/v2/{service}/` | List all keys (use sparingly) |
-| `GET` | `/api/v2/{service}/{key}` | Get value by key |
-| `POST` | `/api/v2/{service}` | Store one or more key-value pairs |
-| `PUT` | `/api/v2/{service}/{key}` | Update existing key |
-| `DELETE` | `/api/v2/{service}/{key}` | Delete a key |
-| `DELETE` | `/api/v2/{service}` | Flush all keys (dangerous) |
+| `GET` | `/api/v2/{service}/{key}` | Get the value of one key |
+| `POST` | `/api/v2/{service}` | Store one or more new keys. Fails if any key already exists |
+| `POST` | `/api/v2/{service}/{key}` | Store one new key. Fails if the key already exists |
+| `PUT` / `PATCH` | `/api/v2/{service}` | Store one or more keys, overwriting existing values |
+| `PUT` / `PATCH` | `/api/v2/{service}/{key}` | Store one key, overwriting an existing value |
+| `DELETE` | `/api/v2/{service}/{key}` | Delete one key |
+
+Every request works on named keys. There is no endpoint to list keys, read several keys at once, or flush the whole cache. A request without a key, such as `GET /api/v2/{service}`, returns `400`.
+
+| Query parameter | Applies to | Effect |
+| --------------- | ---------- | ------ |
+| `ttl` | `POST`, `PUT`, `PATCH` | Time to live in **seconds**. Defaults to the service's **Default TTL** |
+| `forever` | `POST`, `PUT`, `PATCH` | `true` stores the value with no expiry |
+| `default` | `GET` | Value to return when the key does not exist, instead of `404` |
+| `pull` | `GET` | `true` returns the value and deletes the key |
 
 ---
 
 ## API Examples
 
-### Store a Value
+### Store Several Values
+
+Send the keys and values as one JSON object. The TTL goes in the query string, not in the body.
 
 ```bash
-curl -X POST "https://example.com/api/v2/redis" \
+curl -X POST "https://example.com/api/v2/redis?ttl=3600" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "resource": [
-      {
-        "key": "user:123:profile",
-        "value": {"name": "John Doe", "email": "john@example.com"},
-        "ttl": 3600
-      }
-    ]
+    "setting:theme": "dark",
+    "user:123:profile": {"name": "John Doe", "email": "john@example.com"}
   }'
 ```
 
 **Response:**
 ```json
-{
-  "resource": [
-    {
-      "key": "user:123:profile",
-      "success": true
-    }
-  ]
-}
+{"success": true}
 ```
 
-### Store Multiple Values
+If any of the keys already exists, `POST` stores nothing and returns `400`. Use `PUT` to overwrite.
+
+### Store or Overwrite One Value
+
+With the key in the path, the whole request body is the value.
 
 ```bash
-curl -X POST "https://example.com/api/v2/redis" \
+curl -X PUT "https://example.com/api/v2/redis/user:123:profile?ttl=300" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "resource": [
-      {"key": "setting:theme", "value": "dark", "ttl": 86400},
-      {"key": "setting:language", "value": "en", "ttl": 86400},
-      {"key": "setting:timezone", "value": "UTC", "ttl": 86400}
-    ]
-  }'
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+```
+
+**Response:**
+```json
+{"user:123:profile": {"name": "John Doe", "email": "john@example.com"}}
 ```
 
 ### Retrieve a Value
+
+The response body is the stored value itself, not a wrapper object.
 
 ```bash
 curl -X GET "https://example.com/api/v2/redis/user:123:profile" \
@@ -199,14 +203,10 @@ curl -X GET "https://example.com/api/v2/redis/user:123:profile" \
 
 **Response:**
 ```json
-{
-  "key": "user:123:profile",
-  "value": {
-    "name": "John Doe",
-    "email": "john@example.com"
-  }
-}
+{"name": "John Doe", "email": "john@example.com"}
 ```
+
+A missing key returns `404` with the message `No value found for key '...'`. Add `?default=...` to get a fallback value instead.
 
 ### Delete a Key
 
@@ -215,32 +215,23 @@ curl -X DELETE "https://example.com/api/v2/redis/user:123:profile" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY"
 ```
 
-### Check if Key Exists
-
-```bash
-curl -X GET "https://example.com/api/v2/redis/user:123:profile?check_exist=true" \
-  -H "X-DreamFactory-API-Key: YOUR_API_KEY"
-```
-
 **Response:**
 ```json
-{
-  "key": "user:123:profile",
-  "exists": true
-}
+{"success": true}
 ```
 
 ---
 
 ## TTL (Time-To-Live)
 
-Set expiration times when storing values:
+TTL is always in **seconds**, both for the `ttl` query parameter and for the service's **Default TTL** setting.
 
-| TTL Value | Behavior |
-| --------- | -------- |
-| Positive integer | Expire after N seconds |
-| `0` | No expiration (persist indefinitely) |
-| `-1` | Use default TTL from service config |
+| Request | Behavior |
+| ------- | -------- |
+| `?ttl=N` (N > 0) | Expires after N seconds |
+| no `ttl` | Uses the service's Default TTL (300 seconds unless changed) |
+| `?forever=true` | Never expires |
+| `?ttl=0` or a negative value | **Nothing is stored.** Use `forever=true` for no expiry |
 
 ### Recommended TTL Values
 
@@ -251,6 +242,18 @@ Set expiration times when storing values:
 | Reference data | 86400 | 24 hours |
 | Rate limit counters | 60 | 1 minute |
 | Real-time data | 30 | 30 seconds |
+
+### Calling the Cache from Scripts
+
+Scripts call the cache service like any other service. In a Node.js script, `platform.api` takes `(verb, path, payload, options, callback)`:
+
+```javascript
+platform.api.call('PUT', 'redis/my_key', { token: 'abc' },
+  { parameters: { ttl: 3300 } },
+  function (body, response) { /* response.statusCode */ });
+```
+
+To let a script use the cache without exposing it to API callers, give the role access to the cache service with requestor **SCRIPT** only.
 
 ---
 
