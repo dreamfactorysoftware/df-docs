@@ -63,13 +63,31 @@ Below, the .env in its entirety is outlined and every parameter described. These
 - `APP_ENV`: Environment type (local, production).
 - `APP_KEY`: Application encryption key.
 - `APP_LOCALE`: Default application locale.
-- `LOG_CHANNEL`: Configuration for log channels.
+- `LOG_CHANNEL`: Where logs go. Default `stack`, which writes one `storage/logs/dreamfactory.log`. Set `daily` for one file per day. See [Daily log files](#daily-log-files).
 - `APP_LOG_LEVEL`: Log level setting.
-- `APP_LOG_MAX_FILES`: Max log files for 'daily' logging.
+- `APP_LOG_MAX_FILES`: Number of daily log files to keep when `LOG_CHANNEL=daily`. Default `5`.
 - `APP_TIMEZONE`: Timezone setting for PHP functions.
 - `APP_URL`: External URL for the installation. Used by OAuth discovery and similar config-driven URLs. Does not change Laravel-generated redirects; use `FORCE_HTTPS` for those.
 - `FORCE_HTTPS`: Force the HTTPS scheme on generated URLs (redirects, email links). Set to `true` when TLS terminates in front of DreamFactory. Default `false`. Read from `.env` at boot; `config:cache` ignores it.
 - `DF_LANDING_PAGE`: Default landing page URL.
+
+#### Daily log files
+
+By default DreamFactory writes everything to a single `storage/logs/dreamfactory.log`, which grows until you rotate it. To get one file per day and delete old ones automatically, set in `.env`:
+
+```bash
+LOG_CHANNEL=daily
+APP_LOG_MAX_FILES=14   # days to keep, default 5
+```
+
+Then clear the config cache as the web server user and restart PHP-FPM:
+
+```bash
+php artisan config:clear
+sudo systemctl restart php8.3-fpm   # use your PHP-FPM service name
+```
+
+Logs are then written to `storage/logs/dreamfactory-YYYY-MM-DD.log`. Files older than `APP_LOG_MAX_FILES` days are deleted.
 
 ### Database settings
 

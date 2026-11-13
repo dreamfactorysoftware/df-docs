@@ -143,7 +143,7 @@ Click the plus button and select **Memcached**.
 | ----- | -------- | ------- | ----------- |
 | Host | No | `127.0.0.1` | Memcached server hostname or IP |
 | Port | No | `11211` | Memcached port number |
-| Default TTL | No | `300` | Time to live in minutes before cached values expire |
+| Default TTL | No | `300` | Time to live in seconds, used when a request does not set `ttl` |
 
 ### Step 5: Save and Test
 
@@ -155,138 +155,125 @@ Save the service and use API Docs to test operations.
 
 | Method | Endpoint | Description |
 | ------ | -------- | ----------- |
-| `GET` | `/api/v2/{service}/{key}` | Get value by key |
-| `POST` | `/api/v2/{service}` | Store one or more key-value pairs |
-| `PUT` | `/api/v2/{service}/{key}` | Update existing key |
-| `DELETE` | `/api/v2/{service}/{key}` | Delete a key |
-| `DELETE` | `/api/v2/{service}` | Flush all keys |
+| `GET` | `/api/v2/{service}/{key}` | Get the value of one key |
+| `POST` | `/api/v2/{service}` | Store one or more new keys. Fails if any key already exists |
+| `POST` | `/api/v2/{service}/{key}` | Store one new key. Fails if the key already exists |
+| `PUT` / `PATCH` | `/api/v2/{service}` | Store one or more keys, overwriting existing values |
+| `PUT` / `PATCH` | `/api/v2/{service}/{key}` | Store one key, overwriting an existing value |
+| `DELETE` | `/api/v2/{service}/{key}` | Delete one key |
 
-:::note
-Memcached does not support listing all keys. Use `GET` with specific keys only.
-:::
+Every request works on named keys. There is no endpoint to list keys, read several keys at once, or flush the whole cache. A request without a key, such as `GET /api/v2/{service}`, returns `400`.
+
+| Query parameter | Applies to | Effect |
+| --------------- | ---------- | ------ |
+| `ttl` | `POST`, `PUT`, `PATCH` | Time to live in **seconds**. Defaults to the service's **Default TTL** |
+| `forever` | `POST`, `PUT`, `PATCH` | `true` stores the value with no expiry |
+| `default` | `GET` | Value to return when the key does not exist, instead of `404` |
+| `pull` | `GET` | `true` returns the value and deletes the key |
 
 ---
 
 ## API Examples
 
-### Store a Value
+### Store Several Values
+
+Send the keys and values as one JSON object. The TTL goes in the query string, not in the body.
 
 ```bash
-curl -X POST "https://example.com/api/v2/memcache" \
+curl -X POST "https://example.com/api/v2/memcache?ttl=3600" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "resource": [
-      {
-        "key": "user:123:name",
-        "value": "John Doe",
-        "ttl": 3600
-      }
-    ]
+    "setting:theme": "dark",
+    "user:123:profile": {"name": "John Doe", "email": "john@example.com"}
   }'
 ```
 
 **Response:**
 ```json
-{
-  "resource": [
-    {
-      "key": "user:123:name",
-      "success": true
-    }
-  ]
-}
+{"success": true}
 ```
 
-### Store JSON Data
+If any of the keys already exists, `POST` stores nothing and returns `400`. Use `PUT` to overwrite.
 
-Values are automatically serialized:
+### Store or Overwrite One Value
+
+With the key in the path, the whole request body is the value.
 
 ```bash
-curl -X POST "https://example.com/api/v2/memcache" \
+curl -X PUT "https://example.com/api/v2/memcache/user:123:profile?ttl=300" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "resource": [
-      {
-        "key": "config:app",
-        "value": {
-          "theme": "dark",
-          "language": "en",
-          "features": ["analytics", "reporting"]
-        },
-        "ttl": 86400
-      }
-    ]
-  }'
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+```
+
+**Response:**
+```json
+{"user:123:profile": {"name": "John Doe", "email": "john@example.com"}}
 ```
 
 ### Retrieve a Value
 
+The response body is the stored value itself, not a wrapper object.
+
 ```bash
-curl -X GET "https://example.com/api/v2/memcache/user:123:name" \
+curl -X GET "https://example.com/api/v2/memcache/user:123:profile" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY"
 ```
 
 **Response:**
 ```json
-{
-  "key": "user:123:name",
-  "value": "John Doe"
-}
+{"name": "John Doe", "email": "john@example.com"}
 ```
 
-### Retrieve Multiple Values
-
-```bash
-curl -X GET "https://example.com/api/v2/memcache?keys=user:123:name,user:456:name" \
-  -H "X-DreamFactory-API-Key: YOUR_API_KEY"
-```
+A missing key returns `404` with the message `No value found for key '...'`. Add `?default=...` to get a fallback value instead.
 
 ### Delete a Key
 
 ```bash
-curl -X DELETE "https://example.com/api/v2/memcache/user:123:name" \
+curl -X DELETE "https://example.com/api/v2/memcache/user:123:profile" \
   -H "X-DreamFactory-API-Key: YOUR_API_KEY"
 ```
 
-### Flush All Keys
-
-```bash
-curl -X DELETE "https://example.com/api/v2/memcache" \
-  -H "X-DreamFactory-API-Key: YOUR_API_KEY"
+**Response:**
+```json
+{"success": true}
 ```
-
-:::warning
-Flushing deletes all cached data. Use with caution in production.
-:::
 
 ---
 
 ## TTL (Time-To-Live)
 
-Set expiration times when storing values:
+TTL is always in **seconds**, both for the `ttl` query parameter and for the service's **Default TTL** setting.
 
-| TTL Value | Behavior |
-| --------- | -------- |
-| Positive integer (< 30 days) | Expire after N seconds |
-| `0` | No expiration |
-| Unix timestamp (> 30 days) | Expire at specific time |
+| Request | Behavior |
+| ------- | -------- |
+| `?ttl=N` (N > 0) | Expires after N seconds |
+| no `ttl` | Uses the service's Default TTL (300 seconds unless changed) |
+| `?forever=true` | Never expires |
+| `?ttl=0` or a negative value | **Nothing is stored.** Use `forever=true` for no expiry |
 
-### Memcached TTL Behavior
+### Recommended TTL Values
 
-Memcached has a maximum TTL of 30 days (2592000 seconds). Values larger than this are interpreted as Unix timestamps.
+| Data Type | TTL (seconds) | Duration |
+| --------- | ------------- | -------- |
+| Session data | 1800 | 30 minutes |
+| User profiles | 300 | 5 minutes |
+| Reference data | 86400 | 24 hours |
+| Rate limit counters | 60 | 1 minute |
+| Real-time data | 30 | 30 seconds |
 
-```bash
-# Expires in 1 hour
-{"key": "temp:data", "value": "...", "ttl": 3600}
+### Calling the Cache from Scripts
 
-# Expires in 7 days
-{"key": "weekly:report", "value": "...", "ttl": 604800}
+Scripts call the cache service like any other service. In a Node.js script, `platform.api` takes `(verb, path, payload, options, callback)`:
 
-# Expires at specific Unix timestamp
-{"key": "event:data", "value": "...", "ttl": 1740000000}
+```javascript
+platform.api.call('PUT', 'memcache/my_key', { token: 'abc' },
+  { parameters: { ttl: 3300 } },
+  function (body, response) { /* response.statusCode */ });
 ```
+
+To let a script use the cache without exposing it to API callers, give the role access to the cache service with requestor **SCRIPT** only.
 
 ---
 
