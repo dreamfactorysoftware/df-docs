@@ -47,12 +47,14 @@ Yes. CVE-2026-109618 and CVE-2026-109619 are flaws in PHP, and every DreamFactor
 * DreamFactory uses industry standard cybersecurity controls to protect against all of the OWASP Top 10 web application security risks.
 * Product updates and improvements follow a standardized SDLC process, including DevSecOps under the supervision of our CTO.
 * Our policies are designed in compliance with key privacy regulations such as GDPR, PIPEDA, COPPA, HIPAA and FERPA.
+* [Compliance baselines](./compliance-baselines.md) (Gold) check the DreamFactory settings that support HIPAA, PCI DSS, GLBA, CJIS, GDPR, SOC 2 and ISO 27001, and export the results as evidence. A baseline is not a certification and does not cover controls outside DreamFactory.
 
 ### How does DreamFactory prevent information compromise?
 
 * DreamFactory software uses an integrated defense in depth to provide customers configurable tools secure their information. This defense starts with access keys that are individually generated and associated with each API.
 * Beyond basic authentication, DreamFactory supports LDAP, Active Directory, and SAML-based SSO.
 * Customers can create and assign roles to API keys, and delegate/manage custom permissions as well as mapping AD/LDAP groups to roles.
+* [Data Masking](./data-masking/overview.md) (Gold) finds sensitive columns in SQL databases and masks their values in API responses for apps, roles, AI and MCP tools, and admins without a grant.
 * Other controls include the ability for customers to set rate limiting (by minutes, hours, or days), logging, and reporting preferences, and individually assigning them to users. Real-time traffic auditing is possible through Elasticsearch, Logstash, and Kibana or Grafana dashboards.
 * Collectively, this approach allows customers to instantly see who has accessed their data, and individually adjust their access by role or user profile.
 * DreamFactory 3.0 includes several new security features including API lifecycle auditing and restricted administrator controls.

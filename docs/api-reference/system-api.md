@@ -249,6 +249,8 @@ Roles control what services and operations a user or app can access (RBAC).
 | `/api/v2/system/package` | GET/POST | Export/import configuration packages |
 | `/api/v2/system/email_template` | GET/POST/PATCH/DELETE | Manage email templates |
 | `/api/v2/system/custom` | GET/POST/PATCH/DELETE | Custom system settings |
+| `/api/v2/system/data_masking` | GET/PATCH/POST/DELETE | Data Masking mode, columns, access, mask formats, rules, scans and activity (Gold). See [API and CLI reference](../Security/data-masking/api-and-cli.md) |
+| `/api/v2/system/security_baseline` | GET/POST/DELETE | Compliance baselines: checks, apply, stop tracking and evidence export (Gold). See [Compliance baselines](../Security/compliance-baselines.md) |
 
 ---
 

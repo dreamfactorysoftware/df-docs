@@ -73,6 +73,7 @@ Regardless of which database you connect, DreamFactory provides:
 - **Role-Based Access Control**: Table, column, and verb-level permissions
 - **Record-Level Filtering**: Restrict data visibility per user/role
 - **Rate Limiting**: Configurable throttling per user, role, or endpoint
+- **Data Masking** (Gold): Classify sensitive columns and mask their values per app, role, admin and AI tool. See [Data Masking](../../../Security/data-masking/overview.md)
 - **Audit Logging**: Track all API requests
 
 ---
