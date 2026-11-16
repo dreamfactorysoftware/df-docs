@@ -370,6 +370,41 @@ DreamFactory supports MCP for AI assistant integration. MCP endpoints allow AI t
 
 ---
 
+## Data Masking and Compliance Baselines (Gold)
+
+Package `dreamfactory/df-masking`. Admin UI: **Security > Data Masking** and **Security > Compliance**. The two system resources are for full system admins only.
+
+| Property | Value |
+|----------|-------|
+| Modes | `off` (no effect, the default), `preview` (responses unchanged, would-mask activity recorded), `on` (covered responses masked) |
+| Covered services | SQL services built on df-sqldb (MySQL, MariaDB, PostgreSQL, SQLite, SQL Server, Oracle, Snowflake, ...). NoSQL services are not masked. |
+| Default access | Everyone gets masked values, admins included. Real-value access is granted per admin (with an expiry), per role (all classes, or all except restricted) and for AI/MCP sessions (always masked, or same as admins). |
+| Classes | 23 classes in 4 tiers: restricted, identity, quasi-identifiers, free text |
+| Formats | `redact`, `last4`, `initial`, `year`, `token`, `null`, `span` |
+| CLI | `php artisan df:masking status\|scan\|mode\|grant\|revoke\|baseline\|setup` |
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET/PATCH | `/api/v2/system/data_masking` | Overview; set `mode` |
+| GET | `/api/v2/system/data_masking/table` | Classified tables per covered service |
+| GET/PATCH | `/api/v2/system/data_masking/column` | Column verdicts; decide a column (`class` or `null` = not sensitive) |
+| POST | `/api/v2/system/data_masking/scan` | Start a background scan |
+| GET/PATCH | `/api/v2/system/data_masking/access` | Admin grants, role access, AI sessions (`version` for optimistic concurrency) |
+| GET/PATCH | `/api/v2/system/data_masking/mask` | Mask format per class |
+| GET/POST/DELETE | `/api/v2/system/data_masking/rule` | Custom rules `{match: name\|value, pattern, class}` |
+| POST | `/api/v2/system/data_masking/rule/test` | Preview a rule's matching columns |
+| GET | `/api/v2/system/data_masking/activity` | Activity log (`kind`, `limit`, `before`) |
+| GET | `/api/v2/system/security_baseline` | Baselines with live scores (`hipaa`, `pci_dss`, `glba`, `cjis`, `gdpr`, `soc2`, `iso27001`) |
+| POST | `/api/v2/system/security_baseline/{id}/apply` | Apply a baseline (only tightens settings) |
+| GET | `/api/v2/system/security_baseline/{id}/report?format=json\|csv` | Evidence export (no data values) |
+
+| Response header (mode On only) | Meaning |
+|--------------------------------|---------|
+| `X-DreamFactory-Masked-Fields` | Fields masked in this response |
+| `X-DreamFactory-Masking-Rewrites` | Request parts changed because they used a masked field (`filter:ssn`, `order:email`) |
+
+Docs: https://docs.dreamfactory.com/Security/data-masking/overview, https://docs.dreamfactory.com/Security/compliance-baselines
+
 ## Role-Based Access Control (RBAC)
 
 ### Verb Mask Values

@@ -108,3 +108,4 @@ Exposed Services applies to the data-plane **MCP Server** service type. MCP serv
 - [API Key Authentication for MCP](./mcp-api-key-auth.md) — how API-key sessions compose with Exposed Services
 - [Deploying the MCP Server](./mcp-server-deployment.md) — upgrade notes and the export/import caveat
 - [Custom MCP Tools](./custom-tools.md) — tools that register regardless of Exposed Services
+- [Data Masking](../Security/data-masking/overview.md) — Exposed Services decides which backends a client can reach; Data Masking decides which values it sees in them

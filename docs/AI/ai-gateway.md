@@ -210,6 +210,8 @@ When PII redaction is enabled, the following patterns are automatically scrubbed
 
 These built-in patterns prioritize low false-positive rates over completeness. For comprehensive DLP coverage (passports, driver's licenses, IBANs, etc.), configure custom redaction rules or integrate a cloud DLP service.
 
+PII redaction only changes what the AI Gateway stores in its prompt logs. To keep sensitive database values from reaching a model in the first place, use [Data Masking](../Security/data-masking/overview.md) (Gold). It masks columns in API and MCP responses, and AI and MCP sessions get masked values by default.
+
 ### Custom Redaction Rules
 
 Add custom patterns via the `prompt_redaction_rules` field (JSON array):

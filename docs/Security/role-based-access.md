@@ -25,6 +25,8 @@ difficulty: "beginner"
 API Key → Role(s) → Service Access → Component Access → HTTP Methods
 ```
 
+Roles decide which services, tables and verbs a caller can reach. They do not change the values in the columns a caller is allowed to read. To return masked values for sensitive columns, such as national IDs, emails or diagnosis codes, while the role keeps its access, use [Data Masking](./data-masking/overview.md) (Gold). There, a role can also be given real values for all classes, or for all classes except restricted ones.
+
 ## Creating Role Based Access Controls
 
 Over time your DreamFactory instance will likely manage multiple APIs. Chances are you're going to want to silo access to these APIs, creating one or several API keys for each. These API keys will be configured to allow access to one or some APIs, but in all likelihood not all of them. To accomplish this, you'll create a *role* which is associated with one or more services, and then assign that role to an *API Key*.
