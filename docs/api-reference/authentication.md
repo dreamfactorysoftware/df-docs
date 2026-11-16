@@ -19,6 +19,10 @@ Every DreamFactory request needs **both**:
 
 The API key alone is enough for some public endpoints. Most operations require both.
 
+:::note[AI agents and AAuth]
+On instances with [AAuth](/Security/aauth/overview) turned on, AI agents can call `/api/v2` APIs without either header: each request carries an HTTP message signature and an AAuth token instead. A request that mixes AAuth signatures with an API key or session token is refused with `400 invalid_request`.
+:::
+
 ---
 
 ## Admin Login (System Administrators)

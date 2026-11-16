@@ -23,7 +23,7 @@ This document provides structured, machine-readable information about DreamFacto
 | **License Types** | Open Source (OSS), Commercial (Gold, Silver) |
 | **Backend Technology** | PHP 8.3+, Laravel Framework |
 | **Database Support** | MySQL, PostgreSQL, SQL Server, Oracle, MongoDB, Cassandra, CouchDB, and more |
-| **Authentication Support** | API Key, JWT, OAuth 2.0, SAML 2.0, LDAP, Active Directory, OpenID Connect |
+| **Authentication Support** | API Key, JWT, OAuth 2.0, SAML 2.0, LDAP, Active Directory, OpenID Connect, AAuth signed agent requests (Gold or Platinum) |
 | **MCP Support** | Yes - Model Context Protocol for AI assistant integration |
 
 ---
@@ -288,6 +288,26 @@ Base URL pattern: `https://{host}/api/v2/{service-name}/{resource}`
 
 *API key required unless using admin/system endpoints with session token.
 
+### AAuth Agent Authorization (Gold or Platinum)
+
+AI agents can call `/api/v2` with RFC 9421 HTTP message signatures instead of API keys, after a person approves them. Scopes are DreamFactory roles. Docs: https://docs.dreamfactory.com/Security/aauth/overview
+
+| Endpoint | Purpose |
+|----------|---------|
+| `GET /.well-known/aauth-resource.json` | Resource metadata (404 while AAuth is off) |
+| `GET /.well-known/aauth-person.json` | Person server metadata |
+| `POST /aauth/person`, `POST /aauth/token` | Person and auth token requests, signed with the agent token |
+| `GET /aauth/pending/{id}` | Poll a pending request |
+| `/aauth/interact` | Consent pages for the approving person |
+| `/api/v2/system/aauth` | Admin API (sys admins only) |
+
+| Header | Description |
+|--------|-------------|
+| `Signature-Key` | `sig=jwt;jwt="<agent, person or auth token>"` |
+| `Signature-Input`, `Signature` | RFC 9421 signature over `@method`, `@authority`, `@path`, `signature-key`, plus `@query`, `content-type` and `content-digest` when present |
+| `AAuth-Requirement` | Response header: what the agent must get next |
+| `AAuth-Scope` | Response header: the scope the request ran under |
+
 ---
 
 ## MCP (Model Context Protocol) Integration
@@ -411,6 +431,7 @@ Key environment variables for DreamFactory configuration:
 | `CACHE_HOST` | Cache server host |
 | `LOG_CHANNEL` | Logging configuration |
 | `DF_INSTALL` | Installation type (Docker, Bitnami, etc.) |
+| `DF_AAUTH_ISSUER` | Https origin agents use for AAuth (no port or path) |
 
 ---
 
