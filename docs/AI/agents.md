@@ -11,6 +11,10 @@ difficulty: "intermediate"
 
 The **Agents** service gives every AI agent its own identity inside DreamFactory: a named record, a role that scopes what it may reach, its own API key with an optional lifetime, and a list of skills. Because an agent is a first-class record rather than a shared key, you can see which agent did what, revoke one without disturbing the others, and route work to the right agent programmatically.
 
+:::note[Agents service and AAuth]
+This page covers the **Agents** service, where each agent authenticates with its own API key. To let agents sign every request and act only after a person approves them, without API keys, see [AAuth agent authorization](/Security/aauth/overview). AAuth keeps its own list of agents under **Security > AAuth > Agents**, separate from this service.
+:::
+
 Create the service from **API Generation & Connections** by adding a service of type **Agents**. It exposes three resources:
 
 | Resource | Purpose |
@@ -111,3 +115,4 @@ The response contains an agent id, name, and chat service. It never returns `api
 - **[Role-Based Access Control](/Security/role-based-access)**: Scope what an agent may reach
 - **[AI Chat](/AI/ai-chat)**: Configure the chat service an agent uses as its persona
 - **[MCP Server](/AI/mcp-server)**: Expose your APIs to agents as tools
+- **[AAuth](/Security/aauth/overview)**: Let agents call your APIs with signed requests and a person's approval instead of an API key

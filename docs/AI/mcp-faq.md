@@ -100,3 +100,7 @@ From DreamFactory 7.7.1, each MCP service only advertises the backends selected 
 ## Can a client authenticate with an API key instead of OAuth?
 
 Yes, from DreamFactory 7.7.1 — as a per-service opt-in. Enable **Allow API Key Authentication** in the MCP service's Advanced Options, then send a DreamFactory app API key in the `X-DreamFactory-API-Key` header. The key's app must be active and have a role assigned; that role scopes every tool call. OAuth Bearer tokens always take precedence when both are sent. See [API Key Authentication for MCP](mcp-api-key-auth.md).
+
+## Can MCP clients authenticate with AAuth?
+
+No. [AAuth](/Security/aauth/overview) covers DreamFactory's REST APIs under `/api/v2`. MCP endpoints (`/mcp/{service}`) accept OAuth and, when enabled for the service, API keys.

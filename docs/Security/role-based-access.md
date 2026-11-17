@@ -107,3 +107,7 @@ DreamFactory's identity passthrough feature extends RBAC beyond the API layer in
 4. The database audit log records Alice's identity for that query.
 
 This behavior is configured on the database service connection — contact DreamFactory support or review the [database service documentation](/api-generation-and-connections/api-types/database/generating-a-database-backed-api) for connector-specific configuration options.
+
+## Roles as AAuth scopes
+
+On Gold and Platinum instances with [AAuth](/Security/aauth/overview) turned on, an administrator can offer a role to AI agents as a **scope**. A person who holds the role approves the agent, and the agent's signed requests then run with exactly that role's service access, filters and limits. See [Managing AAuth](/Security/aauth/admin-guide#scopes).

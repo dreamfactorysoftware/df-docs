@@ -26,6 +26,10 @@ The practical effect: if Alice authenticates via Okta SAML and queries your Orac
 
 All protocols result in a DreamFactory-issued JWT session token that the client includes in subsequent API requests via the `X-DreamFactory-Session-Token` header.
 
+:::tip[AI agents acting for people]
+To let AI agents call your APIs on a person's behalf without sharing API keys or session tokens, see [AAuth agent authorization](/Security/aauth/overview). People approve agents by signing in with their DreamFactory account, LDAP or Active Directory, or single sign-on through OAuth, OpenID Connect or SAML.
+:::
+
 ### Configuring SAML SSO: Step-by-Step
 
 1. **Navigate** to the DreamFactory admin panel and go to **Security > Authentication**.
