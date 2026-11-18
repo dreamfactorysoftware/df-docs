@@ -137,7 +137,7 @@ Choose AAuth when an agent acts for people and you want their approval, and an A
 
 | Requirement | Detail |
 |---|---|
-| DreamFactory | 7.7.1 or later 7.x |
+| DreamFactory | 7.8.0 or later 7.x |
 | License | AAuth requires a DreamFactory commercial license (Gold or Platinum). |
 | Package | `dreamfactory/df-aauth` installed, with its tables created (`php artisan migrate`) |
 | PHP | 8.3 or later with the `sodium`, `openssl`, `curl`, `json` and `mbstring` extensions |
