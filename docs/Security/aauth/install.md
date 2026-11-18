@@ -22,7 +22,7 @@ AAuth requires a DreamFactory commercial license (Gold or Platinum). On Silver a
 
 | Requirement | Details |
 |---|---|
-| DreamFactory | 7.7.1 or later 7.x. The package requires `dreamfactory/df-core ~1.0.4` and `dreamfactory/df-system ~0.6.2`. |
+| DreamFactory | 7.8.0 or later 7.x. The package requires `dreamfactory/df-core ~1.0.4` and `dreamfactory/df-system ~0.6.2`. |
 | License | Gold or Platinum. |
 | PHP | 8.3 or later with the `sodium`, `openssl`, `curl`, `json` and `mbstring` extensions. The DreamFactory images have all five; check with `php -m`. |
 | Https origin | One host name that agents and approvers use to reach DreamFactory, with TLS on port 443, for example `https://api.example.com`. It can be an internal name. See [Choose the issuer](#choose-the-issuer). |

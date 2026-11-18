@@ -31,7 +31,7 @@ Data Masking and Compliance baselines require a DreamFactory commercial license 
 | **Covered services** | SQL database services built on DreamFactory's SQL connector: MySQL, MariaDB, PostgreSQL, SQL Server, Oracle, SQLite, Snowflake and others |
 | **Classes** | 23 classes of sensitive data in 4 tiers: Restricted, Identity, Quasi-identifiers and Free text |
 | **Response headers** | `X-DreamFactory-Masked-Fields` and `X-DreamFactory-Masking-Rewrites`, in mode On only |
-| **Verified on** | DreamFactory 7.7.1 |
+| **Verified on** | DreamFactory 7.8.0 |
 
 ![The Columns tab of Security > Data Masking on the Masked filter for the patients table. Each column shows its class: mrn and diagnosis_code as Health & special category and ssn as National ID, each with a lock icon, then Person name, Email, Phone, Date of birth, Street address, Postal code, and Free text with personal data for notes. The Masked as column previews what callers get: tokens for names, email and phone, the year for the date of birth, solid bars for redacted values, and for notes the start of the text with bars over the detected spans.](/img/security/data-masking/columns-masked.png)
 
