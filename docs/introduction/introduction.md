@@ -18,7 +18,7 @@ DreamFactory is a self-hosted API generation platform that instantly creates sec
 
 DreamFactory is available in two editions. **DreamFactory Community Edition** is open source under the Apache 2.0 license — the full source code is available on [GitHub](https://github.com/dreamfactorysoftware/dreamfactory) and can be self-hosted at no cost. **DreamFactory Enterprise** adds SSO and identity passthrough (SAML, LDAP, Active Directory, OAuth), advanced RBAC with field-level permissions, commercial database connectors (Oracle, IBM Db2, SAP HANA), dedicated support SLAs, and Logstash/ELK audit logging. Both editions are fully self-hosted — no data leaves your infrastructure.
 
-The current stable release is **DreamFactory 4.x**. See the [GitHub releases page](https://github.com/dreamfactorysoftware/dreamfactory/releases) for the latest version, changelog, and upgrade notes. If you are upgrading from an earlier version, see the [Upgrading & Migrating DreamFactory](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory) guide.
+The current stable release is **DreamFactory 7.8.0**. See the [GitHub releases page](https://github.com/dreamfactorysoftware/dreamfactory/releases) for the latest version, changelog, and upgrade notes. If you are upgrading from an earlier version, see the [Upgrading & Migrating DreamFactory](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory) guide.
 
 ## Quick Navigation
 

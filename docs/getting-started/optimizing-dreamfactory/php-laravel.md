@@ -14,7 +14,7 @@ DreamFactory is a Laravel application, so most of what makes it fast is ordinary
 
 ## The Platform Baseline
 
-DreamFactory 7.7 runs on **PHP 8.5** and **Laravel 13**. Check what you are actually on:
+DreamFactory 7.8 runs on **Laravel 13** and needs **PHP 8.3 or later**. The Docker image and the Linux installer ship **PHP 8.5**. Check what you are actually on:
 
 ```bash
 php -v

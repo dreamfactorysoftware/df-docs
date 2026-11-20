@@ -130,7 +130,7 @@ Two rules apply to every PHP rebuild:
 - Pass your current DreamFactory version, for example `--build-arg BRANCH=7.5.0`. The `Dockerfile` clones DreamFactory from `master` unless you name a version, so a `--no-cache` rebuild without it upgrades DreamFactory to the latest release.
 
 :::warning[Keep the base image and the df-docker version together]
-The entrypoint in each df-docker release starts a specific PHP-FPM version. df-docker 7.4.0 and 7.5.0 use PHP 8.3 (`df-base-img:v7`). df-docker 7.6.0 and later use PHP 8.5 (`df-base-img:7.6` or `:7.7`). Changing the `FROM` line between images with the same PHP version is safe. Changing it to an image with a different PHP version stops the container from starting.
+The entrypoint in each df-docker release starts a specific PHP-FPM version. df-docker 7.4.0 and 7.5.0 use PHP 8.3 (`df-base-img:v7`). df-docker 7.6.0 and later use PHP 8.5 (`df-base-img:7.6`, `:7.7` or `:7.8`). Changing the `FROM` line between images with the same PHP version is safe. Changing it to an image with a different PHP version stops the container from starting.
 :::
 
 ### Upgrading DreamFactory
