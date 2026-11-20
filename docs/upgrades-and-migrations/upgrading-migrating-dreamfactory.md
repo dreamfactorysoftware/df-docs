@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 ## Current Version & Changelog
 
-The current stable release of DreamFactory is **v7.7.1**. For the full list of releases, version history, and release notes, see the [DreamFactory GitHub Releases page](https://github.com/dreamfactorysoftware/dreamfactory/releases).
+The current stable release of DreamFactory is **v7.8.0**. For the full list of releases, version history, and release notes, see the [DreamFactory GitHub Releases page](https://github.com/dreamfactorysoftware/dreamfactory/releases).
 
 Each release includes a changelog describing new features, bug fixes, and any breaking changes. Before upgrading, review the changelog for your target version to identify any actions required on your end (e.g., PHP version changes, `.env` configuration additions, or deprecated API behaviors).
 
@@ -38,6 +38,7 @@ Use the table below to identify the appropriate upgrade method based on your cur
 | 5.x | 6.x | In-place (`git pull`) | Review `.env` for new required variables; check deprecated connectors |
 | 6.x | 7.x | In-place or fresh migration | PHP 8.3+ required; significant dependency updates — test in staging first |
 | 7.0–7.6 | 7.7.x | In-place (check out the release tag) | Laravel 11 → 13; PHP 8.3+; commercial installs need the 7.7.x composer files. See [Upgrading to 7.7.x](#upgrading-to-77x) |
+| 7.0–7.7.x | 7.8.0 | In-place (check out the release tag) | Directly from any 7.x release, no intermediate versions needed; PHP 8.3+; commercial installs need the 7.8.0 composer files. From 7.6.x or earlier, the 7.7.x notes apply too. See [Upgrading to 7.8.0](#upgrading-to-780) |
 | Any | Cross-server | Full migration (see below) | Use the Major Version Migration process to copy `.env` and system database |
 
 **Breaking changes to watch for:**
@@ -46,6 +47,35 @@ Use the table below to identify the appropriate upgrade method based on your cur
 - **4.x → 5.x**: PHP moves from 7.x to 8.1. Reinstall any PHP extensions you added by hand for the new PHP version.
 - **6.x → 7.x**: PHP 8.3 required from 7.0.1 onward (7.0.0 still declares PHP 8.1); Composer 2 required; some deprecated API behaviors removed.
 - **7.6.x → 7.7.x**: The framework moves from Laravel 11 to Laravel 13, which changes the default cache store and several configuration files. `CACHE_STORE` must be set in `.env` — see [Upgrading to 7.7.x](#upgrading-to-77x).
+- **7.7.x → 7.8.0**: Only the root administrator can manage administrator accounts, and DreamFactory connects to hosts on your internal network for SOAP services and URL downloads only when they are listed in `DF_OUTBOUND_ALLOWED_HOSTS` — see [Upgrading to 7.8.0](#upgrading-to-780).
+
+## Upgrading to 7.8.0
+
+DreamFactory 7.8.0 is an in-place upgrade from any 7.x release, using the [Minor Version Upgrade process](#upgrade-process) below. You do not need to install the releases in between: check out the `7.8.0` tag directly. If you are coming from 7.6.x or earlier, the [Upgrading to 7.7.x](#upgrading-to-77x) notes apply as well, because the move to Laravel 13 happened in 7.7.0. The direct path 7.6.0 → 7.8.0 has been validated with the steps on this page on Ubuntu 24.04 with PHP 8.3, Nginx and a MariaDB 10.11 system database, for a commercial (Gold) install: `composer install` and the migrations took under a minute, and the license level, existing services, roles, apps and API keys were unchanged afterwards.
+
+The full list of changes is in the [7.8.0 release notes](https://github.com/dreamfactorysoftware/dreamfactory/releases/tag/7.8.0). Read these notes before you start:
+
+- **PHP 8.3 or later**, as for 7.7.x.
+- **Commercial installs need the 7.8.0 composer files.** As with every release, request `composer.json`, `composer.json-dist` and `composer.lock` for 7.8.0 from DreamFactory support, and install the full set rather than updating packages one at a time. A 7.8.0 commercial install has 62 `dreamfactory/df-*` packages; seven of them are new (`df-aauth`, `df-agents`, `df-alerts`, `df-api-builder`, `df-masking`, `df-schema-contracts` and `df-system-mcp-server`).
+- **The `mongodb` PHP extension must be 2.5 or later** if it is installed. The 7.8.0 packages require it (7.7.x accepted 2.3). The `composer install` command in this guide skips platform checks, so check the version yourself with `php --ri mongodb` and upgrade the extension first if needed.
+- **Run the migrations.** 7.8.0 adds tables and columns: `server_settings`, MCP OAuth client names, scheduler run history (`task_run`), and on commercial installs the Data Masking (`dm_*`) and AAuth (`aauth_*`) tables. Until `php artisan migrate --force` has run, the scheduler task list, MCP OAuth sign-in and saving Server Settings return errors.
+- **Root administrator and administrator accounts.** From 7.8.0, only the root administrator creates, changes or deletes administrator accounts, their roles and their service access.
+  - An instance without a root administrator designates its lowest-id active administrator as root during the upgrade. To choose a different one, run `php artisan df:root_admin --admin_id=<id>`.
+  - Scheduled tasks that change administrator accounts or their roles must run as the root administrator: open each such task and set its user to the root administrator. Otherwise its runs are declined with `Only root admin can manage admins.`, which shows in the task's run history.
+  - For LDAP and Active Directory sign-in, if the directory username of an account that is also an administrator changes, the root administrator updates the account.
+- **Internal hosts: `DF_OUTBOUND_ALLOWED_HOSTS`.** DreamFactory refuses to connect to addresses on your internal network for SOAP WSDL, endpoint and proxy addresses, package, app and data imports from a URL, files and email attachments given by URL, and redirects of outbound requests, unless the host is listed in this setting. Database connections are not affected. If any of your services use such an address, add a comma-separated list of hostnames, IP addresses or CIDR ranges (no wildcards) to `.env`, then run `php artisan config:clear`:
+
+  ```bash
+  DF_OUTBOUND_ALLOWED_HOSTS=soap.corp.local,10.20.0.0/16
+  ```
+
+- **SOAP services no longer follow redirects.** If a WSDL or endpoint address redirects, the call returns a 400 that says so. Configure the final address.
+- **Scheduler crontab.** The `schedule:run` crontab entry is now kept for one OS user per host: the user that already has it, the first user that runs `artisan`, or the user named in `DF_SCHEDULER_CRON_USER`. After the upgrade, check `crontab -l` for `root` and for the user that owns the installation; there should be exactly one `schedule:run` entry, or tasks can run twice. If you run `schedule:run` from your own crontab or a process manager, set `DF_SCHEDULER_INSTALL_CRON=false`.
+- **Python 3 scripts** need the `munch` module in the interpreter DreamFactory runs (`/usr/bin/python3` unless `DF_PYTHON3_PATH` is set): `sudo apt install python3-munch` on Debian and Ubuntu, or `pip install munch`. Python scripts now receive event and platform data as decoded JSON, so `true`, `false` and `null` arrive as real values; test scripts that worked around the old format.
+- **MCP daemons need Node.js 20 or later.** Their launcher scripts install pinned dependencies with `npm ci`.
+- **Several web nodes need a shared cache.** Node.js and Python scripts that call back into the platform API, Data Masking mode changes and AAuth rely on a cache store shared by all web nodes, such as Redis or Memcached.
+- **Other behavior changes** to review in the release notes: Excel services return formula-like text as literal text by default, the Prometheus `uri` label replaces record identifiers, and AMQP and MQTT subscribe requests need an API key or a session.
+- **New features do not change API responses after the upgrade.** Data Masking starts in `Off` mode; when its background scan first finds sensitive columns it moves to `Preview`, which records who would receive masked values without changing any response. AAuth stays off until you set `DF_AAUTH_ISSUER`, and AI budget management stays off until you set `DF_AI_BUDGET_MANAGEMENT_ENABLED=true`. See the [Data Masking](/Security/data-masking/overview) and [AAuth](/Security/aauth/overview) guides.
 
 ## Upgrading to 7.7.x
 
@@ -84,7 +114,7 @@ Before starting any upgrade, complete these steps to ensure you can recover if s
 
 4. **Note custom scripts and connectors** — list any event scripts, scripted services, or custom connectors you've added so you can verify they still function after the upgrade.
 
-5. **Check scheduled jobs and cron tasks** — if you use DreamFactory's scheduler or have external cron jobs calling DreamFactory APIs, document them before upgrading.
+5. **Check scheduled jobs and cron tasks** — if you use DreamFactory's scheduler or have external cron jobs calling DreamFactory APIs, document them before upgrading. Upgrading to 7.8.0 or later: note which administrator should be the root administrator, and which scheduled tasks change administrator accounts or their roles (see [Upgrading to 7.8.0](#upgrading-to-780)).
 
 6. **Test in a staging environment first** — if possible, clone your instance to a staging server and run the upgrade there before applying it to production.
 
@@ -212,10 +242,10 @@ sudo -u dreamfactory git fetch origin --tags
 ```
 
 ```bash
-sudo -u dreamfactory git checkout 7.7.1   # replace with your target version
+sudo -u dreamfactory git checkout 7.8.0   # replace with your target version
 ```
 
-Checking out a release tag works on every install, including those created with the installer's "Install a specific version" option. Those installs are cloned from a single tag and have no `master` branch, so `git checkout master` fails with `pathspec 'master' did not match`. Using the tag also lets you upgrade one version at a time, for example 7.6.0 → 7.7.0 → 7.7.1.
+Checking out a release tag works on every install, including those created with the installer's "Install a specific version" option. Those installs are cloned from a single tag and have no `master` branch, so `git checkout master` fails with `pathspec 'master' did not match`. You can check out the target release directly from any 7.x version (for example 7.6.0 → 7.8.0); the migrations in Step 5 apply every change in between. Using tags also lets you upgrade one version at a time if you prefer, for example 7.6.0 → 7.7.1 → 7.8.0.
 
 :::tip
 If your install tracks the `master` branch, `git checkout master` followed by `git pull origin master` also works, but it always takes you to the newest release rather than to a version you choose.
@@ -369,10 +399,16 @@ sudo -u dreamfactory composer install --no-dev --ignore-platform-reqs
 
 After completing the upgrade:
 
-1. **Check DreamFactory version and license** on **System > Config > System Info**. A commercial instance should show the same license level as before the upgrade.
-2. **Test your APIs** to ensure they're functioning correctly
-3. **Verify user access** and permissions are intact
-4. **Check system logs** (`storage/logs/dreamfactory.log`) for any errors
+1. **Check DreamFactory version and license** on **System > Config > System Info**. A commercial instance should show the same license level as before the upgrade. On a commercial install you can also count the installed DreamFactory packages, which should match the number of `dreamfactory/df-*` entries in the commercial `composer.lock` (62 for 7.8.0):
+
+   ```bash
+   sudo -u dreamfactory composer show 'dreamfactory/df-*' | wc -l
+   ```
+
+2. **Check the root administrator (7.8.0 and later)**. Exactly one administrator should be the root administrator. As an administrator, request `GET /api/v2/system/admin?fields=id,email,is_root_admin` and check that one account has `is_root_admin` set to `1`. To make a different administrator root, run `sudo -u dreamfactory php artisan df:root_admin --admin_id=<id>`. Always pass `--admin_id` when you run it from a script: without it, on an instance with several administrators, the command waits for you to type an id, and with `-n` it repeats `Admin does not exist.` until you stop it.
+3. **Test your APIs** to ensure they're functioning correctly
+4. **Verify user access** and permissions are intact
+5. **Check system logs** (`storage/logs/dreamfactory.log`) for any errors
 
 ---
 
