@@ -110,13 +110,13 @@ PHP 8.5 needs DreamFactory 7.6.0 or later. Moving to it from an earlier DreamFac
 
 ### DreamFactory 5.0.0 to 7.0.0 on PHP 8.3
 
-These versions declare PHP 8.1. The long-term path is to upgrade DreamFactory to 7.7.1.
+These versions declare PHP 8.1. The long-term path is to upgrade DreamFactory to 7.8.0.
 
 If you cannot upgrade DreamFactory right away, these versions can run on PHP 8.3 as a stopgap. We started DreamFactory 5.4.0 on PHP 8.3 with `composer install --ignore-platform-reqs` and confirmed that admin login and the system API work. We have not tested every connector or script type. Test your own services on a staging copy before you change production. Commercial installs need the composer files for their version; request them from DreamFactory support before you start.
 
 ### DreamFactory 4.x
 
-DreamFactory 4.x does not run on PHP 8. Build a new DreamFactory 7.7.1 instance and move your configuration to it. See [Major Version Migration](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#migration-process).
+DreamFactory 4.x does not run on PHP 8. Build a new DreamFactory 7.8.0 instance and move your configuration to it. See [Major Version Migration](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#migration-process).
 
 ## Roll back
 

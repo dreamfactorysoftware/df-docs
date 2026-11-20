@@ -21,10 +21,11 @@ MCP deployment changed between 7.7.0 and 7.7.1. Each DreamFactory release ships 
 |---|---|---|
 | 7.7.0 | 1.3.0 | — |
 | 7.7.1 | 1.4.0 | `dreamfactory/df-system-mcp-server` 0.5.1 (the System API MCP daemon; its own `package.json` and `/health` report 0.5.0) |
+| 7.8.0 | 1.4.1 | `dreamfactory/df-system-mcp-server` 0.5.2 |
 
 Check what you have with `composer show dreamfactory/df-mcp-server | grep versions`.
 
-Throughout this page, a heading or table row marked **7.7.1+** applies only to 7.7.1 and later. A block marked **7.7.0** applies only to 7.7.0. Everything unmarked applies to both. The [What changed in 7.7.1](#what-changed-in-771) table lists every difference in one place.
+Throughout this page, a heading or table row marked **7.7.1+** applies to 7.7.1 and later, including 7.8.0. A block marked **7.7.0** applies only to 7.7.0. Everything unmarked applies to all of them. The [What changed in 7.7.1](#what-changed-in-771) table lists every difference between 7.7.0 and 7.7.1, and [What changed in 7.8.0](#what-changed-in-780) lists the smaller changes after that.
 :::
 
 ## Before you start
@@ -98,6 +99,20 @@ Both daemons execute tools by calling DreamFactory's REST API back, so each one 
 | Service settings | — | [Exposed Services](./mcp-exposed-services.md), [API key authentication](./mcp-api-key-auth.md), Require Role Access, Database Tool Style, Allow writes, Lazy Tool Loading. |
 | Function custom tools | — | Off unless the daemon runs with `MCP_ALLOW_FUNCTION_TOOLS=true`. |
 
+## What changed in 7.8.0
+
+7.8.0 ships `df-mcp-server` 1.4.1 and `df-system-mcp-server` 0.5.2. Deployment works as on 7.7.1, with these differences:
+
+| Area | 7.7.1 (`df-mcp-server` 1.4.0) | 7.8.0 (`df-mcp-server` 1.4.1) |
+|---|---|---|
+| Daemon dependencies | Version ranges in `package.json`, exact versions in the lockfile. | Exact versions in `package.json` as well. `engines` requires Node.js 20 or later. |
+| Linux launchers | Install with `npm install` when they have to. | Install the runtime dependencies with `npm ci --omit=dev` when `node_modules` is missing, for both daemons. |
+| Windows launcher (`start-daemon-win.ps1`) | Full `npm install`, then `npx tsx src\server.ts`, which opens Notepad on a standard Node.js install. See [Windows](#windows). | `npm ci --omit=dev`, then `node dist/server.js`. |
+| `npm start` | Runs the TypeScript source through `tsx`. | Runs `node dist/server.js`. The launcher is still the supported way to start the daemon, because it resolves the shared secret. |
+| `/mcp/{service}` routes | Answer for any service name. | Answer only for `mcp` and `system_mcp` services. |
+| Request log | — | Each MCP OAuth client is logged under its own registered name; callers without OAuth are labelled by app. A migration adds the client-name columns, so run `php artisan migrate --force` as part of the upgrade. |
+| Tool descriptions | — | Every tool parameter is documented and every system tool is annotated, so clients see a slightly larger `tools/list`. |
+
 ## Prerequisites
 
 A working DreamFactory installation, plus the following **on the server**:
@@ -167,7 +182,7 @@ Always start it through the shipped launcher:
 vendor/dreamfactory/df-mcp-server/scripts/start-daemon.sh
 ```
 
-The launcher runs the compiled `node dist/server.js`, sets production defaults, and on 7.7.1 resolves the [shared secret](#the-daemon-shared-secret-771). Do not use `npm start` or `npm run dev` in production: both run the TypeScript source through `tsx`, a dev dependency that `--omit=dev` leaves out.
+The launcher runs the compiled `node dist/server.js`, sets production defaults, and on 7.7.1 resolves the [shared secret](#the-daemon-shared-secret-771). Do not use `npm start` or `npm run dev` in production. On 7.7.x both run the TypeScript source through `tsx`, a dev dependency that `--omit=dev` leaves out; on 7.8.0 `npm start` runs the compiled daemon but still skips the shared-secret setup the launcher does.
 
 :::note 7.7.0 with more than one DreamFactory node
 On 7.7.0 the daemon is stateful by default and keeps each MCP session in memory, so behind a load balancer requests round-robin onto a node that has never seen the session and fail with `Bad Request: Server not initialized`. Set `MCP_STATELESS=true` in the daemon's environment (for example in the systemd unit below) on every node. On 7.7.1 stateless is the default and nothing needs to be set.
@@ -225,7 +240,7 @@ In the Docker/compose stack, the daemon starts automatically when `ENABLE_MCP_DA
 
 ### Windows
 
-The package ships `scripts\start-daemon-win.ps1`. On both 7.7.0 and 7.7.1 it runs a full `npm install` (including dev dependencies) and starts the daemon from the TypeScript source with `npx tsx src\server.ts`, in the background. That works, but it needs network access for the install and keeps `tsx` on the host. To run the compiled daemon instead, mirror the Linux launcher by hand:
+The package ships `scripts\start-daemon-win.ps1`. From 7.8.0 it installs the runtime dependencies with `npm ci --omit=dev` and starts the compiled daemon with `node dist/server.js` in the background, like the Linux launcher. On 7.7.0 and 7.7.1 it runs a full `npm install` (including dev dependencies) and starts the daemon from the TypeScript source with `npx tsx src\server.ts`; on a standard Node.js install that opens `npx` in Notepad instead of running it. On any version, you can run the compiled daemon by hand instead, which is also the command to wrap in a service:
 
 ```powershell
 cd C:\dreamfactory\vendor\dreamfactory\df-mcp-server\daemon

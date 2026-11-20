@@ -3,7 +3,7 @@ sidebar_position: 2
 title: Upgrading DreamFactory on Windows
 id: upgrading-dreamfactory-on-windows
 description: "In-place upgrade of a DreamFactory 7.x installation on Windows Server with IIS: backups, Git checkout, commercial composer files, Composer, migrations, .env changes, permissions and IIS restart."
-keywords: [DreamFactory upgrade, Windows Server, IIS, in-place upgrade, 7.7.1, composer, migrate]
+keywords: [DreamFactory upgrade, Windows Server, IIS, in-place upgrade, 7.8.0, composer, migrate]
 difficulty: "intermediate"
 ---
 
@@ -11,17 +11,15 @@ difficulty: "intermediate"
 
 This guide upgrades an existing DreamFactory 7.x installation on Windows Server with IIS to a newer 7.x release, in place. The commands are the same ones the [Linux upgrade guide](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#upgrade-process) uses; what differs is everything around them: no `sudo` or file owner, IIS permissions instead of `chown`, and `iisreset` instead of PHP-FPM.
 
-The procedure was validated by upgrading a commercial (Gold) 7.3.1 install to 7.7.1 on Windows Server 2025 with IIS 10, PHP 8.3.36 NTS over FastCGI and a SQLite system database, installed as described in the [Windows Installation](/getting-started/installing-dreamfactory/windows-installation) guide. The whole upgrade took about ten minutes, almost all of it in `composer install`.
-
 :::info[Scope]
-- Use this guide for **7.x to 7.x** upgrades only (for example 7.3.1 to 7.7.1). Instances on 6.x or older move to a new 7.7.1 instance with the [Major Version Migration](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#migration-process) process.
+- Use this guide for **7.x to 7.x** upgrades only (for example 7.3.1 to 7.8.0). Instances on 6.x or older move to a new 7.8.0 instance with the [Major Version Migration](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#migration-process) process.
 - To change only the PHP build under an existing install, for example for a PHP security release, follow [Upgrading PHP on Windows](/upgrades-and-migrations/upgrading-php-on-windows) instead.
-- Read the [Upgrading to 7.7.x](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#upgrading-to-77x) notes before you start. They apply on every platform.
+- Read the [Upgrading to 7.8.0](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#upgrading-to-780) notes before you start, and the [Upgrading to 7.7.x](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#upgrading-to-77x) notes as well if you are coming from 7.6.x or earlier. They apply on every platform.
 :::
 
 ## Prerequisites
 
-- **PHP 8.3 or later.** 7.7.x runs on Laravel 13, which needs PHP 8.3+. Check with `php -v`; if you are on an older branch, [upgrade PHP](/upgrades-and-migrations/upgrading-php-on-windows) first and confirm DreamFactory still works before you continue.
+- **PHP 8.3 or later.** 7.7.0 and later run on Laravel 13, which needs PHP 8.3+. Check with `php -v`; if you are on an older branch, [upgrade PHP](/upgrades-and-migrations/upgrading-php-on-windows) first and confirm DreamFactory still works before you continue.
 - **Git.** The installation folder must be a Git clone (the Windows install guide creates it with `git clone`), and `git` must be on the `PATH`.
 - **Composer**, installed as in the Windows install guide.
 - **Commercial installs: the composer files for the target version.** Request the `composer.json`, `composer.json-dist` and `composer.lock` for the version you are upgrading *to* from DreamFactory support. Your current files define your current version only. Without the new set, `composer install` installs the open source edition and the license shows `OPEN SOURCE`.
@@ -62,7 +60,7 @@ Import-Module WebAdministration
 Stop-WebAppPool dreamfactory
 ```
 
-In the validation run the site was left running during the whole upgrade and Composer did not hit any locked files, so this step is a precaution rather than a requirement.
+Composer does not normally hit locked files while the site is running, so this step is a precaution rather than a requirement.
 
 ### Step 3: Update the Source Code
 
@@ -72,10 +70,10 @@ Stash local changes, fetch the release tags, and check out the target version:
 cd C:\inetpub\wwwroot\dreamfactory
 git stash
 git fetch origin --tags
-git checkout 7.7.1
+git checkout 7.8.0
 ```
 
-Replace `7.7.1` with the version you are upgrading to. Checking out a tag works on every install and lets you move one version at a time if you need to.
+Replace `7.8.0` with the version you are upgrading to. Checking out a tag works on every install. You can go straight to the target release or move one version at a time if you prefer.
 
 `git stash` may print `LF will be replaced by CRLF` warnings for the composer files. They are harmless.
 
@@ -127,11 +125,16 @@ Compare your `.env` with the `.env-dist` file of the new release and add any set
 
   If nothing is printed, add `CACHE_STORE=file` (or `redis` / `memcached` if you use one of those). A `.env` written by `php artisan df:env` on 7.3.1 or later already contains `CACHE_STORE=file`; older ones may not.
 
-The 7.7.1 `.env-dist` adds no other keys that a 7.3.1 `.env` lacks. After editing `.env`, run `php artisan config:clear`.
+From 7.8.0 there is one new optional setting and one change to administrator accounts:
+
+- **`DF_OUTBOUND_ALLOWED_HOSTS`**: 7.8.0 refuses outbound requests to internal hosts and private IP addresses from SOAP services, imports from a URL, files and email attachments given by URL, and redirects. If any of those point at an internal host, list it here (comma-separated hostnames, IP addresses or CIDR ranges). Database connections are not affected.
+- **Root administrator**: only the root administrator can manage administrator accounts from 7.8.0. The upgrade migration makes the lowest-id active administrator root when none is set; to choose another one, run `php artisan df:root_admin --admin_id=<id>`. See [Upgrading to 7.8.0](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory#upgrading-to-780).
+
+After editing `.env`, run `php artisan config:clear`.
 
 ### Step 7: Check Directory Permissions
 
-Files created by `git checkout` and `composer install` inherit the permissions of their folders, so the `IIS_IUSRS` grant from the installation carries over (in the validation run, the new `vendor\` packages and `storage\framework\cache` had the inherited grant without any extra step). Re-applying it is harmless and clears up HTTP 500 errors on `storage\framework\cache` if the inheritance was ever broken:
+Files created by `git checkout` and `composer install` inherit the permissions of their folders, so the `IIS_IUSRS` grant from the installation normally carries over to the new `vendor\` packages and `storage\framework\cache`. Re-applying it is harmless and clears up HTTP 500 errors on `storage\framework\cache` if the inheritance was ever broken:
 
 ```powershell
 icacls storage /grant "IIS_IUSRS:(OI)(CI)F" /T /Q
@@ -165,7 +168,7 @@ iisreset
 ## After the Upgrade
 
 - **Scheduled tasks** that run `php artisan schedule:run` or the scripting cleanup keep working unchanged, because the installation folder did not move.
-- **MCP daemons (7.7.x).** 7.7.1 adds the System API MCP daemon (`system_mcp` service type) alongside the data MCP daemon (`mcp` service type), and both run on Node.js. Nothing else in DreamFactory depends on them; until a daemon is started, requests to its service type return a 503 with setup instructions. If you use either service type:
+- **MCP daemons (7.7.1 and later).** 7.7.1 adds the System API MCP daemon (`system_mcp` service type) alongside the data MCP daemon (`mcp` service type), and both run on Node.js. Nothing else in DreamFactory depends on them; until a daemon is started, requests to its service type return a 503 with setup instructions. If you use either service type:
 
   1. Install a supported Node.js release. Node.js 22.23.4 or later is required, because older releases carry the Brotli decoder flaw [CVE-2026-111497](https://nvd.nist.gov/vuln/detail/CVE-2026-111497) that will not be fixed in Node.js 20 and earlier. The 64-bit MSI from [nodejs.org](https://nodejs.org/en/download) with default options is enough; open a new prompt afterwards so `node` is on the `PATH`.
   2. Start the System API daemon. It builds itself on first run and listens on `127.0.0.1:3700`:
@@ -176,7 +179,15 @@ iisreset
      Invoke-WebRequest -Uri http://127.0.0.1:3700/health -UseBasicParsing
      ```
 
-  3. Start the data daemon on `127.0.0.1:8006`. The `start-daemon-win.ps1` script shipped with 7.7.1 launches `npx` with `Start-Process`, which on a standard Node.js install resolves to the extension-less `npx` shell script and opens it in Notepad instead of running it. The script still prints `Daemon started`, but nothing listens on port 8006. Until a fixed script ships, start it with `npx.cmd` from the daemon folder:
+  3. Start the data daemon on `127.0.0.1:8006`. From 7.8.0 the script installs the pinned dependencies with `npm ci --omit=dev` and runs the compiled daemon with `node dist/server.js`:
+
+     ```powershell
+     cd C:\inetpub\wwwroot\dreamfactory\vendor\dreamfactory\df-mcp-server\scripts
+     .\start-daemon-win.ps1
+     Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
+     ```
+
+     On 7.7.1 the script launches `npx` with `Start-Process`, which on a standard Node.js install resolves to the extension-less `npx` shell script and opens it in Notepad instead of running it. The script still prints `Daemon started`, but nothing listens on port 8006. On 7.7.1, start the daemon with `npx.cmd` from the daemon folder instead:
 
      ```powershell
      cd C:\inetpub\wwwroot\dreamfactory\vendor\dreamfactory\df-mcp-server\daemon
@@ -201,7 +212,7 @@ ren C:\inetpub\wwwroot\dreamfactory.backup dreamfactory
 
 While a daemon (or any other program) holds files open under the folder, the rename fails with `Access to the path ... is denied`; stop it and retry.
 
-Restore the system database from the backup you took (not needed for SQLite, the file came back with the folder), then run `iisreset`. Verify the version on **System > Config > System Info**. This rollback was exercised in the validation run: the restored 7.3.1 tree served the admin login and reported its original version and license straight away.
+Restore the system database from the backup you took (not needed for SQLite, the file came back with the folder), then run `iisreset`. Verify the version on **System > Config > System Info**. The restored tree serves the admin login and reports its original version and license straight away.
 
 ## Troubleshooting
 
@@ -225,9 +236,9 @@ git config --global --add safe.directory C:/inetpub/wwwroot/dreamfactory
 
 PHP is still serving cached bytecode. Run `iisreset` ([Step 8](#step-8-restart-iis)).
 
-### `Daemon started` but `/health` on the MCP port does not answer
+### `Daemon started` but `/health` on the MCP port does not answer (7.7.1)
 
-The data daemon's `start-daemon-win.ps1` opened `npx` in Notepad instead of running it. Close the stray Notepad windows and start the daemon with `npx.cmd` as shown in [After the Upgrade](#after-the-upgrade).
+On 7.7.1 the data daemon's `start-daemon-win.ps1` opened `npx` in Notepad instead of running it. 7.8.0 fixes the script. Close the stray Notepad windows and start the daemon with `npx.cmd` as shown in [After the Upgrade](#after-the-upgrade).
 
 ### HTTP 500 with `Failed to open stream` under `storage\framework\cache`
 
@@ -235,7 +246,7 @@ The IIS identity cannot write to `storage\`. Re-apply the grants in [Step 7](#st
 
 ## Related Documentation
 
-- [Upgrading and Migrating DreamFactory](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory): release notes for 7.7.x, pre-upgrade checklist, migration process
+- [Upgrading and Migrating DreamFactory](/upgrades-and-migrations/upgrading-and-migrating-dreamfactory): release notes for 7.7.x and 7.8.0, pre-upgrade checklist, migration process
 - [Upgrading PHP on Windows](/upgrades-and-migrations/upgrading-php-on-windows)
 - [Windows Installation](/getting-started/installing-dreamfactory/windows-installation)
 - [PHP security advisory: CVE-2026-109618 and CVE-2026-109619](/Security/php-cve-2026-109618-109619)

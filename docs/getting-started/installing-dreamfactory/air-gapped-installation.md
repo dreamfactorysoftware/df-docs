@@ -266,9 +266,10 @@ from DreamFactory 4.14.1 to 7.7.1:
   LEFT JOIN service s ON s.id = a.service_id ORDER BY r.name, a.id;
   ```
 - **Keep imported passwords working.** Accounts from older versions have password hashes
-  with a lower bcrypt cost. On 7.7.1, their first login replaces the password with an
+  with a lower bcrypt cost. On 7.7.x, their first login replaces the password with an
   unusable value ([df-core#189](https://github.com/dreamfactorysoftware/df-core/issues/189)).
-  Before any imported admin or user logs in, create `config/hashing.php`:
+  7.8.0 fixes this, so nothing is needed there. On 7.7.x, before any imported admin or user
+  logs in, create `config/hashing.php`:
   ```php
   <?php
   return ['rehash_on_login' => false];

@@ -645,8 +645,8 @@ cd {dreamfactory path}\vendor\dreamfactory\df-mcp-server\scripts
 ```
 
 The script will automatically:
-- Install all required npm dependencies.
-- Start the daemon in the background using npx tsx.
+- Install the daemon's npm dependencies. From 7.8.0 it installs the pinned runtime dependencies with `npm ci --omit=dev`.
+- Start the daemon in the background. From 7.8.0 it runs the compiled daemon with `node dist/server.js`; 7.7.1 and earlier use `npx tsx`.
 - Use default host 127.0.0.1 and port 8006, unless overridden via environment variables:
   - MCP_DAEMON_HOST — host to bind the daemon (default: 127.0.0.1)
   - MCP_DAEMON_PORT — port to bind the daemon (default: 8006)
@@ -658,7 +658,7 @@ Invoke-WebRequest -Uri http://127.0.0.1:8006/health -UseBasicParsing
 ```
 
 :::warning[7.7.1: `start-daemon-win.ps1` opens Notepad instead of starting the daemon]
-The script launches `npx` with `Start-Process`, which on a standard Node.js install resolves to the extension-less `npx` shell script and opens it in Notepad. The script still prints `Daemon started`, but nothing listens on port 8006. Until a fixed script ships, start the daemon with `npx.cmd`:
+On 7.7.1 the script launches `npx` with `Start-Process`, which on a standard Node.js install resolves to the extension-less `npx` shell script and opens it in Notepad. The script still prints `Daemon started`, but nothing listens on port 8006. 7.8.0 fixes the script. On 7.7.1, start the daemon with `npx.cmd`:
 
 ```powershell
 cd {dreamfactory path}\vendor\dreamfactory\df-mcp-server\daemon
@@ -696,7 +696,7 @@ Get-Help C:\df-install\install-dreamfactory-win.ps1 -Full
 2. Open source install. `-DfRef` is the git tag or branch to check out; leave it off for the default branch. The system database defaults to SQLite; `-DbConnection mysql`, `pgsql` or `sqlsrv` together with the `-Db*` parameters uses an existing database server instead.
 
 ```powershell
-C:\df-install\install-dreamfactory-win.ps1 -DfRef 7.7.1 `
+C:\df-install\install-dreamfactory-win.ps1 -DfRef 7.8.0 `
   -AdminFirst Jane -AdminLast Doe -AdminEmail admin@example.com -AdminPassword 'AtLeast16Characters' -AdminPhone 000-000-0000
 ```
 
