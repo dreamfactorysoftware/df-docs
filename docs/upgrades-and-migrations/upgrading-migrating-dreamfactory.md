@@ -51,7 +51,7 @@ Use the table below to identify the appropriate upgrade method based on your cur
 
 ## Upgrading to 7.8.0
 
-DreamFactory 7.8.0 is an in-place upgrade from any 7.x release, using the [Minor Version Upgrade process](#upgrade-process) below. You do not need to install the releases in between: check out the `7.8.0` tag directly. If you are coming from 7.6.x or earlier, the [Upgrading to 7.7.x](#upgrading-to-77x) notes apply as well, because the move to Laravel 13 happened in 7.7.0. The direct path 7.6.0 → 7.8.0 has been validated with the steps on this page on Ubuntu 24.04 with PHP 8.3, Nginx and a MariaDB 10.11 system database, for a commercial (Gold) install: `composer install` and the migrations took under a minute, and the license level, existing services, roles, apps and API keys were unchanged afterwards.
+DreamFactory 7.8.0 is an in-place upgrade from any 7.x release, using the [Minor Version Upgrade process](#upgrade-process) below. You do not need to install the releases in between: check out the `7.8.0` tag directly. If you are coming from 7.6.x or earlier, the [Upgrading to 7.7.x](#upgrading-to-77x) notes apply as well, because the move to Laravel 13 happened in 7.7.0.
 
 The full list of changes is in the [7.8.0 release notes](https://github.com/dreamfactorysoftware/dreamfactory/releases/tag/7.8.0). Read these notes before you start:
 
