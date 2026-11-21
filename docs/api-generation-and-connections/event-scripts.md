@@ -296,7 +296,8 @@ Explore a variety of scripting examples in the [df-scriptingexamples](https://gi
   $event['response']['content']['custom_field'] = 'Added by post-process script';
 
   // Call another service to get related data
-  $relatedData = $platform->api->get('related_service/data');
+  $get = $platform['api']->get;
+  $relatedData = $get('related_service/data');
   $event['response']['content']['related_data'] = $relatedData;
   ?>
   ```
@@ -367,12 +368,13 @@ Note that Python and Node.js scripts authenticate their internal API calls with 
 
 ### Accessing platform resources from within scripts
 
-Scripts have access to the `$platform` (PHP) or `platform` (Python/Node.js) object for making internal DreamFactory API calls. To create a fully custom scripted API service (rather than attaching logic to an existing endpoint), see [Scripted Services and Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints).
+Scripts have access to the `$platform` (PHP) or `platform` (Python/Node.js) object for making internal DreamFactory API calls. To create a fully custom scripted API service (rather than attaching logic to an existing endpoint), see [Scripted Services and Endpoints](/api-generation-and-connections/api-types/scripting/scripted-services-and-endpoints). For the `platform.api` signatures in each language, see the [Platform API reference](/api-generation-and-connections/api-types/scripting/scripting-resources#platform-api).
 
 ```php
 <?php
 // Call another DreamFactory service from within a script
-$result = $platform['api']->get('my_other_service/_table/lookup_table');
+$get = $platform['api']->get;
+$result = $get('my_other_service/_table/lookup_table');
 $lookupData = $result['content']['resource'] ?? [];
 ?>
 ```
@@ -401,7 +403,7 @@ This distinction matters when DreamFactory runs behind a proxy or gateway that r
 ### General troubleshooting tips
 
 1. **Check script syntax**: Ensure your script has correct syntax for the chosen language.
-2. **Enable error logging**: Use DreamFactory's logging features to capture script errors.
+2. **Enable error logging**: Use DreamFactory's logging features to capture script errors. To see script output in the log, see [Script output and logging](/api-generation-and-connections/api-types/scripting/scripting-resources#script-output-and-logging).
 3. **Test incrementally**: Start with simple scripts and gradually add complexity.
 4. **Use platform.api for debugging**: Make API calls within your script to test functionality.
 5. **Monitor performance**: Be mindful of script execution time, especially for pre- and post-process scripts.
